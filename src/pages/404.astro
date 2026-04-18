@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="No encontrado" description="La página no existe">
+	<h1 class="title">404</h1>
+	<p class="lead">No hay nada en esta ruta.</p>
+	<p>
+		<a href="/">Volver al inicio</a>
+		{' · '}
+		<a href="/portfolio/">Portfolio</a>
+	</p>
+</BaseLayout>
+
+<style>
+	.title {
+		font-size: clamp(2rem, 5vw, 3rem);
+		font-weight: 700;
+		margin: 0 0 0.5rem;
+		letter-spacing: -0.03em;
+	}
+	.lead {
+		color: #64748b;
+		font-size: 1.125rem;
+		margin: 0 0 1.5rem;
+	}
+</style>
