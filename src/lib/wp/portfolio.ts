@@ -93,10 +93,16 @@ interface GraphQLPortfolioBySlugResponse {
 }
 
 function getGraphQLEndpoint(): string {
-	const url = import.meta.env.PUBLIC_WORDPRESS_GRAPHQL_URL?.trim();
+	// Vite inyecta .env en import.meta.env (dev/local). En CI (p. ej. Cloudflare Pages) suele estar solo en process.env.
+	const fromVite = import.meta.env.PUBLIC_WORDPRESS_GRAPHQL_URL?.trim();
+	const fromNode =
+		typeof process !== 'undefined'
+			? process.env.PUBLIC_WORDPRESS_GRAPHQL_URL?.trim()
+			: '';
+	const url = fromVite || fromNode || '';
 	if (!url) {
 		throw new Error(
-			'Define PUBLIC_WORDPRESS_GRAPHQL_URL in .env (URL de tu endpoint WPGraphQL, p. ej. https://tudominio.com/graphql)',
+			'Define PUBLIC_WORDPRESS_GRAPHQL_URL en .env local o en el panel de CI (p. ej. Cloudflare → Variables).',
 		);
 	}
 	return url.replace(/\/$/, '');
