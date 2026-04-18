@@ -16,7 +16,9 @@ export default defineConfig(({ mode }) => {
 		'';
 
 	return {
-		adapter: cloudflare(),
+		// Por defecto el prerender usa workerd (Miniflare) y NO ve process.env del build de Pages.
+		// 'node' usa el mismo entorno que `npm run build`, donde sí llegan las variables del dashboard.
+		adapter: cloudflare({ prerenderEnvironment: 'node' }),
 		vite: {
 			// Cloudflare Pages inyecta variables en process.env; el prerender (Miniflare) necesita
 			// que PUBLIC_* queden resueltas en el bundle.
