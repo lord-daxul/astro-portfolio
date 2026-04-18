@@ -92,7 +92,7 @@ interface GraphQLPortfolioBySlugResponse {
 	errors?: readonly { message: string }[];
 }
 
-function getGraphQLEndpoint(): string {
+function getGraphQLEndpoint(): string | null {
 	// Vite inyecta .env en import.meta.env (dev/local). En CI (p. ej. Cloudflare Pages) suele estar solo en process.env.
 	const fromVite = import.meta.env.PUBLIC_WORDPRESS_GRAPHQL_URL?.trim();
 	const fromNode =
@@ -101,15 +101,17 @@ function getGraphQLEndpoint(): string {
 			: '';
 	const url = fromVite || fromNode || '';
 	if (!url) {
-		throw new Error(
-			'Define PUBLIC_WORDPRESS_GRAPHQL_URL en .env local o en el panel de CI (p. ej. Cloudflare → Variables).',
+		console.warn(
+			'[wp] PUBLIC_WORDPRESS_GRAPHQL_URL no está definida. Se usará un portfolio vacío durante el build.',
 		);
+		return null;
 	}
 	return url.replace(/\/$/, '');
 }
 
 export async function fetchPortfolioList(first = 10): Promise<PortfolioItem[]> {
 	const endpoint = getGraphQLEndpoint();
+	if (!endpoint) return [];
 	const res = await fetch(endpoint, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -133,6 +135,7 @@ export async function fetchPortfolioList(first = 10): Promise<PortfolioItem[]> {
 
 export async function fetchPortfolioBySlug(slug: string): Promise<PortfolioItem | null> {
 	const endpoint = getGraphQLEndpoint();
+	if (!endpoint) return null;
 	const res = await fetch(endpoint, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
