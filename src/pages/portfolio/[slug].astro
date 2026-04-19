@@ -1,23 +1,11 @@
 ---
+export const prerender = false;
+
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import {
 	fetchPortfolioBySlug,
-	fetchPortfolioList,
-	PORTFOLIO_LIST_FOR_PATHS,
 	stripHtml,
 } from '../../lib/wp/portfolio';
-
-export async function getStaticPaths() {
-	try {
-		const items = await fetchPortfolioList(PORTFOLIO_LIST_FOR_PATHS);
-		return items
-			.filter((i): i is typeof i & { slug: string } => Boolean(i.slug))
-			.map((i) => ({ params: { slug: i.slug } }));
-	} catch (error) {
-		console.warn('[portfolio] No se pudieron generar las rutas estáticas:', error);
-		return [];
-	}
-}
 
 const slug = Astro.params.slug;
 if (!slug) {

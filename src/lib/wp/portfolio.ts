@@ -59,6 +59,67 @@ export const PORTFOLIO_BY_SLUG_QUERY = /* GraphQL */ `
 	}
 `;
 
+export const POSTS_LIST_QUERY = /* GraphQL */ `
+	query PostsList($first: Int = 10) {
+		posts(first: $first) {
+			nodes {
+				id
+				databaseId
+				title
+				slug
+				excerpt
+				date
+				featuredImage {
+					node {
+						sourceUrl
+						altText
+						mediaDetails {
+							width
+							height
+						}
+					}
+				}
+				portfolioCategories: categories {
+					nodes {
+						name
+						slug
+					}
+				}
+			}
+		}
+	}
+`;
+
+export const POST_BY_SLUG_QUERY = /* GraphQL */ `
+	query PostBySlug($slug: ID!) {
+		post(id: $slug, idType: SLUG) {
+			id
+			databaseId
+			title
+			slug
+			excerpt
+			date
+			content(format: RENDERED)
+			featuredImage {
+				node {
+					sourceUrl
+					altText
+					mediaDetails {
+						width
+						height
+					}
+				}
+			}
+			portfolioCategories: categories {
+				nodes {
+					name
+					slug
+				}
+			}
+		}
+	}
+`;
+
 export interface PortfolioCategoryNode {
 	name?: string | null;
 	slug?: string | null;
@@ -83,12 +144,15 @@ export interface PortfolioItem {
 }
 
 interface GraphQLPortfolioListResponse {
-	data?: { portfolioItems?: { nodes?: PortfolioItem[] | null } | null };
+	data?: {
+		portfolioItems?: { nodes?: PortfolioItem[] | null } | null;
+		posts?: { nodes?: PortfolioItem[] | null } | null;
+	};
 	errors?: readonly { message: string }[];
 }
 
 interface GraphQLPortfolioBySlugResponse {
-	data?: { portfolioItem?: PortfolioItem | null };
+	data?: { portfolioItem?: PortfolioItem | null; post?: PortfolioItem | null };
 	errors?: readonly { message: string }[];
 }
 
@@ -112,49 +176,66 @@ function getGraphQLEndpoint(): string | null {
 export async function fetchPortfolioList(first = 10): Promise<PortfolioItem[]> {
 	const endpoint = getGraphQLEndpoint();
 	if (!endpoint) return [];
-	const res = await fetch(endpoint, {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({
-			query: PORTFOLIO_LIST_QUERY,
-			variables: { first },
-		}),
-	});
 
-	if (!res.ok) {
-		throw new Error(`GraphQL HTTP ${res.status}: ${res.statusText}`);
+	const request = async (query: string) => {
+		const res = await fetch(endpoint, {
+			method: 'POST',
+			cache: 'no-store',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ query, variables: { first } }),
+		});
+
+		if (!res.ok) {
+			throw new Error(`GraphQL HTTP ${res.status}: ${res.statusText}`);
+		}
+
+		return (await res.json()) as GraphQLPortfolioListResponse;
+	};
+
+	const portfolioJson = await request(PORTFOLIO_LIST_QUERY);
+	if (!portfolioJson.errors?.length) {
+		const items = portfolioJson.data?.portfolioItems?.nodes?.filter(Boolean) ?? [];
+		if (items.length > 0) return items;
 	}
 
-	const json = (await res.json()) as GraphQLPortfolioListResponse;
-	if (json.errors?.length) {
-		throw new Error(json.errors.map((e) => e.message).join('; '));
+	const postsJson = await request(POSTS_LIST_QUERY);
+	if (postsJson.errors?.length) {
+		throw new Error(postsJson.errors.map((e) => e.message).join('; '));
 	}
 
-	return json.data?.portfolioItems?.nodes?.filter(Boolean) ?? [];
+	return postsJson.data?.posts?.nodes?.filter(Boolean) ?? [];
 }
 
 export async function fetchPortfolioBySlug(slug: string): Promise<PortfolioItem | null> {
 	const endpoint = getGraphQLEndpoint();
 	if (!endpoint) return null;
-	const res = await fetch(endpoint, {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({
-			query: PORTFOLIO_BY_SLUG_QUERY,
-			variables: { slug },
-		}),
-	});
 
-	if (!res.ok) {
-		throw new Error(`GraphQL HTTP ${res.status}: ${res.statusText}`);
+	const request = async (query: string) => {
+		const res = await fetch(endpoint, {
+			method: 'POST',
+			cache: 'no-store',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ query, variables: { slug } }),
+		});
+
+		if (!res.ok) {
+			throw new Error(`GraphQL HTTP ${res.status}: ${res.statusText}`);
+		}
+
+		return (await res.json()) as GraphQLPortfolioBySlugResponse;
+	};
+
+	const portfolioJson = await request(PORTFOLIO_BY_SLUG_QUERY);
+	if (!portfolioJson.errors?.length && portfolioJson.data?.portfolioItem) {
+		return portfolioJson.data.portfolioItem;
 	}
 
-	const json = (await res.json()) as GraphQLPortfolioBySlugResponse;
-	if (json.errors?.length) {
-		throw new Error(json.errors.map((e) => e.message).join('; '));
+	const postJson = await request(POST_BY_SLUG_QUERY);
+	if (postJson.errors?.length) {
+		throw new Error(postJson.errors.map((e) => e.message).join('; '));
 	}
 
-	return json.data?.portfolioItem ?? null;
+	return postJson.data?.post ?? null;
 }
 
 export function stripHtml(html: string | null | undefined): string {
