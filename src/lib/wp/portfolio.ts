@@ -156,21 +156,31 @@ interface GraphQLPortfolioBySlugResponse {
 	errors?: readonly { message: string }[];
 }
 
+const DEFAULT_WORDPRESS_SITE_URL = 'https://davidsanchez.website';
+
+function normalizeUrl(value: string | null | undefined): string {
+	return value?.trim().replace(/\/$/, '') ?? '';
+}
+
 function getGraphQLEndpoint(): string | null {
-	// Vite inyecta .env en import.meta.env (dev/local). En CI (p. ej. Cloudflare Pages) suele estar solo en process.env.
-	const fromVite = import.meta.env.PUBLIC_WORDPRESS_GRAPHQL_URL?.trim();
+	// Vite inyecta .env en import.meta.env (dev/local). En CI suele estar en process.env.
+	const fromVite = normalizeUrl(import.meta.env.PUBLIC_WORDPRESS_GRAPHQL_URL);
 	const fromNode =
 		typeof process !== 'undefined'
-			? process.env.PUBLIC_WORDPRESS_GRAPHQL_URL?.trim()
+			? normalizeUrl(process.env.PUBLIC_WORDPRESS_GRAPHQL_URL)
 			: '';
-	const url = fromVite || fromNode || '';
-	if (!url) {
-		console.warn(
-			'[wp] PUBLIC_WORDPRESS_GRAPHQL_URL no está definida. Se usará un portfolio vacío durante el build.',
-		);
-		return null;
+	const siteFromVite = normalizeUrl(import.meta.env.PUBLIC_WORDPRESS_SITE_URL);
+	const siteFromNode =
+		typeof process !== 'undefined' ? normalizeUrl(process.env.PUBLIC_WORDPRESS_SITE_URL) : '';
+	const derivedFromSite = siteFromVite || siteFromNode;
+	const fallback = `${DEFAULT_WORDPRESS_SITE_URL}/graphql`;
+	const url = fromVite || fromNode || (derivedFromSite ? `${derivedFromSite}/graphql` : '') || fallback;
+
+	if (!fromVite && !fromNode) {
+		console.warn(`[wp] Usando endpoint GraphQL fallback: ${url}`);
 	}
-	return url.replace(/\/$/, '');
+
+	return url || null;
 }
 
 export async function fetchPortfolioList(first = 10): Promise<PortfolioItem[]> {
