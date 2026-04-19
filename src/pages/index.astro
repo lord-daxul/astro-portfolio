@@ -3,15 +3,26 @@ export const prerender = false;
 
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PortfolioGrid from '../components/PortfolioGrid.astro';
-import { fetchPortfolioList } from '../lib/wp/portfolio';
+import { fetchPortfolioList, fetchPostsList } from '../lib/wp/portfolio';
 
 const HOME_PREVIEW_COUNT = 6;
 
 let previewItems: Awaited<ReturnType<typeof fetchPortfolioList>> = [];
 let loadError: string | null = null;
+let sectionTitle = 'Últimos proyectos';
+let sectionPath = '/portfolio/';
+let emptyMessage = 'Aún no hay proyectos publicados todavía.';
 
 try {
 	previewItems = await fetchPortfolioList(HOME_PREVIEW_COUNT);
+	if (previewItems.length === 0) {
+		previewItems = await fetchPostsList(HOME_PREVIEW_COUNT);
+		if (previewItems.length > 0) {
+			sectionTitle = 'Últimas publicaciones';
+			sectionPath = '/blog/';
+			emptyMessage = 'Aún no hay publicaciones en el blog.';
+		}
+	}
 } catch (e) {
 	loadError = e instanceof Error ? e.message : String(e);
 }
@@ -32,10 +43,10 @@ try {
 
 	<section class="section" aria-labelledby="latest-heading">
 		<div class="section-head">
-			<h2 id="latest-heading">Últimos proyectos</h2>
-			<a class="section-link" href="/portfolio/">Ver todo</a>
+			<h2 id="latest-heading">{sectionTitle}</h2>
+			<a class="section-link" href={sectionPath}>Ver todo</a>
 		</div>
-		<PortfolioGrid items={previewItems} loadError={loadError} />
+		<PortfolioGrid items={previewItems} loadError={loadError} basePath={sectionPath} emptyMessage={emptyMessage} />
 	</section>
 </BaseLayout>
 

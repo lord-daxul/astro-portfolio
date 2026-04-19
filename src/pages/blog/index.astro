@@ -3,28 +3,28 @@ export const prerender = false;
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PortfolioGrid from '../../components/PortfolioGrid.astro';
-import { fetchPortfolioList, PORTFOLIO_LIST_FOR_PATHS } from '../../lib/wp/portfolio';
+import { fetchPostsList, PORTFOLIO_LIST_FOR_PATHS } from '../../lib/wp/portfolio';
 
-let items: Awaited<ReturnType<typeof fetchPortfolioList>> = [];
+let items: Awaited<ReturnType<typeof fetchPostsList>> = [];
 let loadError: string | null = null;
 
 try {
-	items = await fetchPortfolioList(PORTFOLIO_LIST_FOR_PATHS);
+	items = await fetchPostsList(PORTFOLIO_LIST_FOR_PATHS);
 } catch (e) {
 	loadError = e instanceof Error ? e.message : String(e);
 }
 ---
 
-<BaseLayout title="Portfolio" description="Proyectos y trabajos del portfolio">
-	<h1 class="page-title">Portfolio</h1>
+<BaseLayout title="Blog" description="Publicaciones y artículos del blog">
+	<h1 class="page-title">Blog</h1>
 	<p class="page-intro">
-		Listado generado desde WordPress (WPGraphQL). Las fichas enlazan a la vista detalle en este sitio.
+		Aquí encontrarás las publicaciones del blog traídas directamente desde WordPress mediante WPGraphQL.
 	</p>
 	<PortfolioGrid
 		items={items}
 		loadError={loadError}
-		basePath="/portfolio/"
-		emptyMessage="Aún no hay proyectos en el portfolio publicados en WordPress."
+		basePath="/blog/"
+		emptyMessage="Aún no hay publicaciones en el blog."
 	/>
 </BaseLayout>
 
@@ -38,6 +38,6 @@ try {
 	.page-intro {
 		color: #64748b;
 		margin: 0 0 2rem;
-		max-width: 40rem;
+		max-width: 42rem;
 	}
 </style>

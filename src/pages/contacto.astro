@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Contacto" description="Información de contacto y colaboración">
+	<section class="contact">
+		<p class="eyebrow">Contacto</p>
+		<h1>Hablemos de tu proyecto</h1>
+		<p class="lead">
+			Si quieres trabajar conmigo, necesitas una web o deseas colaborar en un proyecto,
+			puedes personalizar esta página con tu correo, WhatsApp o redes profesionales.
+		</p>
+
+		<div class="panel">
+			<h2>Canales de contacto</h2>
+			<ul>
+				<li>Correo profesional</li>
+				<li>LinkedIn</li>
+				<li>GitHub</li>
+				<li>WhatsApp o formulario</li>
+			</ul>
+			<p>
+				Edita esta página para colocar tus datos reales y convertirla en tu contacto final.
+			</p>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.contact {
+		max-width: 48rem;
+	}
+	.eyebrow {
+		font-size: 0.8125rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: #64748b;
+		margin: 0 0 0.75rem;
+	}
+	h1 {
+		font-size: clamp(2rem, 5vw, 2.75rem);
+		line-height: 1.1;
+		letter-spacing: -0.03em;
+		margin: 0 0 1rem;
+	}
+	.lead {
+		font-size: 1.05rem;
+		color: #475569;
+		margin: 0 0 1.5rem;
+	}
+	.panel {
+		background: #fff;
+		border: 1px solid #e2e8f0;
+		border-radius: 0.75rem;
+		padding: 1.25rem;
+		box-shadow: 0 1px 3px rgb(15 23 42 / 0.06);
+	}
+	.panel h2 {
+		margin-top: 0;
+		font-size: 1.125rem;
+	}
+	.panel ul {
+		margin: 0 0 1rem;
+		padding-left: 1.25rem;
+		color: #334155;
+	}
+	.panel p {
+		margin: 0;
+		color: #475569;
+	}
+</style>

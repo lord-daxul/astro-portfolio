@@ -177,65 +177,92 @@ export async function fetchPortfolioList(first = 10): Promise<PortfolioItem[]> {
 	const endpoint = getGraphQLEndpoint();
 	if (!endpoint) return [];
 
-	const request = async (query: string) => {
-		const res = await fetch(endpoint, {
-			method: 'POST',
-			cache: 'no-store',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ query, variables: { first } }),
-		});
+	const res = await fetch(endpoint, {
+		method: 'POST',
+		cache: 'no-store',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ query: PORTFOLIO_LIST_QUERY, variables: { first } }),
+	});
 
-		if (!res.ok) {
-			throw new Error(`GraphQL HTTP ${res.status}: ${res.statusText}`);
-		}
-
-		return (await res.json()) as GraphQLPortfolioListResponse;
-	};
-
-	const portfolioJson = await request(PORTFOLIO_LIST_QUERY);
-	if (!portfolioJson.errors?.length) {
-		const items = portfolioJson.data?.portfolioItems?.nodes?.filter(Boolean) ?? [];
-		if (items.length > 0) return items;
+	if (!res.ok) {
+		throw new Error(`GraphQL HTTP ${res.status}: ${res.statusText}`);
 	}
 
-	const postsJson = await request(POSTS_LIST_QUERY);
-	if (postsJson.errors?.length) {
-		throw new Error(postsJson.errors.map((e) => e.message).join('; '));
+	const json = (await res.json()) as GraphQLPortfolioListResponse;
+	if (json.errors?.length) {
+		throw new Error(json.errors.map((e) => e.message).join('; '));
 	}
 
-	return postsJson.data?.posts?.nodes?.filter(Boolean) ?? [];
+	return json.data?.portfolioItems?.nodes?.filter(Boolean) ?? [];
+}
+
+export async function fetchPostsList(first = 10): Promise<PortfolioItem[]> {
+	const endpoint = getGraphQLEndpoint();
+	if (!endpoint) return [];
+
+	const res = await fetch(endpoint, {
+		method: 'POST',
+		cache: 'no-store',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ query: POSTS_LIST_QUERY, variables: { first } }),
+	});
+
+	if (!res.ok) {
+		throw new Error(`GraphQL HTTP ${res.status}: ${res.statusText}`);
+	}
+
+	const json = (await res.json()) as GraphQLPortfolioListResponse;
+	if (json.errors?.length) {
+		throw new Error(json.errors.map((e) => e.message).join('; '));
+	}
+
+	return json.data?.posts?.nodes?.filter(Boolean) ?? [];
 }
 
 export async function fetchPortfolioBySlug(slug: string): Promise<PortfolioItem | null> {
 	const endpoint = getGraphQLEndpoint();
 	if (!endpoint) return null;
 
-	const request = async (query: string) => {
-		const res = await fetch(endpoint, {
-			method: 'POST',
-			cache: 'no-store',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ query, variables: { slug } }),
-		});
+	const res = await fetch(endpoint, {
+		method: 'POST',
+		cache: 'no-store',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ query: PORTFOLIO_BY_SLUG_QUERY, variables: { slug } }),
+	});
 
-		if (!res.ok) {
-			throw new Error(`GraphQL HTTP ${res.status}: ${res.statusText}`);
-		}
-
-		return (await res.json()) as GraphQLPortfolioBySlugResponse;
-	};
-
-	const portfolioJson = await request(PORTFOLIO_BY_SLUG_QUERY);
-	if (!portfolioJson.errors?.length && portfolioJson.data?.portfolioItem) {
-		return portfolioJson.data.portfolioItem;
+	if (!res.ok) {
+		throw new Error(`GraphQL HTTP ${res.status}: ${res.statusText}`);
 	}
 
-	const postJson = await request(POST_BY_SLUG_QUERY);
-	if (postJson.errors?.length) {
-		throw new Error(postJson.errors.map((e) => e.message).join('; '));
+	const json = (await res.json()) as GraphQLPortfolioBySlugResponse;
+	if (json.errors?.length) {
+		throw new Error(json.errors.map((e) => e.message).join('; '));
 	}
 
-	return postJson.data?.post ?? null;
+	return json.data?.portfolioItem ?? null;
+}
+
+export async function fetchPostBySlug(slug: string): Promise<PortfolioItem | null> {
+	const endpoint = getGraphQLEndpoint();
+	if (!endpoint) return null;
+
+	const res = await fetch(endpoint, {
+		method: 'POST',
+		cache: 'no-store',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ query: POST_BY_SLUG_QUERY, variables: { slug } }),
+	});
+
+	if (!res.ok) {
+		throw new Error(`GraphQL HTTP ${res.status}: ${res.statusText}`);
+	}
+
+	const json = (await res.json()) as GraphQLPortfolioBySlugResponse;
+	if (json.errors?.length) {
+		throw new Error(json.errors.map((e) => e.message).join('; '));
+	}
+
+	return json.data?.post ?? null;
 }
 
 export function stripHtml(html: string | null | undefined): string {

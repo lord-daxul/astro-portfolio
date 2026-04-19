@@ -5,27 +5,33 @@ import { stripHtml } from '../lib/wp/portfolio';
 interface Props {
 	items: PortfolioItem[];
 	loadError: string | null;
+	basePath?: string;
+	emptyMessage?: string;
 }
 
-const { items, loadError } = Astro.props;
+const {
+	items,
+	loadError,
+	basePath = '/portfolio/',
+	emptyMessage = 'Aún no hay elementos para mostrar.',
+} = Astro.props;
+const normalizedBasePath = basePath.endsWith('/') ? basePath : `${basePath}/`;
 ---
 
 {
 	loadError ? (
 		<p class="error" role="alert">
-			No se pudo cargar el portfolio: {loadError}
+			No se pudo cargar el contenido: {loadError}
 		</p>
 	) : items.length === 0 ? (
-		<p class="empty">
-			Aún no hay entradas de portfolio en WordPress, o la consulta devolvió una lista vacía.
-		</p>
+		<p class="empty">{emptyMessage}</p>
 	) : (
 		<ul class="grid">
 			{items.map((item) => {
 				const img = item.featuredImage?.node;
 				const src = img?.sourceUrl;
 				const cats = item.portfolioCategories?.nodes ?? [];
-				const href = item.slug ? `/portfolio/${item.slug}/` : undefined;
+				const href = item.slug ? `${normalizedBasePath}${item.slug}/` : undefined;
 				return (
 					<li class="card">
 						{src ? (
