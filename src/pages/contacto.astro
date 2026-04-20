@@ -35,7 +35,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 		font-weight: 700;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		color: #64748b;
+		color: var(--rd-muted);
 		margin: 0 0 0.75rem;
 	}
 	h1 {
@@ -46,15 +46,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 	}
 	.lead {
 		font-size: 1.05rem;
-		color: #475569;
+		color: var(--rd-text-soft);
 		margin: 0 0 1.5rem;
 	}
 	.panel {
-		background: #fff;
-		border: 1px solid #e2e8f0;
+		background: var(--rd-panel);
+		border: 1px solid var(--rd-ink);
 		border-radius: 0.75rem;
 		padding: 1.25rem;
-		box-shadow: 0 1px 3px rgb(15 23 42 / 0.06);
+		box-shadow: 0 1px 3px rgb(0 0 0 / 0.28);
 	}
 	.panel h2 {
 		margin-top: 0;
@@ -63,10 +63,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 	.panel ul {
 		margin: 0 0 1rem;
 		padding-left: 1.25rem;
-		color: #334155;
+		color: var(--rd-text);
 	}
 	.panel p {
 		margin: 0;
-		color: #475569;
+		color: var(--rd-text-soft);
 	}
 </style>
