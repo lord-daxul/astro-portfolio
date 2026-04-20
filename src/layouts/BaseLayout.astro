@@ -6,9 +6,10 @@ import '../styles/global.css';
 interface Props {
 	title: string;
 	description?: string;
+	mainClass?: string;
 }
 
-const { title, description = 'Portfolio headless con WordPress y Astro' } = Astro.props;
+const { title, description = 'Portfolio headless con WordPress y Astro', mainClass } = Astro.props;
 const fullTitle = title === 'Inicio' ? 'Daxulfolio' : `${title} · Daxulfolio`;
 ---
 
@@ -33,7 +34,7 @@ const fullTitle = title === 'Inicio' ? 'Daxulfolio' : `${title} · Daxulfolio`;
 	</head>
 	<body>
 		<Header />
-		<main id="contenido">
+		<main id="contenido" class={mainClass}>
 			<slot />
 		</main>
 		<Footer />
