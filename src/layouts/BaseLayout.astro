@@ -22,6 +22,14 @@ const fullTitle = title === 'Inicio' ? 'Daxulfolio' : `${title} · Daxulfolio`;
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
 		<title>{fullTitle}</title>
+		<script is:inline>
+			(() => {
+				const saved = localStorage.getItem('theme');
+				const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				const theme = saved === 'light' || saved === 'dark' ? saved : systemDark ? 'dark' : 'light';
+				document.documentElement.setAttribute('data-theme', theme);
+			})();
+		</script>
 	</head>
 	<body>
 		<Header />
@@ -29,5 +37,23 @@ const fullTitle = title === 'Inicio' ? 'Daxulfolio' : `${title} · Daxulfolio`;
 			<slot />
 		</main>
 		<Footer />
+		<script is:inline>
+			(() => {
+				const root = document.documentElement;
+				const btn = document.querySelector('.theme-toggle');
+				if (!btn) return;
+				const update = () => {
+					const isDark = root.getAttribute('data-theme') !== 'light';
+					btn.setAttribute('aria-pressed', String(isDark));
+				};
+				btn.addEventListener('click', () => {
+					const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+					root.setAttribute('data-theme', next);
+					localStorage.setItem('theme', next);
+					update();
+				});
+				update();
+			})();
+		</script>
 	</body>
 </html>

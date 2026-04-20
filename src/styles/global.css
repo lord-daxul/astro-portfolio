@@ -21,6 +21,18 @@
 	line-height: 1.5;
 }
 
+html[data-theme='light'] {
+	--rd-bg: #f8fafc;
+	--rd-panel: #ffffff;
+	--rd-ink: #cbd5e1;
+	--rd-blue: #1d4ed8;
+	--rd-accent: #1d4ed8;
+	--rd-accent-2: #2563eb;
+	--rd-text: #0f172a;
+	--rd-text-soft: #475569;
+	--rd-muted: #64748b;
+}
+
 *,
 *::before,
 *::after {

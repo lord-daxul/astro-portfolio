@@ -13,6 +13,10 @@ const siteTitle = 'Daxulfolio';
 				<li><a href="/contacto/">Contacto</a></li>
 			</ul>
 		</nav>
+		<button class="theme-toggle" type="button" aria-label="Cambiar tema" aria-pressed="true">
+			<span class="icon-sun" aria-hidden="true">☀</span>
+			<span class="icon-moon" aria-hidden="true">🌙</span>
+		</button>
 	</div>
 </header>
 
@@ -28,11 +32,10 @@ const siteTitle = 'Daxulfolio';
 		max-width: 72rem;
 		margin-inline: auto;
 		padding: 0.875rem clamp(1rem, 4vw, 3rem);
-		display: flex;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
 		align-items: center;
-		justify-content: space-between;
 		gap: 1rem;
-		flex-wrap: wrap;
 	}
 	.brand {
 		font-weight: 700;
@@ -51,6 +54,7 @@ const siteTitle = 'Daxulfolio';
 		padding: 0;
 		display: flex;
 		gap: 1.25rem;
+		justify-content: center;
 	}
 	.nav a {
 		color: var(--rd-text-soft);
@@ -61,5 +65,46 @@ const siteTitle = 'Daxulfolio';
 	.nav a:hover {
 		color: var(--rd-text);
 		text-decoration: underline;
+	}
+	.theme-toggle {
+		justify-self: end;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		border-radius: 999px;
+		border: 1px solid var(--rd-ink);
+		background: var(--rd-panel);
+		color: var(--rd-text);
+		cursor: pointer;
+	}
+	.theme-toggle:hover {
+		border-color: var(--rd-accent);
+	}
+	.theme-toggle .icon-sun,
+	.theme-toggle .icon-moon {
+		font-size: 1rem;
+		line-height: 1;
+	}
+	.theme-toggle .icon-sun {
+		display: none;
+	}
+	:global(html[data-theme='light']) .theme-toggle .icon-sun {
+		display: inline;
+	}
+	:global(html[data-theme='light']) .theme-toggle .icon-moon {
+		display: none;
+	}
+	@media (max-width: 760px) {
+		.inner {
+			grid-template-columns: 1fr;
+			gap: 0.75rem;
+		}
+		.brand,
+		.nav,
+		.theme-toggle {
+			justify-self: center;
+		}
 	}
 </style>
