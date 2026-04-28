@@ -115,7 +115,6 @@ a:hover {
 }
 
 .action-code:hover {
-	background: transparent;
 	color: #fff;
 }
 
@@ -132,7 +131,6 @@ html[data-theme='light'] .action-code:hover {
 .action-view:hover {
 	background: transparent;
 	color: #fff;
-	border-color: color-mix(in srgb, var(--rd-accent) 55%, var(--rd-ink));
 }
 
 html[data-theme='light'] .action-view {
