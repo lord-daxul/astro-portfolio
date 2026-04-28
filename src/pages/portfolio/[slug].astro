@@ -20,6 +20,25 @@ if (!item) {
 
 const description = stripHtml(item.excerpt) || stripHtml(item.content?.slice(0, 160));
 const img = item.featuredImage?.node;
+
+function toWpFullUrl(src: string | null | undefined): string | null {
+	if (!src) return null;
+	const [base, query] = src.split('?');
+	const extMatch = base.match(/\.(webp|png|jpe?g)$/i);
+	if (!extMatch) return src;
+	const ext = extMatch[0];
+	const baseNoExt = base.slice(0, -ext.length);
+	const full = `${baseNoExt.replace(/-\d+x\d+$/i, '')}${ext}`;
+	return query ? `${full}?${query}` : full;
+}
+
+const imgOriginalSrc = img?.sourceUrl ?? null;
+const imgFullSrc = toWpFullUrl(imgOriginalSrc);
+const featuredSrc = imgFullSrc ?? imgOriginalSrc;
+const featuredOnError =
+	imgOriginalSrc && imgFullSrc && imgOriginalSrc !== imgFullSrc
+		? `this.onerror=null;this.src=${JSON.stringify(imgOriginalSrc)};`
+		: undefined;
 ---
 
 <BaseLayout title={item.title ?? 'Proyecto'} description={description || undefined}>
@@ -54,14 +73,17 @@ const img = item.featuredImage?.node;
 			) : null}
 		</header>
 
-		{img?.sourceUrl ? (
+		{featuredSrc ? (
 			<figure class="hero-img">
 				<img
-					src={img.sourceUrl}
+					src={featuredSrc}
 					alt={img.altText ?? item.title ?? ''}
 					width={img.mediaDetails?.width ?? undefined}
 					height={img.mediaDetails?.height ?? undefined}
 					loading="eager"
+					fetchpriority="high"
+					decoding="async"
+					onerror={featuredOnError}
 				/>
 			</figure>
 		) : null}
