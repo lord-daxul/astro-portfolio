@@ -16,6 +16,7 @@ const {
 	emptyMessage = 'Aún no hay elementos para mostrar.',
 } = Astro.props;
 const normalizedBasePath = basePath.endsWith('/') ? basePath : `${basePath}/`;
+const isBlog = normalizedBasePath.startsWith('/blog/');
 
 function toWpMediumCardUrl(src: string | null | undefined): string | null {
 	if (!src) return null;
@@ -50,7 +51,13 @@ function toWpMediumCardUrl(src: string | null | undefined): string | null {
 				const cats = item.portfolioCategories?.nodes ?? [];
 				const href = item.slug ? `${normalizedBasePath}${item.slug}/` : undefined;
 				const linkLabel = item.title ? `Ver ${item.title}` : 'Ver detalle del proyecto';
-				const viewLabel = item.title ? `Proyecto: ${item.title}` : 'Proyecto';
+				const viewLabel = isBlog
+					? item.title
+						? `Ver post: ${item.title}`
+						: 'Ver post'
+					: item.title
+						? `Proyecto: ${item.title}`
+						: 'Proyecto';
 				return (
 					<li class="card">
 						<div class="thumb">
@@ -95,22 +102,36 @@ function toWpMediumCardUrl(src: string | null | undefined): string | null {
 								</ul>
 							) : null}
 							<div class="actions">
-								<a
-									class="action action-code"
-									href="https://github.com"
-									target="_blank"
-									rel="noreferrer"
-								>
-									Código
-								</a>
-								{href ? (
-									<a class="action action-view" href={href} aria-label={viewLabel}>
-										Proyecto
-									</a>
+								{isBlog ? (
+									href ? (
+										<a class="action action-view" href={href} aria-label={viewLabel}>
+											Ver Post
+										</a>
+									) : (
+										<span class="action action-view is-disabled" aria-hidden="true">
+											Ver Post
+										</span>
+									)
 								) : (
-									<span class="action action-view is-disabled" aria-hidden="true">
-										Proyecto
-									</span>
+									<>
+										<a
+											class="action action-code"
+											href="https://github.com"
+											target="_blank"
+											rel="noreferrer"
+										>
+											Código
+										</a>
+										{href ? (
+											<a class="action action-view" href={href} aria-label={viewLabel}>
+												Proyecto
+											</a>
+										) : (
+											<span class="action action-view is-disabled" aria-hidden="true">
+												Proyecto
+											</span>
+										)}
+									</>
 								)}
 							</div>
 						</div>
