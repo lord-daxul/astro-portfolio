@@ -43,6 +43,7 @@ const normalizedBasePath = basePath.endsWith('/') ? basePath : `${basePath}/`;
 										alt=""
 										width={img?.mediaDetails?.width ?? undefined}
 										height={img?.mediaDetails?.height ?? undefined}
+										decoding="async"
 										loading="lazy"
 									/>
 								</a>
@@ -53,6 +54,7 @@ const normalizedBasePath = basePath.endsWith('/') ? basePath : `${basePath}/`;
 										alt={img?.altText || (item.title ? `Imagen de ${item.title}` : 'Imagen del proyecto')}
 										width={img?.mediaDetails?.width ?? undefined}
 										height={img?.mediaDetails?.height ?? undefined}
+										decoding="async"
 										loading="lazy"
 									/>
 								</div>
