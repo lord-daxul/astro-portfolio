@@ -105,24 +105,23 @@ try {
 	</section>
 
 	<section class="section experience" aria-labelledby="experience-heading">
-		<div class="section-head">
+		<header class="skills-head">
 			<h2 id="experience-heading">Experiencia</h2>
-		</div>
-		<ol class="timeline">
+			<p class="skills-lead">Roles y proyectos en los que he trabajado.</p>
+		</header>
+		<div class="experience-grid">
 			{
 				experience.map((job) => (
-					<li class="timeline-item">
-						<p class="timeline-period">{job.period}</p>
-						<div class="timeline-card">
-							<h3 class="timeline-role">{job.role}</h3>
-							{(job.company || job.location) && (
-								<p class="timeline-meta">{[job.company, job.location].filter(Boolean).join(' · ')}</p>
-							)}
-						</div>
-					</li>
+					<article class="skill-card experience-card">
+						<p class="experience-period">{job.period}</p>
+						<h3 class="experience-role">{job.role}</h3>
+						{(job.company || job.location) && (
+							<p class="experience-meta">{[job.company, job.location].filter(Boolean).join(' · ')}</p>
+						)}
+					</article>
 				))
 			}
-		</ol>
+		</div>
 	</section>
 
 	<section class="section" aria-labelledby="latest-heading">
@@ -328,6 +327,30 @@ try {
 	.experience {
 		border-bottom: 1px solid var(--rd-ink);
 	}
+	.experience-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.25rem;
+	}
+	.experience-card {
+		align-content: start;
+	}
+	.experience-period {
+		margin: 0;
+		font-weight: 800;
+		letter-spacing: -0.02em;
+		color: var(--rd-accent);
+	}
+	.experience-role {
+		margin: 0.1rem 0 0;
+		font-size: 1.0625rem;
+		font-weight: 800;
+		letter-spacing: -0.02em;
+	}
+	.experience-meta {
+		margin: 0.35rem 0 0;
+		color: var(--rd-text-soft);
+	}
 	.section-head {
 		display: flex;
 		flex-wrap: wrap;
@@ -350,40 +373,6 @@ try {
 	.section-link:hover {
 		text-decoration: underline;
 	}
-	.timeline {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		display: grid;
-		gap: 1rem;
-	}
-	.timeline-item {
-		display: grid;
-		grid-template-columns: 7.5rem 1fr;
-		gap: 1.25rem;
-		align-items: start;
-	}
-	.timeline-period {
-		margin: 0.35rem 0 0;
-		font-weight: 600;
-		color: var(--rd-muted);
-	}
-	.timeline-card {
-		border: 1px solid var(--rd-ink);
-		background: var(--rd-panel);
-		border-radius: 0.75rem;
-		padding: 1rem 1.25rem;
-	}
-	.timeline-role {
-		margin: 0;
-		font-size: 1.0625rem;
-		font-weight: 700;
-		letter-spacing: -0.02em;
-	}
-	.timeline-meta {
-		margin: 0.35rem 0 0;
-		color: var(--rd-text-soft);
-	}
 	@media (max-width: 860px) {
 		.hero {
 			grid-template-columns: 1fr;
@@ -395,12 +384,8 @@ try {
 		.skills-grid {
 			grid-template-columns: 1fr;
 		}
-		.timeline-item {
+		.experience-grid {
 			grid-template-columns: 1fr;
-			gap: 0.5rem;
-		}
-		.timeline-period {
-			margin-top: 0;
 		}
 	}
 </style>
