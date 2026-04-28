@@ -16,18 +16,6 @@ const {
 	emptyMessage = 'Aún no hay elementos para mostrar.',
 } = Astro.props;
 const normalizedBasePath = basePath.endsWith('/') ? basePath : `${basePath}/`;
-
-function toWpMediumCardUrl(src: string | null | undefined): string | null {
-	if (!src) return null;
-	const [base, query] = src.split('?');
-	const extMatch = base.match(/\.(webp|png|jpe?g)$/i);
-	if (!extMatch) return src;
-	const ext = extMatch[0];
-	const baseNoExt = base.slice(0, -ext.length);
-	const sized = baseNoExt.replace(/-\d+x\d+$/i, '');
-	const next = `${sized}-600x400${ext}`;
-	return query ? `${next}?${query}` : next;
-}
 ---
 
 {
@@ -41,7 +29,7 @@ function toWpMediumCardUrl(src: string | null | undefined): string | null {
 		<ul class="grid">
 			{items.map((item) => {
 				const img = item.featuredImage?.node;
-				const src = toWpMediumCardUrl(img?.sourceUrl);
+				const src = img?.sourceUrl ?? null;
 				const cats = item.portfolioCategories?.nodes ?? [];
 				const href = item.slug ? `${normalizedBasePath}${item.slug}/` : undefined;
 				const linkLabel = item.title ? `Ver ${item.title}` : 'Ver detalle del proyecto';
@@ -55,8 +43,8 @@ function toWpMediumCardUrl(src: string | null | undefined): string | null {
 										<img
 											src={src}
 											alt=""
-											width={600}
-											height={400}
+											width={img?.mediaDetails?.width ?? undefined}
+											height={img?.mediaDetails?.height ?? undefined}
 											decoding="async"
 											loading="lazy"
 										/>
@@ -65,8 +53,8 @@ function toWpMediumCardUrl(src: string | null | undefined): string | null {
 									<img
 										src={src}
 										alt={img?.altText || (item.title ? `Imagen de ${item.title}` : 'Imagen del proyecto')}
-										width={600}
-										height={400}
+										width={img?.mediaDetails?.width ?? undefined}
+										height={img?.mediaDetails?.height ?? undefined}
 										decoding="async"
 										loading="lazy"
 									/>
