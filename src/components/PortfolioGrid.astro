@@ -114,14 +114,6 @@ function toWpMediumCardUrl(src: string | null | undefined): string | null {
 									)
 								) : (
 									<>
-										<a
-											class="action action-code"
-											href="https://github.com"
-											target="_blank"
-											rel="noreferrer"
-										>
-											Código
-										</a>
 										{href ? (
 											<a class="action action-view" href={href} aria-label={viewLabel}>
 												Proyecto
@@ -246,7 +238,7 @@ function toWpMediumCardUrl(src: string | null | undefined): string | null {
 	.actions {
 		margin-top: auto;
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 1fr;
 		gap: 0.75rem;
 		padding-top: 0.75rem;
 	}
