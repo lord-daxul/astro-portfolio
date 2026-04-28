@@ -183,6 +183,15 @@ function getGraphQLEndpoint(): string | null {
 	return url || null;
 }
 
+function hasGraphQLMissingField(
+	errors: readonly { message: string }[] | undefined,
+	fieldName: string,
+): boolean {
+	if (!errors?.length) return false;
+	const needle = `Cannot query field "${fieldName}" on type "RootQuery"`;
+	return errors.some((e) => e.message?.includes(needle));
+}
+
 export async function fetchPortfolioList(first = 10): Promise<PortfolioItem[]> {
 	const endpoint = getGraphQLEndpoint();
 	if (!endpoint) return [];
@@ -200,6 +209,9 @@ export async function fetchPortfolioList(first = 10): Promise<PortfolioItem[]> {
 
 	const json = (await res.json()) as GraphQLPortfolioListResponse;
 	if (json.errors?.length) {
+		if (hasGraphQLMissingField(json.errors, 'portfolioItems')) {
+			return [];
+		}
 		throw new Error(json.errors.map((e) => e.message).join('; '));
 	}
 
@@ -246,6 +258,9 @@ export async function fetchPortfolioBySlug(slug: string): Promise<PortfolioItem 
 
 	const json = (await res.json()) as GraphQLPortfolioBySlugResponse;
 	if (json.errors?.length) {
+		if (hasGraphQLMissingField(json.errors, 'portfolioItem')) {
+			return null;
+		}
 		throw new Error(json.errors.map((e) => e.message).join('; '));
 	}
 
