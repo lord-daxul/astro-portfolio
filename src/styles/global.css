@@ -62,6 +62,32 @@ a:hover {
 	text-decoration: underline;
 }
 
+.pill {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	border-radius: 999px;
+	border: 1px solid var(--rd-ink);
+	background: transparent;
+	color: var(--rd-text);
+	font-weight: 800;
+	letter-spacing: -0.02em;
+	text-decoration: none;
+	transition: border-color 0.18s;
+	white-space: nowrap;
+}
+
+.pill:hover {
+	border-color: color-mix(in srgb, var(--rd-accent) 55%, var(--rd-ink));
+	text-decoration: none;
+}
+
+.pill--sm {
+	font-size: 0.8125rem;
+	padding: 0.25rem 0.65rem;
+}
+
 .sr-only {
 	position: absolute;
 	width: 1px;

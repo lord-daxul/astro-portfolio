@@ -90,7 +90,7 @@ function toWpMediumCardUrl(src: string | null | undefined): string | null {
 							{cats.length > 0 ? (
 								<ul class="tags" aria-label="Frameworks">
 									{cats.map((c) =>
-										c?.name || c?.slug ? <li class="tag">{c?.name ?? c?.slug}</li> : null,
+										c?.name || c?.slug ? <li class="pill pill--sm">{c?.name ?? c?.slug}</li> : null,
 									)}
 								</ul>
 							) : null}
@@ -221,15 +221,6 @@ function toWpMediumCardUrl(src: string | null | undefined): string | null {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.5rem;
-	}
-	.tag {
-		font-size: 0.8125rem;
-		background: var(--rd-ink);
-		color: var(--rd-text-soft);
-		padding: 0.25rem 0.55rem;
-		border-radius: 999px;
-		font-weight: 600;
-		border: 1px solid var(--rd-ink);
 	}
 	.actions {
 		margin-top: auto;

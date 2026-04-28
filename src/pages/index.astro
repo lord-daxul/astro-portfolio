@@ -103,7 +103,7 @@ try {
 						<p class="skill-desc">{skill.description}</p>
 						<ul class="skill-tags" aria-label={`Tecnologías de ${skill.title}`}>
 							{skill.tags.map((tag) => (
-								<li class="skill-tag">{tag}</li>
+								<li class="pill pill--sm">{tag}</li>
 							))}
 						</ul>
 					</article>
@@ -322,15 +322,6 @@ try {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.5rem;
-	}
-	.skill-tag {
-		border: 1px solid var(--rd-ink);
-		background: color-mix(in srgb, var(--rd-bg) 40%, transparent);
-		color: var(--rd-text);
-		border-radius: 999px;
-		padding: 0.25rem 0.55rem;
-		font-size: 0.8125rem;
-		font-weight: 600;
 	}
 	.experience {
 		border-bottom: 1px solid var(--rd-ink);
