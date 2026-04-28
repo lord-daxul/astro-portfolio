@@ -88,6 +88,43 @@ a:hover {
 	padding: 0.25rem 0.65rem;
 }
 
+.action {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	height: 2.5rem;
+	padding: 0 1rem;
+	border-radius: 0.75rem;
+	text-decoration: none;
+	font-weight: 800;
+	letter-spacing: -0.02em;
+	border: 1px solid var(--rd-ink);
+	background: transparent;
+	color: var(--rd-text);
+	transition: border-color 0.18s;
+	white-space: nowrap;
+}
+
+.action:hover {
+	border-color: color-mix(in srgb, var(--rd-accent) 55%, var(--rd-ink));
+	text-decoration: none;
+}
+
+.action-view {
+	background: var(--rd-accent);
+	color: #041016;
+	border-color: color-mix(in srgb, var(--rd-accent) 55%, var(--rd-ink));
+}
+
+html[data-theme='light'] .action-view {
+	color: #fff;
+}
+
+.action-view.is-disabled {
+	opacity: 0.55;
+}
+
 .sr-only {
 	position: absolute;
 	width: 1px;

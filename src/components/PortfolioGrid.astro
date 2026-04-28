@@ -229,32 +229,4 @@ function toWpMediumCardUrl(src: string | null | undefined): string | null {
 		gap: 0.75rem;
 		padding-top: 0.75rem;
 	}
-	.action {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.5rem;
-		height: 2.5rem;
-		border-radius: 0.75rem;
-		text-decoration: none;
-		font-weight: 800;
-		letter-spacing: -0.02em;
-		border: 1px solid var(--rd-ink);
-		background: transparent;
-		color: var(--rd-text);
-	}
-	.action:hover {
-		border-color: color-mix(in srgb, var(--rd-accent) 55%, var(--rd-ink));
-	}
-	.action-view {
-		background: var(--rd-accent);
-		color: #041016;
-		border-color: color-mix(in srgb, var(--rd-accent) 55%, var(--rd-ink));
-	}
-	:global(html[data-theme='light']) .action-view {
-		color: #fff;
-	}
-	.action-view.is-disabled {
-		opacity: 0.55;
-	}
 </style>

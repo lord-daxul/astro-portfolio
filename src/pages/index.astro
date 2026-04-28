@@ -70,9 +70,10 @@ try {
 				crear aplicaciones web y móviles que realmente marcan la diferencia.
 			</p>
 			<p class="hero-quote">"Siempre aprendiendo, siempre construyendo."</p>
-			<p class="hero-cta">
-				<a class="btn btn-primary" href="/portfolio/">Ver portfolio</a>
-			</p>
+			<div class="hero-actions" aria-label="Acciones principales">
+				<a class="action action-view" href="/portfolio/">Portafolio</a>
+				<a class="action action-code" href="#">Descargar CV</a>
+			</div>
 		</div>
 		<div class="hero-media">
 			<img
@@ -202,41 +203,10 @@ try {
 		padding: 0.1em 0.35em;
 		border-radius: 0.25rem;
 	}
-	.hero-cta {
-		margin: 0;
-	}
-	.btn {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0.625rem 1.25rem;
-		font-size: 0.9375rem;
-		font-weight: 600;
-		border-radius: 0.5rem;
-		text-decoration: none;
-		transition:
-			background 0.15s,
-			color 0.15s;
-	}
-	.btn-primary {
-		background: var(--rd-accent);
-		color: #041016;
-		border: 1px solid color-mix(in srgb, var(--rd-accent) 55%, var(--rd-ink));
-	}
-	.btn-primary:hover {
-		background: var(--rd-accent-2);
-		text-decoration: none;
-		color: #041016;
-	}
-	.btn-primary:focus-visible {
-		outline: 3px solid color-mix(in srgb, var(--rd-accent) 60%, white);
-		outline-offset: 3px;
-	}
-	:global(html[data-theme='light']) .btn-primary {
-		color: #fff;
-	}
-	:global(html[data-theme='light']) .btn-primary:hover {
-		color: #fff;
+	.hero-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
 	}
 	.section {
 		margin-top: 0;
