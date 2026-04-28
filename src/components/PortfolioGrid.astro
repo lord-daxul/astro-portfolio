@@ -32,14 +32,15 @@ const normalizedBasePath = basePath.endsWith('/') ? basePath : `${basePath}/`;
 				const src = img?.sourceUrl;
 				const cats = item.portfolioCategories?.nodes ?? [];
 				const href = item.slug ? `${normalizedBasePath}${item.slug}/` : undefined;
+				const linkLabel = item.title ? `Ver ${item.title}` : 'Ver detalle del proyecto';
 				return (
 					<li class="card">
 						{src ? (
 							href ? (
-								<a href={href} class="thumb">
+								<a href={href} class="thumb" aria-label={linkLabel}>
 									<img
 										src={src}
-										alt={img?.altText ?? item.title ?? ''}
+										alt=""
 										width={img?.mediaDetails?.width ?? undefined}
 										height={img?.mediaDetails?.height ?? undefined}
 										loading="lazy"
@@ -49,7 +50,7 @@ const normalizedBasePath = basePath.endsWith('/') ? basePath : `${basePath}/`;
 								<div class="thumb">
 									<img
 										src={src}
-										alt={img?.altText ?? item.title ?? ''}
+										alt={img?.altText || (item.title ? `Imagen de ${item.title}` : 'Imagen del proyecto')}
 										width={img?.mediaDetails?.width ?? undefined}
 										height={img?.mediaDetails?.height ?? undefined}
 										loading="lazy"

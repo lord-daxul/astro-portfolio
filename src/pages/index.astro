@@ -128,7 +128,7 @@ try {
 	<section class="section" aria-labelledby="latest-heading">
 		<div class="section-head">
 			<h2 id="latest-heading">{sectionTitle}</h2>
-			<a class="section-link" href={sectionPath}>Ver todo</a>
+			<a class="section-link" href={sectionPath} aria-label={`Ver todo: ${sectionTitle}`}>Ver todo</a>
 		</div>
 		<PortfolioGrid items={previewItems} loadError={loadError} basePath={sectionPath} emptyMessage={emptyMessage} />
 	</section>
@@ -212,12 +212,23 @@ try {
 			color 0.15s;
 	}
 	.btn-primary {
-		background: var(--rd-accent-2);
-		color: #fff;
+		background: var(--rd-accent);
+		color: #041016;
+		border: 1px solid color-mix(in srgb, var(--rd-accent) 55%, var(--rd-ink));
 	}
 	.btn-primary:hover {
-		background: var(--rd-accent);
+		background: var(--rd-accent-2);
 		text-decoration: none;
+		color: #041016;
+	}
+	.btn-primary:focus-visible {
+		outline: 3px solid color-mix(in srgb, var(--rd-accent) 60%, white);
+		outline-offset: 3px;
+	}
+	:global(html[data-theme='light']) .btn-primary {
+		color: #fff;
+	}
+	:global(html[data-theme='light']) .btn-primary:hover {
 		color: #fff;
 	}
 	.section {
