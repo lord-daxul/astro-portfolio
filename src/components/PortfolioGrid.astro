@@ -50,7 +50,7 @@ function toWpMediumCardUrl(src: string | null | undefined): string | null {
 				const cats = item.portfolioCategories?.nodes ?? [];
 				const href = item.slug ? `${normalizedBasePath}${item.slug}/` : undefined;
 				const linkLabel = item.title ? `Ver ${item.title}` : 'Ver detalle del proyecto';
-				const viewLabel = item.title ? `Vista: ${item.title}` : 'Vista del proyecto';
+				const viewLabel = item.title ? `Proyecto: ${item.title}` : 'Proyecto';
 				return (
 					<li class="card">
 						<div class="thumb">
@@ -105,11 +105,11 @@ function toWpMediumCardUrl(src: string | null | undefined): string | null {
 								</a>
 								{href ? (
 									<a class="action action-view" href={href} aria-label={viewLabel}>
-										Vista
+										Proyecto
 									</a>
 								) : (
 									<span class="action action-view is-disabled" aria-hidden="true">
-										Vista
+										Proyecto
 									</span>
 								)}
 							</div>

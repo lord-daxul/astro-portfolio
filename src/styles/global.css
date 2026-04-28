@@ -112,6 +112,7 @@ a:hover {
 }
 
 .action-code:hover {
+	background: transparent;
 	color: #fff;
 }
 
