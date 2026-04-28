@@ -102,7 +102,10 @@ a:hover {
 	border: 1px solid var(--rd-ink);
 	background: transparent;
 	color: var(--rd-text);
-	transition: border-color 0.18s;
+	transition:
+		border-color 0.18s,
+		background 0.18s,
+		color 0.18s;
 	white-space: nowrap;
 }
 
@@ -124,6 +127,11 @@ html[data-theme='light'] .action-code:hover {
 	background: var(--rd-accent);
 	color: #041016;
 	border-color: color-mix(in srgb, var(--rd-accent) 55%, var(--rd-ink));
+}
+
+.action-view:hover {
+	background: var(--rd-accent-2);
+	border-color: color-mix(in srgb, var(--rd-accent-2) 55%, var(--rd-ink));
 }
 
 html[data-theme='light'] .action-view {
