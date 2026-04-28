@@ -12,7 +12,6 @@ const skills = [
 		description: 'Construir interfaces de usuario responsive, accesibles y eficientes con frameworks y herramientas modernas.',
 		tags: ['React', 'Vue.js', 'Next.js', 'TypeScript', 'Tailwind CSS'],
 		icon: '</>',
-		highlight: true,
 	},
 	{
 		title: 'Desarrollo Backend',
@@ -31,13 +30,6 @@ const skills = [
 		description: 'Optimización, desarrollo de themes y plugins.',
 		tags: ['WordPress', 'Themes', 'Plugins', 'Performance'],
 		icon: 'WP',
-		full: true,
-	},
-	{
-		title: 'Desarrollo de juegos',
-		description: 'Prototipado y desarrollo de juegos 2D/3D con foco en performance y experiencia del jugador.',
-		tags: ['Unity', 'Godot', 'C#'],
-		icon: '🎮',
 	},
 ];
 const experience = [
@@ -74,8 +66,10 @@ try {
 			<p class="hero-kicker">Desarrollador Full-Stack</p>
 			<h1 id="hero-heading" class="hero-title">Hola, Soy Raúl David</h1>
 			<p class="hero-lead">
-				Este sitio consume tu WordPress por GraphQL y se despliega en Cloudflare Pages..
+				Transformo ideas en soluciones digitales funcionales y atractivas. Combino lógica, diseño y creatividad para
+				crear aplicaciones web y móviles que realmente marcan la diferencia.
 			</p>
+			<p class="hero-quote">"Siempre aprendiendo, siempre construyendo."</p>
 			<p class="hero-cta">
 				<a class="btn btn-primary" href="/portfolio/">Ver portfolio</a>
 			</p>
@@ -93,7 +87,7 @@ try {
 		<div class="skills-grid">
 			{
 				skills.map((skill) => (
-					<article class:list={['skill-card', skill.highlight && 'is-highlight', skill.full && 'is-full']}>
+					<article class="skill-card">
 						<div class="skill-top">
 							<span class="skill-icon" aria-hidden="true">{skill.icon}</span>
 							<h3 class="skill-title">{skill.title}</h3>
@@ -190,6 +184,11 @@ try {
 		color: var(--rd-text-soft);
 		margin: 0 0 1.5rem;
 	}
+	.hero-quote {
+		margin: -0.75rem 0 1.5rem;
+		font-weight: 700;
+		color: var(--rd-text);
+	}
 	.hero-lead code {
 		font-size: 0.9em;
 		background: var(--rd-panel);
@@ -256,15 +255,18 @@ try {
 		display: grid;
 		gap: 0.75rem;
 		box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+		transition:
+			box-shadow 0.18s,
+			border-color 0.18s,
+			transform 0.18s;
 	}
-	.skill-card.is-highlight {
+	.skill-card:hover,
+	.skill-card:focus-within {
 		border-color: color-mix(in srgb, var(--rd-accent) 55%, var(--rd-ink));
 		box-shadow:
 			0 14px 40px rgba(0, 0, 0, 0.22),
 			0 0 0 1px color-mix(in srgb, var(--rd-accent) 35%, transparent);
-	}
-	.skill-card.is-full {
-		grid-column: 1 / -1;
+		transform: translateY(-1px);
 	}
 	.skill-top {
 		display: grid;
@@ -381,9 +383,6 @@ try {
 		}
 		.skills-grid {
 			grid-template-columns: 1fr;
-		}
-		.skill-card.is-full {
-			grid-column: auto;
 		}
 		.timeline-item {
 			grid-template-columns: 1fr;
