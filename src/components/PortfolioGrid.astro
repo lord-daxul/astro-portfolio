@@ -16,6 +16,18 @@ const {
 	emptyMessage = 'Aún no hay elementos para mostrar.',
 } = Astro.props;
 const normalizedBasePath = basePath.endsWith('/') ? basePath : `${basePath}/`;
+
+function toWpMediumCardUrl(src: string | null | undefined): string | null {
+	if (!src) return null;
+	const [base, query] = src.split('?');
+	const extMatch = base.match(/\.(webp|png|jpe?g)$/i);
+	if (!extMatch) return src;
+	const ext = extMatch[0];
+	const baseNoExt = base.slice(0, -ext.length);
+	const sized = baseNoExt.replace(/-\d+x\d+$/i, '');
+	const next = `${sized}-600x400${ext}`;
+	return query ? `${next}?${query}` : next;
+}
 ---
 
 {
@@ -29,7 +41,7 @@ const normalizedBasePath = basePath.endsWith('/') ? basePath : `${basePath}/`;
 		<ul class="grid">
 			{items.map((item) => {
 				const img = item.featuredImage?.node;
-				const src = img?.sourceUrl;
+				const src = toWpMediumCardUrl(img?.sourceUrl);
 				const cats = item.portfolioCategories?.nodes ?? [];
 				const href = item.slug ? `${normalizedBasePath}${item.slug}/` : undefined;
 				const linkLabel = item.title ? `Ver ${item.title}` : 'Ver detalle del proyecto';
@@ -43,8 +55,8 @@ const normalizedBasePath = basePath.endsWith('/') ? basePath : `${basePath}/`;
 										<img
 											src={src}
 											alt=""
-											width={img?.mediaDetails?.width ?? undefined}
-											height={img?.mediaDetails?.height ?? undefined}
+											width={600}
+											height={400}
 											decoding="async"
 											loading="lazy"
 										/>
@@ -53,8 +65,8 @@ const normalizedBasePath = basePath.endsWith('/') ? basePath : `${basePath}/`;
 									<img
 										src={src}
 										alt={img?.altText || (item.title ? `Imagen de ${item.title}` : 'Imagen del proyecto')}
-										width={img?.mediaDetails?.width ?? undefined}
-										height={img?.mediaDetails?.height ?? undefined}
+										width={600}
+										height={400}
 										decoding="async"
 										loading="lazy"
 									/>
@@ -71,7 +83,7 @@ const normalizedBasePath = basePath.endsWith('/') ? basePath : `${basePath}/`;
 							{cats.length > 0 ? (
 								<ul class="tags" aria-label="Frameworks">
 									{cats.map((c) =>
-										c?.name ? <li class="tag">{c.name}</li> : null,
+										c?.name || c?.slug ? <li class="tag">{c?.name ?? c?.slug}</li> : null,
 									)}
 								</ul>
 							) : null}
@@ -120,7 +132,17 @@ const normalizedBasePath = basePath.endsWith('/') ? basePath : `${basePath}/`;
 		padding: 0;
 		display: grid;
 		gap: 1.5rem;
-		grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+	@media (max-width: 1024px) {
+		.grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+	@media (max-width: 720px) {
+		.grid {
+			grid-template-columns: 1fr;
+		}
 	}
 	.card {
 		background: var(--rd-panel);
