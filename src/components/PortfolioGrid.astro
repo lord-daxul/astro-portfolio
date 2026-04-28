@@ -41,7 +41,12 @@ function toWpMediumCardUrl(src: string | null | undefined): string | null {
 		<ul class="grid">
 			{items.map((item) => {
 				const img = item.featuredImage?.node;
-				const src = toWpMediumCardUrl(img?.sourceUrl);
+				const originalSrc = img?.sourceUrl ?? null;
+				const mediumSrc = toWpMediumCardUrl(originalSrc);
+				const src = mediumSrc ?? originalSrc;
+				const onError = originalSrc
+					? `this.onerror=null;this.src=${JSON.stringify(originalSrc)};`
+					: undefined;
 				const cats = item.portfolioCategories?.nodes ?? [];
 				const href = item.slug ? `${normalizedBasePath}${item.slug}/` : undefined;
 				const linkLabel = item.title ? `Ver ${item.title}` : 'Ver detalle del proyecto';
@@ -59,6 +64,7 @@ function toWpMediumCardUrl(src: string | null | undefined): string | null {
 											height={400}
 											decoding="async"
 											loading="lazy"
+											onerror={onError}
 										/>
 									</a>
 								) : (
@@ -69,6 +75,7 @@ function toWpMediumCardUrl(src: string | null | undefined): string | null {
 										height={400}
 										decoding="async"
 										loading="lazy"
+										onerror={onError}
 									/>
 								)
 							) : (
