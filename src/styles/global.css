@@ -111,6 +111,14 @@ a:hover {
 	text-decoration: none;
 }
 
+.action-code:hover {
+	color: #fff;
+}
+
+html[data-theme='light'] .action-code:hover {
+	color: var(--rd-text);
+}
+
 .action-view {
 	background: var(--rd-accent);
 	color: #041016;
