@@ -17,6 +17,27 @@ if (!post) {
 }
 
 const img = post.featuredImage;
+
+const postJsonLd = {
+	'@type': 'BlogPosting',
+	headline: post.title,
+	description: post.excerpt || `Lee el artículo ${post.title} por Raúl David Sánchez.`,
+	url: `https://rauldavid.com/blog/${post.slug}/`,
+	image: img?.sourceUrl,
+	datePublished: post.date,
+	dateModified: post.modified || post.date,
+	author: {
+		'@type': 'Person',
+		name: 'Raúl David Sánchez',
+		url: 'https://rauldavid.com',
+	},
+	publisher: {
+		'@type': 'Person',
+		name: 'Raúl David Sánchez',
+		url: 'https://rauldavid.com',
+	},
+	keywords: post.categories?.join(', '),
+};
 ---
 
 <BaseLayout
@@ -24,6 +45,9 @@ const img = post.featuredImage;
 	description={post.excerpt || `Lee el artículo ${post.title} publicado por Raúl David Sánchez.`}
 	image={img?.sourceUrl}
 	type="article"
+	publishedTime={post.date}
+	modifiedTime={post.modified}
+	jsonLd={postJsonLd}
 >
 	<!-- Breadcrumb -->
 	<nav class="breadcrumb" aria-label="Migas de pan">

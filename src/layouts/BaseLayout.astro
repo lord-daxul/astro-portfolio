@@ -8,20 +8,116 @@ interface Props {
 	description?: string;
 	image?: string;
 	mainClass?: string;
-	type?: 'website' | 'article';
+	type?: 'website' | 'article' | 'profile';
+	keywords?: string[];
+	publishedTime?: string;
+	modifiedTime?: string;
+	jsonLd?: Record<string, unknown>;
 }
 
 const {
 	title,
-	description = 'Portafolio profesional de Raúl David Sánchez — Desarrollador Web Full Stack.',
+	description = 'Portafolio profesional de Raúl David Sánchez — Senior Full Stack Developer & AI Vibe Coder en Bogotá, Colombia. Especialista en WebApps, WordPress Headless, Mobile (iOS/Android) y Cloudflare.',
 	image = '/img/raul-david-sanchez.webp',
 	mainClass,
 	type = 'website',
+	keywords = [
+		'Desarrollador Web Full Stack Bogotá',
+		'Desarrollador Frontend Colombia',
+		'Desarrollo de WebApps Astro React TypeScript',
+		'WordPress Headless WPGraphQL',
+		'Desarrollador Mobile iOS Android React Native',
+		'AI Vibe Coding',
+		'Cloudflare Workers Developer',
+		'Core Web Vitals SEO Técnico',
+		'Raúl David Sánchez',
+	],
+	publishedTime,
+	modifiedTime,
+	jsonLd,
 } = Astro.props;
 
 const siteName = 'Raúl David Sánchez';
-const fullTitle = title === 'Inicio' ? `${siteName} · Desarrollador Web` : `${title} · ${siteName}`;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://rauldavid.com');
+const isHome = title === 'Inicio';
+const fullTitle = isHome
+	? `${siteName} | Desarrollador Full Stack & Mobile en Bogotá, Colombia`
+	: `${title} | ${siteName} — Full Stack Developer`;
+
+const siteOrigin = (Astro.site?.toString() ?? 'https://rauldavid.com').replace(/\/$/, '');
+const canonicalURL = new URL(Astro.url.pathname, siteOrigin);
+const imageURL = new URL(image, siteOrigin);
+
+// Schema.org Structured Data
+const baseJsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Person',
+			'@id': `${siteOrigin}/#person`,
+			name: 'Raúl David Sánchez',
+			url: siteOrigin,
+			image: `${siteOrigin}/img/raul-david-sanchez.webp`,
+			jobTitle: 'Senior Full Stack Developer & AI Vibe Coder',
+			telephone: '+57-300-000-0000',
+			email: 'contacto@rauldavid.com',
+			description:
+				'Desarrollador Web Full Stack y Mobile en Bogotá, Colombia. Especialista en WebApps de alto rendimiento, Astro, WordPress Headless, iOS, Android y Vibe Coding con IA.',
+			address: {
+				'@type': 'PostalAddress',
+				addressLocality: 'Bogotá',
+				addressRegion: 'Bogotá D.C.',
+				addressCountry: 'CO',
+			},
+			geo: {
+				'@type': 'GeoCoordinates',
+				latitude: 4.711,
+				longitude: -74.0721,
+			},
+			knowsAbout: [
+				'Desarrollo de WebApps',
+				'Full Stack Development',
+				'Astro Framework',
+				'WordPress Headless',
+				'WPGraphQL',
+				'React & Next.js',
+				'TypeScript',
+				'Mobile Apps iOS & Android (React Native)',
+				'Vibe Coding & AI Autonomous Agents',
+				'Cloudflare Workers Edge Computing',
+				'Core Web Vitals Optimization',
+				'WCAG 2.1 AA Accessibility',
+			],
+			sameAs: ['https://github.com/daxul'],
+		},
+		{
+			'@type': 'WebSite',
+			'@id': `${siteOrigin}/#website`,
+			url: siteOrigin,
+			name: 'Raúl David Sánchez | Desarrollador Web Full Stack Bogotá',
+			description: description,
+			publisher: {
+				'@id': `${siteOrigin}/#person`,
+			},
+			inLanguage: 'es-CO',
+		},
+		{
+			'@type': 'ProfessionalService',
+			'@id': `${siteOrigin}/#service`,
+			name: 'Raúl David Sánchez — Servicios de Desarrollo Web & Mobile',
+			url: siteOrigin,
+			image: `${siteOrigin}/img/raul-david-sanchez.webp`,
+			priceRange: '$$',
+			address: {
+				'@type': 'PostalAddress',
+				addressLocality: 'Bogotá',
+				addressRegion: 'Bogotá D.C.',
+				addressCountry: 'CO',
+			},
+			areaServed: ['Colombia', 'Latinoamérica', 'Global / Remoto'],
+		},
+		...(jsonLd ? [jsonLd] : []),
+	],
+};
 ---
 
 <!doctype html>
@@ -30,28 +126,48 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://rauldavi
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/png" href="/favicon.png" />
 		<link rel="canonical" href={canonicalURL} />
+		<link rel="alternate" type="application/rss+xml" title="RSS Feed de Raúl David Sánchez" href="/rss.xml" />
+		<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
 		<meta name="generator" content={Astro.generator} />
 
 		<!-- Primary Meta Tags -->
 		<title>{fullTitle}</title>
 		<meta name="title" content={fullTitle} />
 		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords.join(', ')} />
+		<meta name="author" content="Raúl David Sánchez" />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+		<meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+		<!-- Geographic & Local SEO (Bogotá, Colombia) -->
+		<meta name="geo.region" content="CO-DC" />
+		<meta name="geo.placename" content="Bogot&aacute;, Colombia" />
+		<meta name="geo.position" content="4.7110;-74.0721" />
+		<meta name="ICBM" content="4.7110, -74.0721" />
 
 		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content={type} />
+		<meta property="og:locale" content="es_CO" />
 		<meta property="og:url" content={canonicalURL} />
 		<meta property="og:title" content={fullTitle} />
 		<meta property="og:description" content={description} />
-		<meta property="og:image" content={new URL(image, canonicalURL)} />
+		<meta property="og:image" content={imageURL} />
+		<meta property="og:image:alt" content="Raúl David Sánchez — Portafolio Profesional" />
 		<meta property="og:site_name" content={siteName} />
+		{publishedTime && <meta property="article:published_time" content={publishedTime} />}
+		{modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
 
 		<!-- Twitter -->
-		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url" content={canonicalURL} />
-		<meta property="twitter:title" content={fullTitle} />
-		<meta property="twitter:description" content={description} />
-		<meta property="twitter:image" content={new URL(image, canonicalURL)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:url" content={canonicalURL} />
+		<meta name="twitter:title" content={fullTitle} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={imageURL} />
+
+		<!-- Structured Data (JSON-LD) for Google Search Rich Snippets -->
+		<script is:inline type="application/ld+json" set:html={JSON.stringify(baseJsonLd)} />
 
 		<!-- Dark Theme Initialization Script (prevents FOUC) -->
 		<script is:inline>

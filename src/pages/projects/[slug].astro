@@ -17,13 +17,29 @@ if (!project) {
 }
 
 const img = project.featuredImage;
+
+const projectJsonLd = {
+	'@type': 'CreativeWork',
+	name: project.title,
+	description: project.excerpt || `Detalles técnicos y caso de estudio del proyecto ${project.title}`,
+	url: `https://rauldavid.com/projects/${project.slug}/`,
+	image: img?.sourceUrl,
+	author: {
+		'@type': 'Person',
+		name: 'Raúl David Sánchez',
+		url: 'https://rauldavid.com',
+	},
+	keywords: project.technologies?.join(', '),
+};
 ---
 
 <BaseLayout
 	title={project.title}
-	description={project.excerpt || `Detalles y caso de estudio del proyecto ${project.title}`}
+	description={project.excerpt || `Detalles y caso de estudio del proyecto ${project.title} desarrollado por Raúl David Sánchez en Bogotá, Colombia.`}
 	image={img?.sourceUrl}
 	type="article"
+	publishedTime={project.projectDate}
+	jsonLd={projectJsonLd}
 >
 	<!-- Breadcrumbs -->
 	<nav class="breadcrumb" aria-label="Migas de pan">

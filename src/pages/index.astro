@@ -54,7 +54,7 @@ const fallbackExperience: Experience[] = [
 		title: 'Senior Full Stack & Headless Architect',
 		role: 'Senior Full Stack & Headless Architect',
 		company: 'PangeaTech',
-		location: 'Remoto',
+		location: 'Bogotá, Colombia (Remoto)',
 		startDate: '2023',
 		endDate: '2025',
 		isCurrent: false,
@@ -66,7 +66,7 @@ const fallbackExperience: Experience[] = [
 		title: 'Senior WordPress & Frontend Developer',
 		role: 'Senior WordPress & Frontend Developer',
 		company: 'Proyectos Corporativos & Consultoría',
-		location: 'Remoto',
+		location: 'Bogotá, Colombia (Remoto)',
 		startDate: '2021',
 		endDate: '2023',
 		isCurrent: false,
@@ -78,7 +78,7 @@ const fallbackExperience: Experience[] = [
 		title: 'Desarrollador Web & Mobile Freelance',
 		role: 'Desarrollador Web & Mobile Freelance',
 		company: 'Estudio Independiente',
-		location: 'Remoto',
+		location: 'Bogotá, Colombia',
 		startDate: '2016',
 		endDate: '2021',
 		isCurrent: false,
@@ -97,30 +97,41 @@ if (experiences.length === 0) {
 
 <BaseLayout
 	title="Inicio"
-	description="Portafolio profesional de Raúl David Sánchez — Senior Full Stack Developer, WordPress Headless, Mobile (iOS & Android) y Vibe Coding."
+	description="Raúl David Sánchez — Senior Full Stack Developer en Bogotá, Colombia. Especialista en WebApps de alto rendimiento (Astro, React), WordPress Headless (WPGraphQL), aplicaciones móviles (iOS/Android) y AI Vibe Coding."
+	keywords={[
+		'Desarrollador Web Bogotá',
+		'Desarrollador Full Stack Colombia',
+		'Desarrollo WebApps Astro React',
+		'Desarrollador WordPress Headless Bogotá',
+		'WPGraphQL Cloudflare Workers',
+		'Desarrollador Mobile iOS Android React Native Colombia',
+		'AI Vibe Coding Developer',
+		'Ingeniero de Software Bogotá',
+	]}
 >
 	<!-- Hero Section -->
 	<section class="hero" aria-labelledby="hero-title">
 		<div class="hero-body">
-			<span class="hero-badge">Senior Full Stack Developer & AI Vibe Coder</span>
+			<span class="hero-badge">📍 Bogotá, Colombia · Senior Full Stack & AI Vibe Coder</span>
 			<h1 id="hero-title" class="hero-heading">
-				Hola, soy <span class="highlight">Raúl David Sánchez</span>.
+				Hola, soy <span class="highlight">Raúl David Sánchez</span>.<br />
+				Desarrollador Full Stack & Mobile.
 			</h1>
 			<p class="hero-lead">
-				Construyo <strong>WebApps de alto rendimiento</strong>, arquitecturas <strong>WordPress Headless</strong> en el Edge (Cloudflare) y aplicaciones móviles para <strong>iOS & Android</strong>.
+				Especializado en construir <strong>WebApps ultrarrápidas</strong>, arquitecturas <strong>WordPress Headless</strong> desplegadas en Cloudflare Workers y aplicaciones móviles para <strong>iOS & Android</strong>.
 			</p>
 			<p class="hero-sublead">
-				Acelero el ciclo de desarrollo desde la idea hasta producción combinando ingeniería sólida y <strong>Vibe Coding</strong> con agentes de inteligencia artificial.
+				Acelero el ciclo de desarrollo desde la concepción hasta producción combinando arquitectura de software de clase mundial y <strong>Vibe Coding</strong> asistido por agentes de inteligencia artificial.
 			</p>
 			<div class="hero-cta">
 				<Button href="/projects/" variant="primary">
-					Ver Proyectos
+					Explorar Proyectos
 				</Button>
 				<Button href="/cv/" variant="secondary">
 					📄 Ver / Descargar CV
 				</Button>
 				<Button href="/contacto/" variant="ghost">
-					Hablemos →
+					Contáctame en Bogotá →
 				</Button>
 			</div>
 		</div>
@@ -129,7 +140,7 @@ if (experiences.length === 0) {
 			<div class="avatar-frame">
 				<img
 					src="/img/raul-david-sanchez.webp"
-					alt="Fotografía de Raúl David Sánchez"
+					alt="Fotografía de Raúl David Sánchez — Desarrollador Full Stack en Bogotá"
 					width="380"
 					height="380"
 					loading="eager"
@@ -144,8 +155,8 @@ if (experiences.length === 0) {
 	<section class="section" aria-labelledby="skills-heading">
 		<SectionHeader
 			id="skills-heading"
-			title="Especialidades & Habilidades"
-			subtitle="Disciplinas técnicas, herramientas y metodologías donde aporto máximo valor."
+			title="Especialidades & Habilidades Técnicas"
+			subtitle="Disciplinas de ingeniería, tecnologías y soluciones en las que aporto máximo valor competitivo."
 		/>
 		<div class="skills-grid">
 			{
@@ -171,8 +182,8 @@ if (experiences.length === 0) {
 	<section class="section" aria-labelledby="projects-heading">
 		<SectionHeader
 			id="projects-heading"
-			title="Proyectos Destacados"
-			subtitle="Selección de desarrollos, WebApps y casos de estudio recientes."
+			title="Proyectos Destacados en WebApps & Headless"
+			subtitle="Casos de estudio recientes, plataformas web en producción y soluciones a medida."
 		/>
 		<ProjectGrid
 			projects={projects}
@@ -190,8 +201,8 @@ if (experiences.length === 0) {
 	<section class="section" aria-labelledby="experience-heading">
 		<SectionHeader
 			id="experience-heading"
-			title="Trayectoria Profesional"
-			subtitle="Experiencia liderando proyectos de ingeniería de software y desarrollo de producto."
+			title="Trayectoria Profesional en Ingeniería de Software"
+			subtitle="Experiencia liderando arquitecturas digitales para clientes en Colombia y el mercado internacional."
 		/>
 		<div class="experience-container">
 			<ExperienceTimeline items={experiences} />
