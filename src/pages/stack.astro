@@ -3,105 +3,169 @@ export const prerender = false;
 
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const specialties = [
+const techEcosystem = [
 	{
-		title: 'Desarrollo de WebApps & Full Stack',
-		description: 'Ingeniería de aplicaciones web modernas, reactivas y ultrarrápidas utilizando Astro, React, Next.js, TypeScript y Tailwind CSS.',
-		tags: ['WebApps', 'Astro', 'React', 'Next.js', 'TypeScript', 'Node.js', 'Tailwind CSS'],
-		icon: '⚡',
-	},
-	{
-		title: 'Desarrollo Móvil (iOS & Android)',
-		description: 'Creación de aplicaciones móviles multiplataforma nativas y fluidas, con sincronización de datos en tiempo real y almacenamiento offline.',
-		tags: ['iOS', 'Android', 'React Native', 'Expo', 'Cross-Platform', 'Mobile APIs'],
-		icon: '📱',
-	},
-	{
-		title: 'Vibe Coding & AI Engineering',
-		description: 'Desarrollo acelerado mediante agentes autónomos de IA, prototipado instantáneo de ideas a producción, integración de LLMs y automatizaciones.',
-		tags: ['Vibe Coding', 'AI Agents', 'LLMs', 'Prompt Engineering', 'Automatización'],
-		icon: '🧠',
-	},
-	{
-		title: 'WordPress Headless & CMS Moderno',
-		description: 'Arquitecturas desacopladas con WPGraphQL y ACF Pro para entregar paneles editoriales intuitivos y frontends de máxima velocidad.',
-		tags: ['WordPress Headless', 'WPGraphQL', 'ACF Pro', 'PHP', 'APIs REST'],
-		icon: '🌐',
-	},
-	{
-		title: 'Cloud, Edge & Serverless',
-		description: 'Despliegues globales en el Edge con Cloudflare Workers, microservicios serverless, latencia ultrabaja y entrega de emails con Resend.',
-		tags: ['Cloudflare Workers', 'Edge Computing', 'Wrangler', 'Serverless', 'Resend API'],
-		icon: '☁️',
-	},
-	{
-		title: 'Rendimiento Extremo & Accesibilidad (a11y)',
-		description: 'Optimización obsesiva de Core Web Vitals (LCP < 1.2s), navegación por teclado, contraste estricto y cumplimiento WCAG 2.1 AA.',
-		tags: ['Core Web Vitals', 'LCP < 1.2s', 'WCAG 2.1 AA', 'SEO Técnico'],
-		icon: '🎯',
-	},
-];
-
-const categoryStacks = [
-	{
+		number: '01',
 		category: 'Frontend & WebApps',
-		items: [
-			{ name: 'Astro', icon: '🚀', desc: 'Framework web orientado a contenido y Zero JS.' },
-			{ name: 'React', icon: '⚛️', desc: 'Interfaces reactivas, componentización y ecosistema moderno.' },
-			{ name: 'Next.js', icon: '▲', desc: 'SSR, App Router y optimización de rendimiento.' },
-			{ name: 'TypeScript', icon: 'TS', desc: 'Tipado estricto, seguridad y código autodocumentado.' },
-			{ name: 'Tailwind CSS', icon: '🌊', desc: 'Diseño responsivo, tokens CSS y utilidades modernas.' },
+		icon: '⚛️',
+		description: 'Arquitectura de cliente, interfaces interactivas y sistemas de diseño de alto rendimiento.',
+		cards: [
+			{
+				title: 'Core UI & Modern Frameworks',
+				enfoque: 'Arquitectura de cliente, interfaces reactivas y renderizado moderno.',
+				descripcion: 'Desarrollo de interfaces interactivas, accesibles y modulares con tipado estricto y Server-Side Rendering (SSR/SSG).',
+				stack: ['React', 'Next.js', 'TypeScript', 'JavaScript (ES6+)', 'HTML5 / CSS3'],
+			},
+			{
+				title: 'Diseño de Sistemas & UI Engineering',
+				enfoque: 'Experiencia visual, diseño responsivo y componentes reusables.',
+				descripcion: 'Maquetación rápida y consistente mediante Utility-First CSS, librerías accesibles basadas en Radix y micro-interacciones fluidas.',
+				stack: ['Tailwind CSS', 'Shadcn UI', 'Radix UI', 'Framer Motion', 'Lucide Icons'],
+			},
+			{
+				title: 'Gestión de Estado, Datos & Tooling',
+				enfoque: 'Sincronización de datos, formularios robustos y optimización de bundle.',
+				descripcion: 'Manejo de estado global predecible, caché de datos de servidor y validación estricta de formularios.',
+				stack: ['TanStack Query (React Query)', 'Zustand', 'React Hook Form', 'Zod', 'Vite'],
+			},
 		],
 	},
 	{
+		number: '02',
 		category: 'Backend & APIs',
-		items: [
-			{ name: 'Node.js', icon: '🟢', desc: 'Servicios en tiempo real, APIs REST y microservicios.' },
-			{ name: 'Python', icon: '🐍', desc: 'Automatizaciones, backend y scripts de procesamiento de datos.' },
-			{ name: 'FastAPI', icon: '⚡', desc: 'APIs asíncronas de alto rendimiento con documentación OpenAPI.' },
-			{ name: 'PostgreSQL', icon: '🐘', desc: 'Bases de datos relacionales robustas y escalables.' },
-			{ name: 'MongoDB', icon: '🍃', desc: 'Bases de datos orientadas a documentos NoSQL.' },
+		icon: '⚡',
+		description: 'Servicios escalables, APIs tipadas, persistencia de datos y microservicios concurrentes.',
+		cards: [
+			{
+				title: 'Servidores & Lógica de Negocio',
+				enfoque: 'Servicios escalables, arquitecturas orientadas a servicios y microservicios.',
+				descripcion: 'Creación de backends eficientes, manejo de concurrencia y construcción de APIs RESTful y GraphQL bien documentadas.',
+				stack: ['Node.js', 'Express', 'NestJS', 'PHP (Moderno)', 'REST APIs', 'GraphQL'],
+			},
+			{
+				title: 'Bases de Datos & ORMs',
+				enfoque: 'Persistencia de datos, modelado relacional y NoSQL.',
+				descripcion: 'Diseño de esquemas eficientes, migraciones, optimización de consultas y capas de abstracción tipadas.',
+				stack: ['PostgreSQL', 'MySQL', 'MongoDB', 'Prisma ORM', 'Drizzle ORM', 'Redis'],
+			},
+			{
+				title: 'Autenticación & Integraciones',
+				enfoque: 'Seguridad, pasarelas y servicios de terceros.',
+				descripcion: 'Implementación de flujos de autenticación seguros (OAuth, JWT), pasarelas de pago y consumo de webhooks.',
+				stack: ['NextAuth / Auth.js', 'JWT', 'Stripe API', 'Webhooks', 'CORS & Security Headers'],
+			},
 		],
 	},
 	{
+		number: '03',
 		category: 'Mobile & Multiplataforma',
-		items: [
-			{ name: 'React Native', icon: '📱', desc: 'Desarrollo nativo unificado para iOS y Android.' },
-			{ name: 'Expo', icon: '🛠️', desc: 'Entorno ágil de compilación y despliegue móvil.' },
-			{ name: 'Mobile APIs', icon: '🔌', desc: 'Integración de push notifications, geolocalización y offline storage.' },
+		icon: '📱',
+		description: 'Desarrollo móvil nativo con base de código única, PWAs y publicación en tiendas.',
+		cards: [
+			{
+				title: 'Desarrollo Híbrido & Cross-Platform',
+				enfoque: 'Aplicaciones móviles nativas con una base de código única.',
+				descripcion: 'Creación de apps para iOS y Android con rendimiento cuasi-nativo y sincronización de estado.',
+				stack: ['React Native', 'Expo', 'TypeScript', 'NativeWind (Tailwind for RN)'],
+			},
+			{
+				title: 'Progressive Web Apps (PWA)',
+				enfoque: 'Experiencias web instalables y offline-first.',
+				descripcion: 'Implementación de Service Workers, caché avanzado en cliente y adaptación responsiva a dispositivos móviles.',
+				stack: ['PWA Manifest', 'Service Workers', 'Workbox', 'IndexedDB', 'Push Notifications'],
+			},
+			{
+				title: 'Publicación & Distribución',
+				enfoque: 'Empaquetado, pipelines de build y consolas de distribución.',
+				descripcion: 'Configuración de builds de producción, resolución de dependencias nativas y despliegue en tiendas de aplicaciones.',
+				stack: ['Google Play Console', 'EAS Build (Expo)', 'Android SDK / App Bundles (.aab)'],
+			},
 		],
 	},
 	{
+		number: '04',
 		category: 'Cloud, Edge & Infraestructura',
-		items: [
-			{ name: 'Cloudflare Workers', icon: '☁️', desc: 'Servicios serverless con computación global en el Edge.' },
-			{ name: 'Docker', icon: '🐳', desc: 'Contenedores, entornos reproducibles y microservicios.' },
-			{ name: 'Git & GitHub CI/CD', icon: '🔀', desc: 'Control de versiones, pipelines automatizados y despliegues continuos.' },
-			{ name: 'Resend API', icon: '📧', desc: 'Infraestructura serverless de entrega de correos transaccionales.' },
+		icon: '☁️',
+		description: 'Despliegues globales serverless en el Edge, bases de datos administradas y CI/CD automatizado.',
+		cards: [
+			{
+				title: 'Edge Computing & Serverless',
+				enfoque: 'Ejecución de código a nivel global y baja latencia.',
+				descripcion: 'Despliegue de microservicios, APIs y workers distribuidos en el edge para cómputo inmediato sin servidor dedicado.',
+				stack: ['Cloudflare Workers', 'Cloudflare Pages / KV', 'Vercel Serverless', 'Wrangler CLI'],
+			},
+			{
+				title: 'Cloud Databases & BaaS',
+				enfoque: 'Infraestructura de datos administrada y tiempo real.',
+				descripcion: 'Plataformas backend integradas con base de datos, almacenamiento de objetos y reglas de seguridad automáticas.',
+				stack: ['Supabase', 'Firebase / Firestore', 'Cloudflare R2 / S3', 'Neon (Serverless Postgres)'],
+			},
+			{
+				title: 'CI/CD, DevOps & Versionado',
+				enfoque: 'Automatización de flujos de entrega y control de código.',
+				descripcion: 'Pipelines de integración y despliegue continuo, contenedores ligeros y control de versiones profesional.',
+				stack: ['Git', 'GitHub Actions', 'Docker', 'DNS Management / Cloudflare CDN'],
+			},
 		],
 	},
 	{
-		category: 'CMS & Arquitectura Headless',
-		items: [
-			{ name: 'WordPress Headless', icon: '🌐', desc: 'Gestión editorial desacoplada de alto rendimiento.' },
-			{ name: 'WPGraphQL', icon: '⚡', desc: 'Capa API GraphQL para WordPress flexible y tipada.' },
-			{ name: 'ACF Pro & Custom Post Types', icon: '🧩', desc: 'Modelado de datos avanzado y personalizado.' },
+		number: '05',
+		category: 'CMS & Arquitectura Headless (WordPress Pro)',
+		icon: '🌐',
+		description: 'Desarrollo a medida en WordPress, WooCommerce y arquitecturas desacopladas ultra rápidas.',
+		cards: [
+			{
+				title: 'Desarrollo a Medida en WordPress & WooCommerce',
+				enfoque: 'Programación nativa, snippets personalizados y lógica e-commerce compleja.',
+				descripcion: 'Creación y personalización avanzada de plugins, hooks, filtros y reglas complejas de checkout/envío en WooCommerce.',
+				stack: ['WordPress Core', 'WooCommerce', 'PHP / OOP', 'Custom Post Types (CPT)', 'ACF Pro'],
+			},
+			{
+				title: 'Headless WordPress & Decoupled CMS',
+				enfoque: 'WordPress como backend de contenidos consumido por frontends modernos.',
+				descripcion: 'Exposición de endpoints y datos estructurados para ser renderizados a máxima velocidad en Next.js/React.',
+				stack: ['WP REST API', 'WPGraphQL', 'Next.js ISR / SSR', 'Webhook Triggers (On-demand Revalidation)'],
+			},
+			{
+				title: 'Performance, Seguridad & Optimización CMS',
+				enfoque: 'Core Web Vitals, caching agresivo y hardening.',
+				descripcion: 'Auditoría de velocidad, compresión de assets, cache a nivel de servidor/edge y mitigación de vulnerabilidades.',
+				stack: ['Redis Object Cache', 'WP-CLI', 'Cloudflare Cache Rules', 'Database Optimization', 'Security Hardening'],
+			},
 		],
 	},
 	{
+		number: '06',
 		category: 'AI Engineering & Vibe Coding',
-		items: [
-			{ name: 'Agentes Autónomos', icon: '🧠', desc: 'Automatización y aceleración del ciclo de ingeniería de software.' },
-			{ name: 'Integración LLM', icon: '🤖', desc: 'Implementación de modelos generativos y embeddings.' },
-			{ name: 'Prompt Engineering', icon: '💡', desc: 'Diseño de instrucciones de alta precisión para tareas de código.' },
+		icon: '🧠',
+		description: 'Integración de LLMs generativos, desarrollo asistido por agentes de IA y automatizaciones inteligentes.',
+		cards: [
+			{
+				title: 'Integración de LLMs & APIs de IA',
+				enfoque: 'Inclusión de modelos de lenguaje en aplicaciones web.',
+				descripcion: 'Consumo de APIs generativas, orquestación de prompts, streaming de respuestas y parsing estructurado de datos (JSON Mode).',
+				stack: ['Google Gemini API', 'Google AI Studio', 'OpenAI API', 'LangChain / Vercel AI SDK'],
+			},
+			{
+				title: 'Flujos de Vibe Coding & Tooling Acelerado por IA',
+				enfoque: 'Productividad extrema en desarrollo asistido por IA.',
+				descripcion: 'Arquitectura guiada por IA, generación de código contextual, prototipado acelerado y debugging asistido en tiempo real.',
+				stack: ['Cursor IDE', 'Claude Dev / Copilot', 'Prompt Engineering', 'Context Window Optimization', 'Automated Refactoring'],
+			},
+			{
+				title: 'Automatización Inteligente & Web Scraping',
+				enfoque: 'Extracción de datos no estructurados y pipelines de automatización.',
+				descripcion: 'Scrapers automatizados y microservicios que procesan, limpian y estructuran información externa para APIs privadas.',
+				stack: ['Puppeteer / Cheerio', 'Automated Cron Workers', 'Structured Data Extraction', 'n8n / Webhooks'],
+			},
 		],
 	},
 ];
 ---
 
 <BaseLayout
-	title="Stack Técnico & Habilidades"
-	description="Stack tecnológico, frameworks, herramientas y especialidades de ingeniería dominadas por Raúl David Sánchez — Senior Full Stack Developer en Bogotá, Colombia."
+	title="Stack Técnico & Ecosistema Tecnológico"
+	description="Herramientas, frameworks y arquitectura técnica dominadas por Raúl David Sánchez: Frontend, Backend, Mobile, Cloud Serverless, WordPress Headless e IA Engineering."
 >
 	<!-- Stack Hero Banner -->
 	<section class="relative py-20 bg-[#0b1020] overflow-hidden">
@@ -109,105 +173,89 @@ const categoryStacks = [
 		<div class="absolute inset-0 hero-glow pointer-events-none"></div>
 
 		<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-			<span class="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase">Tecnología & Arquitectura</span>
+			<span class="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase">Herramientas & Frameworks</span>
 			<h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-bold mt-3 text-white">
-				Stack Técnico & <span class="gradient-text">Especialidades</span>
+				Ecosistema <span class="gradient-text">Tecnológico</span>
 			</h1>
 			<p class="text-white/60 max-w-2xl mx-auto text-base sm:text-lg mt-4 leading-relaxed">
-				Herramientas, lenguajes, frameworks y soluciones en la nube con las que diseño y construyo productos digitales robustos, rápidos y escalables.
+				Stack técnico de producción, herramientas y arquitectura de software que domino para construir soluciones digitales rápidas, escalables y seguras.
 			</p>
 		</div>
 	</section>
 
-	<!-- Especialidades de Ingeniería -->
-	<section class="py-20 bg-[#0d1526] relative border-t border-white/5">
-		<div class="absolute inset-0 grid-bg opacity-20 pointer-events-none"></div>
-		<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<div class="text-center mb-14">
-				<span class="text-xs font-semibold tracking-[0.2em] text-cyan-400 uppercase">Capacidades Clave</span>
-				<h2 class="section-title text-3xl md:text-4xl font-display font-bold mt-2 text-white">
-					Disciplinas de <span class="gradient-text">Ingeniería</span>
-				</h2>
-			</div>
-
-			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-				{
-					specialties.map((item) => (
-						<div class="group card-dark p-7 flex flex-col justify-between hover:-translate-y-2 hover:border-cyan-400/50 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300">
+	<!-- Ecosistema Tecnológico por Categorías -->
+	<section class="py-20 bg-[#0d1526] relative">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
+			{
+				techEcosystem.map((cat) => (
+					<div class="space-y-8">
+						<!-- Categoría Header -->
+						<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-5">
 							<div>
-								<div class="flex items-center justify-between gap-3 mb-5">
-									<span class="text-3xl p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 group-hover:scale-110 group-hover:border-cyan-400/40 transition-transform duration-300">
-										{item.icon}
+								<div class="flex items-center gap-2.5 mb-1.5">
+									<span class="text-xs font-mono font-bold text-cyan-400 px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20">
+										{cat.number}
 									</span>
-									<span class="w-2.5 h-2.5 rounded-full bg-cyan-400/40 group-hover:bg-cyan-400 group-hover:animate-pulse transition-colors"></span>
+									<span class="text-xl">{cat.icon}</span>
+									<h2 class="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+										{cat.category}
+									</h2>
 								</div>
-
-								<h3 class="font-display font-bold text-xl text-white group-hover:text-cyan-400 transition-colors mb-3 leading-snug">
-									{item.title}
-								</h3>
-
-								<p class="text-sm text-white/60 leading-relaxed mb-6">
-									{item.description}
-								</p>
-							</div>
-
-							<div class="flex flex-wrap gap-1.5 pt-4 border-t border-white/5">
-								{item.tags.map((tag) => (
-									<span class="tag">{tag}</span>
-								))}
+								<p class="text-sm text-white/50 m-0 max-w-2xl">{cat.description}</p>
 							</div>
 						</div>
-					))
-				}
-			</div>
-		</div>
-	</section>
 
-	<!-- Stack por Categorías -->
-	<section class="py-24 bg-[#0b1020] relative">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<div class="text-center mb-16">
-				<span class="text-xs font-semibold tracking-[0.2em] text-cyan-400 uppercase">Herramientas & Frameworks</span>
-				<h2 class="section-title text-3xl md:text-4xl font-display font-bold mt-2 text-white">
-					Ecosistema <span class="gradient-text">Tecnológico</span>
-				</h2>
-			</div>
+						<!-- Grid de 3 Cards por Categoría -->
+						<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+							{cat.cards.map((card) => (
+								<div class="group card-dark p-7 flex flex-col justify-between hover:-translate-y-2 hover:border-cyan-400/50 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300">
+									<div>
+										<!-- Enfoque Badge -->
+										<div class="mb-4">
+											<span class="text-[11px] font-mono font-semibold uppercase tracking-wider text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2.5 py-1 rounded-md inline-block leading-normal">
+												Enfoque: {card.enfoque}
+											</span>
+										</div>
 
-			<div class="space-y-12">
-				{
-					categoryStacks.map((group) => (
-						<div class="card-dark p-6 sm:p-8">
-							<h3 class="font-display font-bold text-xl text-cyan-400 mb-6 flex items-center gap-2 border-b border-white/5 pb-3">
-								<span>⚡</span> {group.category}
-							</h3>
-							<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-								{group.items.map((tool) => (
-									<div class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-cyan-400/30 transition-all flex items-start gap-3.5">
-										<span class="text-2xl mt-0.5">{tool.icon}</span>
-										<div>
-											<div class="font-semibold text-white text-sm">{tool.name}</div>
-											<p class="text-xs text-white/50 mt-1 m-0 leading-relaxed">{tool.desc}</p>
+										<!-- Title -->
+										<h3 class="font-display font-bold text-lg text-white group-hover:text-cyan-400 transition-colors mb-3 leading-snug">
+											{card.title}
+										</h3>
+
+										<!-- Description -->
+										<p class="text-sm text-white/60 leading-relaxed mb-6">
+											{card.descripcion}
+										</p>
+									</div>
+
+									<!-- Stack Tags -->
+									<div class="pt-4 border-t border-white/5">
+										<div class="text-[11px] text-white/40 uppercase tracking-widest font-mono mb-2">Stack Tecnológico</div>
+										<div class="flex flex-wrap gap-1.5">
+											{card.stack.map((tech) => (
+												<span class="tag">{tech}</span>
+											))}
 										</div>
 									</div>
-								))}
-							</div>
+								</div>
+							))}
 						</div>
-					))
-				}
-			</div>
+					</div>
+				))
+			}
 
 			<!-- CTA Bottom -->
-			<div class="text-center mt-16 p-10 card-dark bg-gradient-to-r from-cyan-500/10 via-[#0b1020] to-indigo-500/10">
-				<h3 class="text-2xl font-bold text-white mb-2">¿Quieres ver estas tecnologías en acción?</h3>
+			<div class="text-center mt-20 p-10 card-dark bg-gradient-to-r from-cyan-500/10 via-[#0b1020] to-indigo-500/10 border border-cyan-500/20">
+				<h3 class="text-2xl font-display font-bold text-white mb-2">¿Tienes un desafío técnico o un proyecto en mente?</h3>
 				<p class="text-white/60 text-sm max-w-xl mx-auto mb-6">
-					Explora los proyectos reales que he construido o contáctame para hablar sobre tu próximo desafío técnico.
+					Explora los proyectos reales que he construido o contáctame para diseñar la mejor arquitectura para tu producto digital.
 				</p>
 				<div class="flex flex-wrap justify-center gap-4">
 					<a href="/projects/" class="btn-primary">
-						Ver Proyectos →
+						Ver Portafolio →
 					</a>
 					<a href="/contacto/" class="btn-outline">
-						Hablemos
+						Contactar Ahora
 					</a>
 				</div>
 			</div>
