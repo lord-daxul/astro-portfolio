@@ -1,0 +1,524 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+import Badge from '../components/ui/Badge.astro';
+
+const professionalSummary = `Desarrollador Web Full Stack y Mobile con sólida trayectoria creando aplicaciones web de alto rendimiento, arquitecturas desacopladas (WordPress Headless + Astro + Cloudflare) y aplicaciones móviles para iOS y Android. Pionero en flujos de Vibe Coding y desarrollo acelerado con inteligencia artificial, combinando velocidad de entrega con excelencia en Core Web Vitals, accesibilidad (WCAG 2.1 AA) y código limpio y mantenible.`;
+
+const skillCategories = [
+	{
+		name: 'WebApps & Frontend',
+		skills: ['Astro', 'TypeScript', 'React', 'Next.js', 'Vue.js', 'Tailwind CSS v4', 'HTML5 Semántico', 'CSS Tokens'],
+	},
+	{
+		name: 'Mobile (iOS & Android)',
+		skills: ['React Native', 'Expo', 'Cross-Platform Apps', 'Mobile APIs', 'Offline-First Storage'],
+	},
+	{
+		name: 'Backend & Headless CMS',
+		skills: ['WordPress Headless', 'WPGraphQL', 'ACF Pro', 'Node.js', 'PHP', 'REST APIs', 'PostgreSQL', 'Resend'],
+	},
+	{
+		name: 'Vibe Coding & AI Tools',
+		skills: ['Autonomous AI Agents', 'LLM Integrations', 'Prompt Engineering', 'Prototipado Rápido', 'Automatización'],
+	},
+	{
+		name: 'Cloud & Edge Infrastructure',
+		skills: ['Cloudflare Workers', 'Wrangler CLI', 'Serverless Functions', 'Edge Caching', 'Git / GitHub CI/CD'],
+	},
+	{
+		name: 'Rendimiento & Calidad',
+		skills: ['Core Web Vitals (LCP < 1.2s)', 'Accesibilidad WCAG 2.1 AA', 'SEO Técnico (JSON-LD)', 'TypeScript Estricto'],
+	},
+];
+
+const workExperience = [
+	{
+		role: 'Senior Full Stack & Headless Architect',
+		company: 'PangeaTech',
+		location: 'Remoto',
+		period: '2023 — 2025',
+		description: 'Liderazgo en el desarrollo y modernización de plataformas digitales de alto tráfico.',
+		achievements: [
+			'Diseño y migración de portales monolíticos a arquitecturas desacopladas con Astro y WordPress Headless vía WPGraphQL, reduciendo el tiempo de carga en un 65%.',
+			'Implementación de flujos de despliegue en el Edge con Cloudflare Workers, optimizando la latencia global y logrando puntuaciones de 98+ en Google Lighthouse.',
+			'Desarrollo de módulos e integraciones con APIs de terceros, pasarelas de pago y sistemas de notificación serverless con Resend.',
+		],
+		technologies: ['Astro', 'WordPress Headless', 'WPGraphQL', 'TypeScript', 'Cloudflare Workers', 'Tailwind CSS'],
+	},
+	{
+		role: 'Senior WordPress & Frontend Developer',
+		company: 'Proyectos Corporativos & Consultoría',
+		location: 'Remoto',
+		period: '2021 — 2023',
+		description: 'Creación de soluciones a medida para marcas internacionales y empresas de tecnología.',
+		achievements: [
+			'Desarrollo de themes a medida optimizados con ACF Pro y Gutenberg Blocks, eliminando constructores visuales pesados.',
+			'Construcción de WebApps reactivas y SPAs conectadas a APIs REST y GraphQL.',
+			'Auditoría y optimización de Core Web Vitals, mejorando la conversión orgánica y posicionamiento SEO técnico.',
+		],
+		technologies: ['WordPress', 'PHP', 'JavaScript (ES6+)', 'React', 'ACF Pro', 'REST API', 'SEO Técnico'],
+	},
+	{
+		role: 'Desarrollador Web & Mobile Freelance',
+		company: 'Estudio Independiente',
+		location: 'Remoto',
+		period: '2016 — 2021',
+		description: 'Conceptualización, diseño y entrega de aplicaciones web y móviles para clientes diversos.',
+		achievements: [
+			'Publicación y mantenimiento de más de 30 proyectos web y aplicaciones móviles multiplataforma.',
+			'Implementación de tiendas e-commerce de alta conversión y plataformas autogestionables.',
+			'Acompañamiento integral desde la arquitectura de información hasta el despliegue en producción.',
+		],
+		technologies: ['React Native', 'JavaScript', 'HTML5 / CSS3', 'WordPress', 'MySQL', 'UI/UX Design'],
+	},
+];
+
+const education = [
+	{
+		title: 'Ingeniería / Especialización en Desarrollo de Software',
+		institution: 'Formación Continua & Certificaciones Profesionales',
+		period: '2015 — Presente',
+		details: 'Especialización en Arquitecturas Web Modernas, Ecosistema TypeScript, Mobile Cross-Platform y Cloudflare Edge Computing.',
+	},
+];
+---
+
+<BaseLayout
+	title="Currículum Vitae"
+	description="CV profesional de Raúl David Sánchez — Senior Full Stack Developer, WordPress Headless, Mobile (iOS & Android) y Vibe Coding."
+>
+	<div class="cv-page">
+		<!-- Header Actions (Print / Download) -->
+		<div class="cv-top-bar no-print">
+			<div class="top-nav">
+				<Button href="/" variant="ghost">← Volver al Inicio</Button>
+			</div>
+			<div class="top-actions">
+				<button type="button" class="action-btn action-btn--primary" id="print-cv-btn">
+					<span aria-hidden="true">🖨</span> Imprimir / Guardar en PDF
+				</button>
+				<Button href="/contacto/" variant="secondary">Contactar</Button>
+			</div>
+		</div>
+
+		<!-- CV Container (Print-optimized) -->
+		<article class="cv-document" id="cv-content">
+			<!-- Header / Contact Info -->
+			<header class="cv-header">
+				<div class="cv-header-text">
+					<h1 class="cv-name">Raúl David Sánchez</h1>
+					<p class="cv-role">Senior Full Stack Developer & AI Vibe Coder</p>
+					<p class="cv-tagline">WebApps · Mobile (iOS & Android) · WordPress Headless · Edge Computing</p>
+				</div>
+				<div class="cv-contact-box">
+					<ul class="contact-list">
+						<li><strong>Email:</strong> <a href="mailto:contacto@rauldavid.com">contacto@rauldavid.com</a></li>
+						<li><strong>Web:</strong> <a href="https://rauldavid.com">https://rauldavid.com</a></li>
+						<li><strong>GitHub:</strong> <a href="https://github.com/daxul" target="_blank" rel="noopener">github.com/daxul</a></li>
+						<li><strong>Ubicación:</strong> Remoto / Global</li>
+					</ul>
+				</div>
+			</header>
+
+			<hr class="cv-divider" />
+
+			<!-- Profile Summary -->
+			<section class="cv-section">
+				<h2 class="cv-section-title">Perfil Profesional</h2>
+				<p class="cv-summary-text">{professionalSummary}</p>
+			</section>
+
+			<!-- Core Competencies -->
+			<section class="cv-section">
+				<h2 class="cv-section-title">Habilidades & Especialidades</h2>
+				<div class="cv-skills-grid">
+					{
+						skillCategories.map((cat) => (
+							<div class="skill-category">
+								<h3 class="skill-cat-title">{cat.name}</h3>
+								<div class="skill-cat-tags">
+									{cat.skills.map((s) => (
+										<span class="pill pill--sm">{s}</span>
+									))}
+								</div>
+							</div>
+						))
+					}
+				</div>
+			</section>
+
+			<!-- Experience -->
+			<section class="cv-section">
+				<h2 class="cv-section-title">Experiencia Profesional</h2>
+				<div class="cv-timeline">
+					{
+						workExperience.map((job) => (
+							<article class="cv-job">
+								<header class="job-header">
+									<div class="job-role-line">
+										<h3 class="job-role">{job.role}</h3>
+										<span class="job-period">{job.period}</span>
+									</div>
+									<p class="job-company">
+										<strong>{job.company}</strong> · <span>{job.location}</span>
+									</p>
+								</header>
+								<p class="job-desc">{job.description}</p>
+								<ul class="job-achievements">
+									{job.achievements.map((ach) => (
+										<li>{ach}</li>
+									))}
+								</ul>
+								<div class="job-techs">
+									{job.technologies.map((t) => (
+										<Badge text={t} variant="subtle" />
+									))}
+								</div>
+							</article>
+						))
+					}
+				</div>
+			</section>
+
+			<!-- Education -->
+			<section class="cv-section">
+				<h2 class="cv-section-title">Formación & Certificaciones</h2>
+				<div class="cv-edu-list">
+					{
+						education.map((edu) => (
+							<div class="edu-item">
+								<div class="edu-header">
+									<h3 class="edu-title">{edu.title}</h3>
+									<span class="edu-period">{edu.period}</span>
+								</div>
+								<p class="edu-inst">{edu.institution}</p>
+								<p class="edu-details">{edu.details}</p>
+							</div>
+						))
+					}
+				</div>
+			</section>
+		</article>
+	</div>
+</BaseLayout>
+
+<script is:inline>
+	(() => {
+		const btn = document.getElementById('print-cv-btn');
+		if (btn) {
+			btn.addEventListener('click', () => {
+				window.print();
+			});
+		}
+	})();
+</script>
+
+<style>
+	.cv-page {
+		max-width: 56rem;
+		margin-inline: auto;
+		padding-top: 1rem;
+	}
+
+	.cv-top-bar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 1rem;
+		margin-bottom: 2rem;
+		padding-bottom: 1rem;
+		border-bottom: 1px solid var(--rd-ink);
+	}
+
+	.top-actions {
+		display: flex;
+		gap: 0.75rem;
+	}
+
+	.cv-document {
+		background: var(--rd-panel);
+		border: 1px solid var(--rd-ink);
+		border-radius: var(--rd-radius-lg);
+		padding: clamp(2rem, 5vw, 3.5rem);
+		box-shadow: var(--rd-shadow-md);
+	}
+
+	.cv-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		flex-wrap: wrap;
+		gap: 2rem;
+	}
+
+	.cv-name {
+		font-size: clamp(2.25rem, 4vw, 2.75rem);
+		font-weight: 800;
+		letter-spacing: -0.035em;
+		margin: 0 0 0.25rem;
+		color: var(--rd-text);
+	}
+
+	.cv-role {
+		font-size: 1.2rem;
+		font-weight: 700;
+		color: var(--rd-accent);
+		margin: 0 0 0.35rem;
+	}
+
+	.cv-tagline {
+		font-size: 0.9375rem;
+		color: var(--rd-text-soft);
+		margin: 0;
+	}
+
+	.cv-contact-box {
+		background: var(--rd-bg);
+		border: 1px solid var(--rd-ink);
+		border-radius: var(--rd-radius-md);
+		padding: 1rem 1.25rem;
+	}
+
+	.contact-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		font-size: 0.875rem;
+	}
+
+	.contact-list a {
+		color: var(--rd-accent);
+	}
+
+	.cv-divider {
+		border: none;
+		border-top: 1px solid var(--rd-ink);
+		margin: 2.25rem 0;
+	}
+
+	.cv-section {
+		margin-bottom: 2.5rem;
+	}
+
+	.cv-section:last-child {
+		margin-bottom: 0;
+	}
+
+	.cv-section-title {
+		font-size: 1.25rem;
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--rd-accent);
+		margin: 0 0 1.25rem;
+		padding-bottom: 0.5rem;
+		border-bottom: 2px solid color-mix(in srgb, var(--rd-accent) 40%, var(--rd-ink));
+	}
+
+	.cv-summary-text {
+		font-size: 1.05rem;
+		line-height: 1.7;
+		color: var(--rd-text);
+		margin: 0;
+	}
+
+	.cv-skills-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+		gap: 1.5rem;
+	}
+
+	.skill-category {
+		background: var(--rd-bg);
+		border: 1px solid var(--rd-ink);
+		border-radius: var(--rd-radius-md);
+		padding: 1rem;
+	}
+
+	.skill-cat-title {
+		font-size: 0.9375rem;
+		font-weight: 700;
+		margin: 0 0 0.65rem;
+		color: var(--rd-text);
+	}
+
+	.skill-cat-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+	}
+
+	.cv-timeline {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	}
+
+	.cv-job {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.job-role-line {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.job-role {
+		font-size: 1.15rem;
+		font-weight: 800;
+		margin: 0;
+		color: var(--rd-text);
+	}
+
+	.job-period {
+		font-size: 0.8125rem;
+		font-weight: 700;
+		color: var(--rd-accent);
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+
+	.job-company {
+		font-size: 0.9375rem;
+		color: var(--rd-text-soft);
+		margin: 0;
+	}
+
+	.job-desc {
+		font-size: 0.9375rem;
+		color: var(--rd-text-soft);
+		margin: 0.25rem 0 0.5rem;
+		line-height: 1.5;
+	}
+
+	.job-achievements {
+		margin: 0 0 0.75rem;
+		padding-left: 1.25rem;
+		font-size: 0.9375rem;
+		color: var(--rd-text);
+		line-height: 1.6;
+	}
+
+	.job-achievements li {
+		margin-bottom: 0.35rem;
+	}
+
+	.job-techs {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+	}
+
+	.cv-edu-list {
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+	}
+
+	.edu-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.edu-title {
+		font-size: 1.05rem;
+		font-weight: 700;
+		margin: 0;
+	}
+
+	.edu-period {
+		font-size: 0.8125rem;
+		font-weight: 700;
+		color: var(--rd-accent);
+	}
+
+	.edu-inst {
+		font-size: 0.9375rem;
+		color: var(--rd-text-soft);
+		margin: 0.15rem 0 0.35rem;
+		font-weight: 600;
+	}
+
+	.edu-details {
+		font-size: 0.875rem;
+		color: var(--rd-muted);
+		margin: 0;
+		line-height: 1.5;
+	}
+
+	/* Print Stylesheet */
+	@media print {
+		.no-print,
+		:global(.site-header),
+		:global(.site-footer) {
+			display: none !important;
+		}
+
+		:global(body) {
+			background: #ffffff !important;
+			color: #0f172a !important;
+		}
+
+		:global(main) {
+			padding: 0 !important;
+			max-width: 100% !important;
+		}
+
+		.cv-page {
+			max-width: 100% !important;
+			padding: 0 !important;
+		}
+
+		.cv-document {
+			border: none !important;
+			box-shadow: none !important;
+			padding: 0 !important;
+			background: transparent !important;
+		}
+
+		.cv-name,
+		.job-role,
+		.skill-cat-title {
+			color: #0f172a !important;
+		}
+
+		.cv-role,
+		.job-period,
+		.edu-period,
+		.cv-section-title {
+			color: #0284c7 !important;
+		}
+
+		.cv-contact-box,
+		.skill-category {
+			background: #f8fafc !important;
+			border: 1px solid #cbd5e1 !important;
+		}
+
+		.pill {
+			background: #f1f5f9 !important;
+			border-color: #cbd5e1 !important;
+			color: #334155 !important;
+		}
+
+		.job-achievements,
+		.cv-summary-text {
+			color: #1e293b !important;
+		}
+	}
+</style>

@@ -7,52 +7,57 @@ import Button from '../components/ui/Button.astro';
 
 const principles = [
 	{
-		title: 'Rendimiento Primero',
-		description: 'Construir para la web moderna significa priorizar la velocidad de carga, la entrega mínima de JavaScript y una experiencia fluida desde el primer byte.',
+		title: 'Vibe Coding & Velocidad de Iteración',
+		description: 'Acelero el ciclo de vida de los productos combinando agentes de IA con arquitectura limpia, pasando de concepto a software funcional en tiempo récord.',
 	},
 	{
-		title: 'Accesibilidad Universal (a11y)',
-		description: 'La web debe ser usable para todos. Cuido la navegación por teclado, el contraste de color, las etiquetas semánticas y el soporte para tecnologías asistivas.',
+		title: 'Rendimiento Extremo (Core Web Vitals)',
+		description: 'Construir para la web moderna significa priorizar la velocidad de carga (LCP < 1.2s), mínima sobrecarga de JavaScript y renderizado instantáneo en el Edge.',
 	},
 	{
-		title: 'Arquitectura Limpia & Desacoplada',
-		description: 'Separar el CMS editorial del frontend otorga flexibilidad de diseño, seguridad robusta y facilidad de escalabilidad sin ataduras de temas pesados.',
+		title: 'Ecosistema Multiplataforma (Web & Mobile)',
+		description: 'Desarrollo soluciones unificadas: aplicaciones web reactivas y apps móviles nativas para iOS y Android con experiencias de usuario consistentes.',
+	},
+	{
+		title: 'Arquitectura Desacoplada & CMS Headless',
+		description: 'Separar el panel editorial (WordPress / WPGraphQL) de la capa de presentación (Astro) garantiza máxima seguridad, flexibilidad estética y escalabilidad.',
 	},
 ];
 ---
 
 <BaseLayout
 	title="Sobre Mí"
-	description="Conoce más sobre Raúl David Sánchez: filosofía de trabajo, stack tecnológico y enfoque de desarrollo."
+	description="Conoce la trayectoria de Raúl David Sánchez: desarrollo Full Stack, WebApps, Mobile (iOS/Android), WordPress Headless y Vibe Coding con IA."
 >
 	<article class="about-page">
 		<SectionHeader
 			title="Sobre Mí"
-			subtitle="Desarrollador Web Full Stack apasionado por construir productos digitales eficientes, limpios y accesibles."
+			subtitle="Senior Full Stack Developer & AI Vibe Coder enfocado en crear productos digitales rápidos, escalables y multiplataforma."
 			align="left"
 		/>
 
 		<div class="about-grid">
 			<div class="about-story">
 				<p>
-					Hola, soy <strong>Raúl David Sánchez</strong>. Cuento con varios años de experiencia transformando requerimientos de negocio en arquitecturas web sólidas. Me especializo en el ecosistema <strong>Astro</strong>, <strong>WordPress Headless</strong>, <strong>TypeScript</strong> y tecnologías en el Edge como <strong>Cloudflare Workers</strong>.
+					Hola, soy <strong>Raúl David Sánchez</strong>. Cuento con más de 8 años de experiencia en la industria tecnológica transformando retos complejos de negocio en productos de software eficientes y bien estructurados.
 				</p>
 				<p>
-					Mi enfoque combina la disciplina del desarrollo frontend moderno (con énfasis en Core Web Vitals y diseño responsivo) con la robustez en la integración de APIs, modelado de contenido y despliegues automatizados.
+					Mi especialidad abarca el desarrollo de <strong>WebApps de alto rendimiento</strong> (Astro, React, TypeScript), aplicaciones móviles para <strong>iOS & Android</strong> (React Native / Expo) y arquitecturas desacopladas con <strong>WordPress Headless</strong> (WPGraphQL + Cloudflare Workers).
 				</p>
 				<p>
-					Creo firmemente en la simplicidad arquitectónica: no añadir librerías o dependencias innecesarias cuando las capacidades nativas del navegador y los frameworks modernos ya resuelven el problema con elegancia.
+					Como pionero en la adopción de <strong>Vibe Coding</strong> y desarrollo asistido por agentes inteligentes de IA, integro herramientas de última generación en mis flujos diarios para optimizar tiempos de entrega sin sacrificar rigurosidad técnica, accesibilidad (WCAG 2.1 AA) ni mantenibilidad de código.
 				</p>
 
 				<div class="about-actions">
 					<Button href="/projects/" variant="primary">Ver Proyectos</Button>
-					<Button href="/contacto/" variant="secondary">Hablemos de tu Proyecto</Button>
+					<Button href="/cv/" variant="secondary">📄 Ver Currículum (CV)</Button>
+					<Button href="/contacto/" variant="ghost">Hablemos de tu Proyecto →</Button>
 				</div>
 			</div>
 
 			<aside class="about-sidebar">
 				<div class="sidebar-card">
-					<h3>Valores de Desarrollo</h3>
+					<h3>Principios & Metodología</h3>
 					<div class="principles-list">
 						{
 							principles.map((p) => (

@@ -3,6 +3,7 @@ export const prerender = false;
 
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHeader from '../components/ui/SectionHeader.astro';
+import Button from '../components/ui/Button.astro';
 import ExperienceTimeline from '../components/experience/ExperienceTimeline.astro';
 import { getExperiences } from '../lib/wordpress';
 import type { Experience } from '../types/experience';
@@ -10,39 +11,39 @@ import type { Experience } from '../types/experience';
 const fallbackExperience: Experience[] = [
 	{
 		id: 'exp-1',
-		title: 'WebMaster & Full Stack Developer',
-		role: 'WebMaster & Full Stack Developer',
+		title: 'Senior Full Stack & Headless Architect',
+		role: 'Senior Full Stack & Headless Architect',
 		company: 'PangeaTech',
 		location: 'Remoto',
 		startDate: '2023',
 		endDate: '2025',
 		isCurrent: false,
-		description: 'Desarrollo y optimización continua de aplicaciones web de alto rendimiento. Mantenimiento y modernización del stack headless con WordPress y Astro.',
-		technologies: ['WordPress', 'PHP', 'JavaScript', 'Tailwind CSS', 'Cloudflare'],
+		description: 'Liderazgo en la modernización y desarrollo de plataformas web de alto tráfico. Migración a arquitecturas desacopladas con Astro y WordPress Headless vía WPGraphQL, reduciendo tiempos de carga en un 65% y desplegando en Cloudflare Workers.',
+		technologies: ['Astro', 'WordPress Headless', 'WPGraphQL', 'TypeScript', 'Cloudflare Workers', 'Tailwind CSS'],
 	},
 	{
 		id: 'exp-2',
-		title: 'Senior WordPress Developer',
-		role: 'Senior WordPress Developer',
-		company: 'Proyectos Corporativos',
+		title: 'Senior WordPress & Frontend Developer',
+		role: 'Senior WordPress & Frontend Developer',
+		company: 'Proyectos Corporativos & Consultoría',
 		location: 'Remoto',
 		startDate: '2021',
 		endDate: '2023',
 		isCurrent: false,
-		description: 'Arquitecturas desacopladas con WPGraphQL, themes a medida basados en ACF Pro y conectividad con clientes modernos de frontend.',
-		technologies: ['WordPress Headless', 'WPGraphQL', 'React', 'ACF Pro'],
+		description: 'Desarrollo de themes a medida basados en ACF Pro y Gutenberg, WebApps reactivas y APIs personalizadas, asegurando puntuaciones perfectas en Core Web Vitals.',
+		technologies: ['WordPress', 'PHP', 'React', 'ACF Pro', 'REST API', 'SEO Técnico'],
 	},
 	{
 		id: 'exp-3',
-		title: 'Desarrollador Web Freelance',
-		role: 'Desarrollador Web Freelance',
-		company: 'Independiente',
+		title: 'Desarrollador Web & Mobile Freelance',
+		role: 'Desarrollador Web & Mobile Freelance',
+		company: 'Estudio Independiente',
 		location: 'Remoto',
 		startDate: '2016',
 		endDate: '2021',
 		isCurrent: false,
-		description: 'Desarrollo de sitios web a medida, optimización de velocidad de carga y estrategias de posicionamiento web (SEO).',
-		technologies: ['JavaScript', 'HTML5/CSS3', 'WordPress', 'SEO'],
+		description: 'Diseño e implementación de más de 30 soluciones web y aplicaciones móviles para clientes internacionales en comercio electrónico, SaaS y medios digitales.',
+		technologies: ['React Native', 'JavaScript', 'HTML5/CSS3', 'WordPress', 'MySQL'],
 	},
 ];
 
@@ -54,14 +55,21 @@ if (experiences.length === 0) {
 
 <BaseLayout
 	title="Experiencia"
-	description="Trayectoria profesional y experiencia laboral de Raúl David Sánchez: Desarrollo Web Full Stack, WordPress Headless y arquitectura de software."
+	description="Trayectoria profesional y experiencia laboral de Raúl David Sánchez: Desarrollo Web Full Stack, WordPress Headless, Mobile y Vibe Coding."
 >
 	<div class="experience-page">
-		<SectionHeader
-			title="Trayectoria Profesional"
-			subtitle="Un recorrido por los roles y proyectos en los que he participado a lo largo de mi carrera."
-			align="left"
-		/>
+		<div class="page-top-actions">
+			<SectionHeader
+				title="Trayectoria Profesional"
+				subtitle="Un recorrido por los roles clave, responsabilidades y logros técnicos en mi carrera profesional."
+				align="left"
+			/>
+			<div class="cv-badge-action">
+				<Button href="/cv/" variant="secondary">
+					📄 Ver CV Completo e Imprimible
+				</Button>
+			</div>
+		</div>
 
 		<div class="timeline-wrapper">
 			<ExperienceTimeline items={experiences} />
@@ -74,8 +82,21 @@ if (experiences.length === 0) {
 		padding-top: 1rem;
 	}
 
+	.page-top-actions {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		flex-wrap: wrap;
+		gap: 1.5rem;
+		margin-bottom: 2rem;
+	}
+
+	.cv-badge-action {
+		margin-top: 0.5rem;
+	}
+
 	.timeline-wrapper {
 		max-width: 52rem;
-		margin-top: 2rem;
+		margin-top: 1rem;
 	}
 </style>

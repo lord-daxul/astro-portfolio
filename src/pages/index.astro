@@ -9,29 +9,41 @@ import ExperienceTimeline from '../components/experience/ExperienceTimeline.astr
 import { getProjects, getExperiences } from '../lib/wordpress';
 import type { Experience } from '../types/experience';
 
-const fallbackSkills = [
+const specialtiesAndSkills = [
 	{
-		title: 'Desarrollo Frontend',
-		description: 'Interfaces de usuario modernas, rápidas y accesibles con Astro, React, TypeScript y Tailwind CSS.',
-		tags: ['Astro', 'TypeScript', 'Tailwind CSS', 'React', 'Next.js'],
+		title: 'Desarrollo de WebApps & Full Stack',
+		description: 'Ingeniería de aplicaciones web modernas, reactivas y ultrarrápidas utilizando Astro, React, Next.js, TypeScript y Tailwind CSS.',
+		tags: ['WebApps', 'Astro', 'React', 'Next.js', 'TypeScript', 'Node.js', 'Tailwind CSS'],
 		icon: '⚡',
 	},
 	{
-		title: 'WordPress Headless & Full Stack',
-		description: 'Arquitecturas desacopladas con WPGraphQL, desarrollo de themes a medida, plugins y optimización de rendimiento.',
-		tags: ['WordPress', 'WPGraphQL', 'ACF Pro', 'PHP', 'APIs'],
+		title: 'Desarrollo Móvil (iOS & Android)',
+		description: 'Creación de aplicaciones móviles multiplataforma nativas y fluidas, con sincronización de datos en tiempo real y almacenamiento offline.',
+		tags: ['iOS', 'Android', 'React Native', 'Expo', 'Cross-Platform', 'Mobile APIs'],
+		icon: '📱',
+	},
+	{
+		title: 'Vibe Coding & AI Engineering',
+		description: 'Desarrollo acelerado mediante agentes autónomos de IA, prototipado instantáneo de ideas a producción, integración de LLMs y automatizaciones.',
+		tags: ['Vibe Coding', 'AI Agents', 'LLMs', 'Prompt Engineering', 'Automatización'],
+		icon: '🧠',
+	},
+	{
+		title: 'WordPress Headless & CMS Moderno',
+		description: 'Arquitecturas desacopladas con WPGraphQL y ACF Pro para entregar paneles editoriales intuitivos y frontends de máxima velocidad.',
+		tags: ['WordPress Headless', 'WPGraphQL', 'ACF Pro', 'PHP', 'APIs REST'],
 		icon: '🛠',
 	},
 	{
-		title: 'Desarrollo Backend & Cloud',
-		description: 'APIs escalables, funciones serverless y despliegues en el Edge con Cloudflare Workers y Node.js.',
-		tags: ['Cloudflare Workers', 'Node.js', 'PostgreSQL', 'GraphQL', 'Resend'],
+		title: 'Cloud, Edge & Serverless',
+		description: 'Despliegues globales en el Edge con Cloudflare Workers, microservicios serverless, latencia ultrabaja y entrega de emails con Resend.',
+		tags: ['Cloudflare Workers', 'Edge Computing', 'Wrangler', 'Serverless', 'Resend API'],
 		icon: '☁',
 	},
 	{
-		title: 'Rendimiento & Accesibilidad (a11y)',
-		description: 'Enfoque en Core Web Vitals, HTML semántico, navegación por teclado y cumplimiento WCAG 2.1 AA.',
-		tags: ['Core Web Vitals', 'LCP Optimization', 'WCAG AA', 'SEO'],
+		title: 'Rendimiento Extremo & Accesibilidad (a11y)',
+		description: 'Optimización obsesiva de Core Web Vitals (LCP < 1.2s), navegación por teclado, contraste estricto y cumplimiento WCAG 2.1 AA.',
+		tags: ['Core Web Vitals', 'LCP < 1.2s', 'WCAG 2.1 AA', 'SEO Técnico'],
 		icon: '🎯',
 	},
 ];
@@ -39,39 +51,39 @@ const fallbackSkills = [
 const fallbackExperience: Experience[] = [
 	{
 		id: 'exp-1',
-		title: 'WebMaster & Full Stack Developer',
-		role: 'WebMaster & Full Stack Developer',
+		title: 'Senior Full Stack & Headless Architect',
+		role: 'Senior Full Stack & Headless Architect',
 		company: 'PangeaTech',
 		location: 'Remoto',
 		startDate: '2023',
 		endDate: '2025',
 		isCurrent: false,
-		description: 'Desarrollo y mantenimiento de plataformas web de alto tráfico, optimización de velocidad de carga y modernización del stack tecnológico.',
-		technologies: ['WordPress', 'PHP', 'JavaScript', 'Tailwind CSS', 'Cloudflare'],
+		description: 'Liderazgo en la modernización y desarrollo de plataformas web de alto tráfico. Migración a arquitecturas desacopladas con Astro y WordPress Headless vía WPGraphQL, reduciendo tiempos de carga en un 65% y desplegando en Cloudflare Workers.',
+		technologies: ['Astro', 'WordPress Headless', 'WPGraphQL', 'TypeScript', 'Cloudflare Workers', 'Tailwind CSS'],
 	},
 	{
 		id: 'exp-2',
-		title: 'Senior WordPress Developer',
-		role: 'Senior WordPress Developer',
-		company: 'Proyectos Corporativos',
+		title: 'Senior WordPress & Frontend Developer',
+		role: 'Senior WordPress & Frontend Developer',
+		company: 'Proyectos Corporativos & Consultoría',
 		location: 'Remoto',
 		startDate: '2021',
 		endDate: '2023',
 		isCurrent: false,
-		description: 'Construcción de arquitecturas headless con WordPress, themes a medida con ACF Pro y conectividad API.',
-		technologies: ['WordPress Headless', 'WPGraphQL', 'React', 'ACF Pro'],
+		description: 'Desarrollo de themes a medida basados en ACF Pro y Gutenberg, WebApps reactivas y APIs personalizadas, asegurando puntuaciones perfectas en Core Web Vitals.',
+		technologies: ['WordPress', 'PHP', 'React', 'ACF Pro', 'REST API', 'SEO Técnico'],
 	},
 	{
 		id: 'exp-3',
-		title: 'Desarrollador Freelance',
-		role: 'Desarrollador Web Freelance',
-		company: 'Independiente',
+		title: 'Desarrollador Web & Mobile Freelance',
+		role: 'Desarrollador Web & Mobile Freelance',
+		company: 'Estudio Independiente',
 		location: 'Remoto',
 		startDate: '2016',
 		endDate: '2021',
 		isCurrent: false,
-		description: 'Diseño e implementación de sitios web corporativos, tiendas e-commerce y soluciones personalizadas para clientes internacionales.',
-		technologies: ['JavaScript', 'HTML5/CSS3', 'WordPress', 'SEO'],
+		description: 'Diseño e implementación de más de 30 soluciones web y aplicaciones móviles para clientes internacionales en comercio electrónico, SaaS y medios digitales.',
+		technologies: ['React Native', 'JavaScript', 'HTML5/CSS3', 'WordPress', 'MySQL'],
 	},
 ];
 
@@ -83,24 +95,32 @@ if (experiences.length === 0) {
 }
 ---
 
-<BaseLayout title="Inicio" description="Portafolio profesional de Raúl David Sánchez — Desarrollador Full Stack & WordPress Headless.">
+<BaseLayout
+	title="Inicio"
+	description="Portafolio profesional de Raúl David Sánchez — Senior Full Stack Developer, WordPress Headless, Mobile (iOS & Android) y Vibe Coding."
+>
 	<!-- Hero Section -->
 	<section class="hero" aria-labelledby="hero-title">
 		<div class="hero-body">
-			<span class="hero-badge">Desarrollador Web Full Stack</span>
+			<span class="hero-badge">Senior Full Stack Developer & AI Vibe Coder</span>
 			<h1 id="hero-title" class="hero-heading">
-				Hola, soy <span class="highlight">Raúl David</span>.
+				Hola, soy <span class="highlight">Raúl David Sánchez</span>.
 			</h1>
-			<p class="hero-description">
-				Especializado en construir aplicaciones web ultrarrápidas, accesibles y elegantes combinando 
-				<strong>Astro</strong>, <strong>WordPress Headless</strong> y <strong>Cloudflare</strong>.
+			<p class="hero-lead">
+				Construyo <strong>WebApps de alto rendimiento</strong>, arquitecturas <strong>WordPress Headless</strong> en el Edge (Cloudflare) y aplicaciones móviles para <strong>iOS & Android</strong>.
+			</p>
+			<p class="hero-sublead">
+				Acelero el ciclo de desarrollo desde la idea hasta producción combinando ingeniería sólida y <strong>Vibe Coding</strong> con agentes de inteligencia artificial.
 			</p>
 			<div class="hero-cta">
 				<Button href="/projects/" variant="primary">
 					Ver Proyectos
 				</Button>
-				<Button href="/contacto/" variant="secondary">
-					Hablemos
+				<Button href="/cv/" variant="secondary">
+					📄 Ver / Descargar CV
+				</Button>
+				<Button href="/contacto/" variant="ghost">
+					Hablemos →
 				</Button>
 			</div>
 		</div>
@@ -125,18 +145,20 @@ if (experiences.length === 0) {
 		<SectionHeader
 			id="skills-heading"
 			title="Especialidades & Habilidades"
-			subtitle="Stack técnico y disciplinas donde aporto mayor valor."
+			subtitle="Disciplinas técnicas, herramientas y metodologías donde aporto máximo valor."
 		/>
 		<div class="skills-grid">
 			{
-				fallbackSkills.map((skill) => (
+				specialtiesAndSkills.map((skill) => (
 					<article class="skill-card">
-						<div class="skill-icon" aria-hidden="true">{skill.icon}</div>
-						<h3 class="skill-title">{skill.title}</h3>
+						<div class="skill-top">
+							<span class="skill-icon" aria-hidden="true">{skill.icon}</span>
+							<h3 class="skill-title">{skill.title}</h3>
+						</div>
 						<p class="skill-desc">{skill.description}</p>
 						<div class="skill-tags">
 							{skill.tags.map((t) => (
-								<span class="pill">{t}</span>
+								<span class="pill pill--sm">{t}</span>
 							))}
 						</div>
 					</article>
@@ -150,7 +172,7 @@ if (experiences.length === 0) {
 		<SectionHeader
 			id="projects-heading"
 			title="Proyectos Destacados"
-			subtitle="Selección de trabajos recientes y desarrollos destacados."
+			subtitle="Selección de desarrollos, WebApps y casos de estudio recientes."
 		/>
 		<ProjectGrid
 			projects={projects}
@@ -169,10 +191,15 @@ if (experiences.length === 0) {
 		<SectionHeader
 			id="experience-heading"
 			title="Trayectoria Profesional"
-			subtitle="Resumen de mi experiencia y roles desempeñados."
+			subtitle="Experiencia liderando proyectos de ingeniería de software y desarrollo de producto."
 		/>
 		<div class="experience-container">
 			<ExperienceTimeline items={experiences} />
+		</div>
+		<div class="section-footer-action">
+			<Button href="/cv/" variant="secondary">
+				Ver CV completo detallado →
+			</Button>
 		</div>
 	</section>
 </BaseLayout>
@@ -199,9 +226,9 @@ if (experiences.length === 0) {
 	}
 
 	.hero-heading {
-		font-size: clamp(2.5rem, 5vw, 3.5rem);
+		font-size: clamp(2.25rem, 4.5vw, 3.25rem);
 		font-weight: 800;
-		line-height: 1.1;
+		line-height: 1.15;
 		letter-spacing: -0.035em;
 		margin: 0 0 1.25rem;
 	}
@@ -210,18 +237,26 @@ if (experiences.length === 0) {
 		color: var(--rd-accent);
 	}
 
-	.hero-description {
+	.hero-lead {
 		font-size: 1.15rem;
+		color: var(--rd-text);
+		line-height: 1.6;
+		margin: 0 0 0.75rem;
+		max-width: 38rem;
+	}
+
+	.hero-sublead {
+		font-size: 1rem;
 		color: var(--rd-text-soft);
 		line-height: 1.6;
 		margin: 0 0 2rem;
-		max-width: 36rem;
+		max-width: 38rem;
 	}
 
 	.hero-cta {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 1rem;
+		gap: 0.85rem;
 	}
 
 	.hero-avatar {
@@ -254,7 +289,7 @@ if (experiences.length === 0) {
 
 	.skills-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
 		gap: 1.5rem;
 	}
 
@@ -271,25 +306,41 @@ if (experiences.length === 0) {
 
 	.skill-card:hover {
 		transform: translateY(-2px);
-		border-color: color-mix(in srgb, var(--rd-accent) 40%, var(--rd-ink));
+		border-color: color-mix(in srgb, var(--rd-accent) 45%, var(--rd-ink));
+		box-shadow: var(--rd-shadow-md);
 	}
 
-	.skill-icon {
-		font-size: 1.75rem;
+	.skill-top {
+		display: flex;
+		align-items: center;
+		gap: 0.85rem;
 		margin-bottom: 0.75rem;
 	}
 
+	.skill-icon {
+		font-size: 1.5rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.5rem;
+		height: 2.5rem;
+		border-radius: var(--rd-radius-md);
+		background: var(--rd-ink-subtle);
+		border: 1px solid var(--rd-ink);
+	}
+
 	.skill-title {
-		font-size: 1.15rem;
-		font-weight: 700;
-		margin: 0 0 0.5rem;
+		font-size: 1.125rem;
+		font-weight: 800;
+		margin: 0;
+		letter-spacing: -0.02em;
 	}
 
 	.skill-desc {
 		font-size: 0.9375rem;
 		color: var(--rd-text-soft);
 		margin: 0 0 1.25rem;
-		line-height: 1.5;
+		line-height: 1.55;
 	}
 
 	.skill-tags {
@@ -316,7 +367,8 @@ if (experiences.length === 0) {
 			text-align: center;
 		}
 
-		.hero-description {
+		.hero-lead,
+		.hero-sublead {
 			margin-inline: auto;
 		}
 
