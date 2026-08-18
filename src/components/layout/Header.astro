@@ -1,160 +1,126 @@
 ---
-import ThemeToggle from '../ui/ThemeToggle.astro';
-
 const navLinks = [
 	{ label: 'Inicio', href: '/' },
-	{ label: 'Home 2', href: '/home2/' },
-	{ label: 'Proyectos', href: '/projects/' },
-	{ label: 'Experiencia', href: '/experience/' },
-	{ label: 'CV', href: '/cv/' },
+	{ label: 'Stack', href: '/stack/' },
+	{ label: 'Portfolio', href: '/projects/' },
 	{ label: 'Blog', href: '/blog/' },
 	{ label: 'Contacto', href: '/contacto/' },
 ];
 
 const pathname = Astro.url.pathname;
 const isCurrent = (href: string) => {
-	if (href === '/') return pathname === '/';
+	if (href === '/') return pathname === '/' || pathname === '';
 	return pathname.startsWith(href);
 };
 ---
 
-<header class="site-header">
-	<div class="header-container">
-		<a class="site-brand" href="/" aria-label="Ir a inicio">
-			<span class="brand-text">Raúl David</span>
-			<span class="brand-badge">Portfolio</span>
-		</a>
+<header id="site-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#0b1020]/90 backdrop-blur-md border-b border-white/5 shadow-xl shadow-black/20">
+	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+		<div class="flex items-center justify-between h-16 md:h-20">
+			<!-- Logo -->
+			<a href="/" class="text-xl font-display font-bold tracking-tight site-logo">
+				<span class="text-white site-logo-name">Daxul</span><span class="text-cyan-400">folio</span>
+			</a>
 
-		<nav class="site-nav" aria-label="Navegación principal">
-			<ul class="nav-list">
+			<!-- Desktop Navigation -->
+			<nav class="hidden md:flex items-center gap-1" aria-label="Navegación principal">
 				{
 					navLinks.map((link) => (
-						<li>
-							<a
-								href={link.href}
-								class={`nav-link ${isCurrent(link.href) ? 'is-active' : ''}`}
-								aria-current={isCurrent(link.href) ? 'page' : undefined}
-							>
-								{link.label}
-							</a>
-						</li>
+						<a
+							href={link.href}
+							class={`px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
+								isCurrent(link.href)
+									? 'text-cyan-400 bg-cyan-500/10 font-semibold'
+									: 'text-white/70 hover:text-cyan-400 hover:bg-white/5'
+							}`}
+							aria-current={isCurrent(link.href) ? 'page' : undefined}
+						>
+							{link.label}
+						</a>
 					))
 				}
-			</ul>
-		</nav>
+			</nav>
 
-		<div class="header-actions">
-			<ThemeToggle />
+			<!-- Right Actions (Theme toggle + CV button + Mobile toggle) -->
+			<div class="flex items-center gap-2">
+				<button
+					id="global-theme-toggle-btn"
+					class="p-2 rounded-lg text-white/60 hover:text-cyan-400 hover:bg-white/5 transition-all"
+					aria-label="Alternar modo oscuro y claro"
+				>
+					<svg id="sun-icon-global" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+					<svg id="moon-icon-global" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+				</button>
+
+				<a
+					href="/cv/"
+					class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-[#2979FF] text-white hover:bg-[#2979FF]/80 transition-all shadow-lg shadow-[#2979FF]/20"
+				>
+					Ver CV
+				</a>
+
+				<button
+					id="global-mobile-menu-btn"
+					class="md:hidden p-2 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-all"
+					aria-label="Abrir menú"
+				>
+					<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+				</button>
+			</div>
 		</div>
+	</div>
+
+	<!-- Mobile Menu Dropdown -->
+	<div id="global-mobile-menu" class="hidden md:hidden backdrop-blur-md border-t px-4 pb-4 bg-[#0b1020]/95 border-white/10">
+		{
+			navLinks.map((link) => (
+				<a
+					href={link.href}
+					class={`block py-3 text-sm font-medium border-b border-white/5 ${
+						isCurrent(link.href) ? 'text-cyan-400 font-semibold' : 'text-white/70 hover:text-cyan-400'
+					}`}
+				>
+					{link.label}
+				</a>
+			))
+		}
+		<a href="/cv/" class="block py-3 text-sm font-semibold text-cyan-400">
+			Ver CV Completo →
+		</a>
 	</div>
 </header>
 
-<style>
-	.site-header {
-		background-color: color-mix(in srgb, var(--rd-panel) 85%, transparent);
-		backdrop-filter: blur(12px);
-		-webkit-backdrop-filter: blur(12px);
-		border-bottom: 1px solid var(--rd-ink);
-		position: sticky;
-		top: 0;
-		z-index: 50;
-	}
+<script is:inline>
+	(() => {
+		const mobileBtn = document.getElementById('global-mobile-menu-btn');
+		const mobileMenu = document.getElementById('global-mobile-menu');
+		const themeBtn = document.getElementById('global-theme-toggle-btn');
+		const sunIcon = document.getElementById('sun-icon-global');
+		const moonIcon = document.getElementById('moon-icon-global');
 
-	.header-container {
-		max-width: 72rem;
-		margin-inline: auto;
-		padding: 0.85rem clamp(1rem, 4vw, 3rem);
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 1.5rem;
-	}
+		mobileBtn?.addEventListener('click', () => {
+			mobileMenu?.classList.toggle('hidden');
+		});
 
-	.site-brand {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		text-decoration: none;
-		color: var(--rd-text);
-	}
+		const updateIcons = () => {
+			const isLight = document.documentElement.classList.contains('light') || document.body?.classList.contains('light');
+			if (isLight) {
+				sunIcon?.classList.add('hidden');
+				moonIcon?.classList.remove('hidden');
+			} else {
+				sunIcon?.classList.remove('hidden');
+				moonIcon?.classList.add('hidden');
+			}
+		};
 
-	.site-brand:hover {
-		text-decoration: none;
-	}
+		themeBtn?.addEventListener('click', () => {
+			document.body?.classList.toggle('light');
+			document.documentElement.classList.toggle('light');
+			const isLight = document.body?.classList.contains('light');
+			localStorage.setItem('theme', isLight ? 'light' : 'dark');
+			updateIcons();
+		});
 
-	.brand-text {
-		font-weight: 800;
-		font-size: 1.15rem;
-		letter-spacing: -0.025em;
-	}
-
-	.brand-badge {
-		font-size: 0.7rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		padding: 0.15rem 0.45rem;
-		border-radius: var(--rd-radius-sm);
-		background: var(--rd-ink-subtle);
-		border: 1px solid var(--rd-ink);
-		color: var(--rd-accent);
-	}
-
-	.site-nav {
-		display: flex;
-	}
-
-	.nav-list {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-	}
-
-	.nav-link {
-		color: var(--rd-text-soft);
-		font-weight: 600;
-		font-size: 0.9375rem;
-		padding: 0.4rem 0.75rem;
-		border-radius: var(--rd-radius-md);
-		text-decoration: none;
-		transition: all 0.15s ease;
-	}
-
-	.nav-link:hover {
-		color: var(--rd-text);
-		background: var(--rd-ink-subtle);
-		text-decoration: none;
-	}
-
-	.nav-link.is-active {
-		color: var(--rd-accent);
-		background: var(--rd-ink-subtle);
-		border: 1px solid color-mix(in srgb, var(--rd-accent) 25%, transparent);
-	}
-
-	.header-actions {
-		display: flex;
-		align-items: center;
-	}
-
-	@media (max-width: 768px) {
-		.header-container {
-			flex-wrap: wrap;
-			padding-block: 0.75rem;
-		}
-
-		.nav-list {
-			gap: 0.25rem;
-			overflow-x: auto;
-			padding-bottom: 0.25rem;
-		}
-
-		.nav-link {
-			font-size: 0.875rem;
-			padding: 0.35rem 0.5rem;
-		}
-	}
-</style>
+		updateIcons();
+	})();
+</script>

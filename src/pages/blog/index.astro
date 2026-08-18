@@ -2,196 +2,151 @@
 export const prerender = false;
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import SectionHeader from '../../components/ui/SectionHeader.astro';
-import Badge from '../../components/ui/Badge.astro';
-import Button from '../../components/ui/Button.astro';
 import { getPosts } from '../../lib/wordpress';
 
-const posts = await getPosts(20).catch(() => []);
+const fallbackPosts = [
+	{
+		id: '1',
+		title: 'Construyendo APIs modernas con FastAPI y MongoDB',
+		excerpt: 'Una guía práctica para crear APIs REST robustas usando Python, FastAPI y MongoDB como base de datos.',
+		image: null,
+		date: '2024-01-15',
+		slug: 'fastapi-mongodb-guide',
+		readTime: '8 min',
+		categories: ['Backend', 'Python', 'FastAPI'],
+	},
+	{
+		id: '2',
+		title: 'React 18: Todo lo que necesitas saber',
+		excerpt: 'Exploramos las nuevas características de React 18 incluyendo Concurrent Mode, Suspense y las nuevas hooks.',
+		image: null,
+		date: '2024-01-08',
+		slug: 'react-18-features',
+		readTime: '6 min',
+		categories: ['Frontend', 'React'],
+	},
+	{
+		id: '3',
+		title: 'Docker para desarrolladores full-stack',
+		excerpt: 'Aprende a containerizar tus aplicaciones web completas con Docker y Docker Compose de manera efectiva.',
+		image: null,
+		date: '2023-12-20',
+		slug: 'docker-fullstack',
+		readTime: '10 min',
+		categories: ['DevOps', 'Docker'],
+	},
+	{
+		id: '4',
+		title: 'TailwindCSS: El framework que cambió mi flujo de trabajo',
+		excerpt: 'Por qué adopté TailwindCSS y cómo transformó la manera en que construyo interfaces de usuario.',
+		image: null,
+		date: '2023-12-10',
+		slug: 'tailwind-workflow',
+		readTime: '5 min',
+		categories: ['CSS', 'TailwindCSS'],
+	},
+];
+
+let wpPosts = await getPosts(50).catch(() => []);
+const posts = wpPosts.length > 0
+	? wpPosts.map((p: any) => ({
+			id: p.id,
+			title: p.title,
+			excerpt: p.excerpt ? p.excerpt.replace(/<[^>]*>/g, '').trim() : '',
+			image: p.featuredImage?.node?.sourceUrl || null,
+			date: p.date ? new Date(p.date).toISOString().split('T')[0] : '2024-01-15',
+			slug: p.slug,
+			readTime: '5 min',
+			categories: p.categories || ['Tecnología'],
+	  }))
+	: fallbackPosts;
+
+function formatDate(dateStr: string) {
+	try {
+		return new Date(dateStr).toLocaleDateString('es-ES', {
+			day: 'numeric',
+			month: 'long',
+			year: 'numeric',
+		});
+	} catch {
+		return dateStr;
+	}
+}
 ---
 
 <BaseLayout
-	title="Blog"
-	description="Artículos, tutoriales y reflexiones sobre desarrollo web, WordPress Headless, Astro y rendimiento."
+	title="Blog & Publicaciones"
+	description="Artículos, tutoriales y reflexiones sobre desarrollo web, WordPress Headless, Astro, inteligencia artificial y arquitectura de software por Raúl David Sánchez."
 >
-	<div class="blog-page">
-		<SectionHeader
-			title="Blog & Publicaciones"
-			subtitle="Reflexiones, tutoriales y notas técnicas sobre desarrollo web y arquitectura de software."
-			align="left"
-		/>
+	<!-- Banner -->
+	<section class="relative py-20 bg-[#0b1020] overflow-hidden">
+		<div class="absolute inset-0 grid-bg opacity-40 pointer-events-none"></div>
+		<div class="absolute inset-0 hero-glow pointer-events-none"></div>
 
-		{
-			posts.length === 0 ? (
-				<div class="empty-state" role="status">
-					<p class="empty-text">No hay artículos publicados en el blog en este momento.</p>
-				</div>
-			) : (
-				<div class="posts-grid">
-					{posts.map((post) => (
-						<article class="post-card">
-							{post.featuredImage?.sourceUrl ? (
-								<a href={`/blog/${post.slug}/`} class="post-thumb-link" tabindex="-1" aria-hidden="true">
+		<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+			<span class="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase">Artículos & Tutoriales</span>
+			<h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-bold mt-3 text-white">
+				Blog & <span class="gradient-text">Publicaciones</span>
+			</h1>
+			<p class="text-white/60 max-w-2xl mx-auto text-base sm:text-lg mt-4 leading-relaxed">
+				Notas técnicas, reflexiones y guías sobre desarrollo web, IA, rendimiento y mejores prácticas en la industria.
+			</p>
+		</div>
+	</section>
+
+	<!-- Posts Grid -->
+	<section class="py-20 bg-[#0d1526] relative">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+				{
+					posts.map((post) => (
+						<article class="group card-dark overflow-hidden flex flex-col hover:-translate-y-2 transition-all duration-300">
+							<div class="relative h-48 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 overflow-hidden">
+								{post.image ? (
 									<img
-										src={post.featuredImage.sourceUrl}
-										alt={post.featuredImage.altText || post.title}
-										width={post.featuredImage.width || 600}
-										height={post.featuredImage.height || 350}
+										src={post.image}
+										alt={post.title}
+										class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
 										loading="lazy"
-										decoding="async"
 									/>
-								</a>
-							) : null}
-							<div class="post-body">
-								<header class="post-header">
-									{post.date ? (
-										<time class="post-date" datetime={post.date}>
-											{new Date(post.date).toLocaleDateString('es-ES', {
-												year: 'numeric',
-												month: 'long',
-												day: 'numeric',
-											})}
-										</time>
-									) : null}
-									<h2 class="post-title">
-										<a href={`/blog/${post.slug}/`}>{post.title}</a>
-									</h2>
-								</header>
-
-								{post.excerpt ? <p class="post-excerpt">{post.excerpt}</p> : null}
-
-								{post.categories?.length > 0 ? (
-									<div class="post-categories" aria-label="Categorías">
-										{post.categories.map((cat) => (
-											<Badge text={cat} variant="subtle" />
-										))}
+								) : (
+									<div class="w-full h-full flex items-center justify-center text-4xl">
+										✍️
 									</div>
-								) : null}
+								)}
+								<div class="absolute inset-0 bg-gradient-to-t from-[#0b1020] via-transparent to-transparent opacity-60"></div>
+								<span class="absolute top-3 right-3 text-xs font-medium px-2.5 py-1 rounded-full bg-[#0b1020]/80 text-white/60 border border-white/10">
+									{post.readTime}
+								</span>
+							</div>
 
-								<div class="post-actions">
-									<Button href={`/blog/${post.slug}/`} variant="ghost">
-										Leer artículo completo →
-									</Button>
+							<div class="p-6 flex flex-col gap-3.5 flex-1">
+								<div class="flex items-center gap-1.5 text-xs text-white/40">
+									<span>📅</span>
+									<span>{formatDate(post.date)}</span>
+								</div>
+
+								<h2 class="font-display font-bold text-xl text-white group-hover:text-cyan-400 transition-colors leading-snug">
+									<a href={`/blog/${post.slug}/`}>{post.title}</a>
+								</h2>
+
+								<p class="text-sm text-white/60 leading-relaxed flex-1 line-clamp-3">
+									{post.excerpt}
+								</p>
+
+								<div class="pt-3 border-t border-white/5 flex items-center justify-between">
+									<a
+										href={`/blog/${post.slug}/`}
+										class="text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors"
+									>
+										Leer artículo →
+									</a>
 								</div>
 							</div>
 						</article>
-					))}
-				</div>
-			)
-		}
-	</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
 </BaseLayout>
-
-<style>
-	.blog-page {
-		padding-top: 1rem;
-	}
-
-	.posts-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
-		gap: 2rem;
-	}
-
-	.post-card {
-		background: var(--rd-panel);
-		border: 1px solid var(--rd-ink);
-		border-radius: var(--rd-radius-lg);
-		overflow: hidden;
-		display: flex;
-		flex-direction: column;
-		box-shadow: var(--rd-shadow-sm);
-		transition: all 0.2s ease;
-	}
-
-	.post-card:hover {
-		border-color: color-mix(in srgb, var(--rd-accent) 40%, var(--rd-ink));
-		transform: translateY(-2px);
-		box-shadow: var(--rd-shadow-md);
-	}
-
-	.post-thumb-link {
-		display: block;
-		aspect-ratio: 16 / 9;
-		overflow: hidden;
-		background: var(--rd-ink-subtle);
-	}
-
-	.post-thumb-link img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		display: block;
-		transition: transform 0.3s ease;
-	}
-
-	.post-card:hover .post-thumb-link img {
-		transform: scale(1.03);
-	}
-
-	.post-body {
-		padding: 1.5rem;
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-	}
-
-	.post-date {
-		display: block;
-		font-size: 0.8125rem;
-		color: var(--rd-accent);
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
-		margin-bottom: 0.4rem;
-	}
-
-	.post-title {
-		font-size: 1.25rem;
-		font-weight: 800;
-		margin: 0 0 0.75rem;
-		line-height: 1.35;
-	}
-
-	.post-title a {
-		color: var(--rd-text);
-		text-decoration: none;
-	}
-
-	.post-title a:hover {
-		color: var(--rd-accent);
-	}
-
-	.post-excerpt {
-		font-size: 0.9375rem;
-		color: var(--rd-text-soft);
-		line-height: 1.6;
-		margin: 0 0 1.25rem;
-	}
-
-	.post-categories {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.35rem;
-		margin-bottom: 1.25rem;
-	}
-
-	.post-actions {
-		margin-top: auto;
-		padding-top: 1rem;
-		border-top: 1px solid var(--rd-ink-subtle);
-	}
-
-	.empty-state {
-		text-align: center;
-		padding: 3rem 1.5rem;
-		background: var(--rd-panel);
-		border: 1px dashed var(--rd-ink);
-		border-radius: var(--rd-radius-lg);
-	}
-
-	.empty-text {
-		color: var(--rd-text-soft);
-		margin: 0;
-	}
-</style>

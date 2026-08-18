@@ -2,12 +2,8 @@
 export const prerender = false;
 
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SectionHeader from '../components/ui/SectionHeader.astro';
-import Button from '../components/ui/Button.astro';
-import ProjectGrid from '../components/projects/ProjectGrid.astro';
-import ExperienceTimeline from '../components/experience/ExperienceTimeline.astro';
-import { getProjects, getExperiences } from '../lib/wordpress';
-import type { Experience } from '../types/experience';
+import { getProjects, getPosts } from '../lib/wordpress';
+import type { Project } from '../types/project';
 
 const specialtiesAndSkills = [
 	{
@@ -32,13 +28,13 @@ const specialtiesAndSkills = [
 		title: 'WordPress Headless & CMS Moderno',
 		description: 'Arquitecturas desacopladas con WPGraphQL y ACF Pro para entregar paneles editoriales intuitivos y frontends de máxima velocidad.',
 		tags: ['WordPress Headless', 'WPGraphQL', 'ACF Pro', 'PHP', 'APIs REST'],
-		icon: '🛠',
+		icon: '🌐',
 	},
 	{
 		title: 'Cloud, Edge & Serverless',
 		description: 'Despliegues globales en el Edge con Cloudflare Workers, microservicios serverless, latencia ultrabaja y entrega de emails con Resend.',
 		tags: ['Cloudflare Workers', 'Edge Computing', 'Wrangler', 'Serverless', 'Resend API'],
-		icon: '☁',
+		icon: '☁️',
 	},
 	{
 		title: 'Rendimiento Extremo & Accesibilidad (a11y)',
@@ -48,347 +44,617 @@ const specialtiesAndSkills = [
 	},
 ];
 
-const fallbackExperience: Experience[] = [
+const techStack = [
+	{ name: 'React', icon: '⚛️', color: 'from-blue-500/10 to-cyan-500/10', border: 'border-blue-500/20' },
+	{ name: 'Next.js', icon: '▲', color: 'from-white/5 to-white/10', border: 'border-white/10' },
+	{ name: 'TypeScript', icon: 'TS', color: 'from-blue-600/10 to-blue-400/10', border: 'border-blue-500/20' },
+	{ name: 'Node.js', icon: '🟢', color: 'from-green-500/10 to-emerald-500/10', border: 'border-green-500/20' },
+	{ name: 'Python', icon: '🐍', color: 'from-yellow-500/10 to-blue-500/10', border: 'border-yellow-500/20' },
+	{ name: 'FastAPI', icon: '⚡', color: 'from-teal-500/10 to-green-500/10', border: 'border-teal-500/20' },
+	{ name: 'MongoDB', icon: '🍃', color: 'from-green-600/10 to-green-400/10', border: 'border-green-500/20' },
+	{ name: 'PostgreSQL', icon: '🐘', color: 'from-blue-700/10 to-blue-400/10', border: 'border-blue-600/20' },
+	{ name: 'Docker', icon: '🐳', color: 'from-blue-500/10 to-sky-500/10', border: 'border-blue-400/20' },
+	{ name: 'TailwindCSS', icon: '🌊', color: 'from-cyan-500/10 to-teal-500/10', border: 'border-cyan-500/20' },
+	{ name: 'React Native', icon: '📱', color: 'from-blue-400/10 to-indigo-400/10', border: 'border-blue-400/20' },
+	{ name: 'Git', icon: '🔀', color: 'from-orange-500/10 to-red-500/10', border: 'border-orange-500/20' },
+];
+
+const fallbackProjects = [
 	{
-		id: 'exp-1',
-		title: 'Senior Full Stack & Headless Architect',
-		role: 'Senior Full Stack & Headless Architect',
-		company: 'PangeaTech',
-		location: 'Bogotá, Colombia (Remoto)',
-		startDate: '2023',
-		endDate: '2025',
-		isCurrent: false,
-		description: 'Liderazgo en la modernización y desarrollo de plataformas web de alto tráfico. Migración a arquitecturas desacopladas con Astro y WordPress Headless vía WPGraphQL, reduciendo tiempos de carga en un 65% y desplegando en Cloudflare Workers.',
-		technologies: ['Astro', 'WordPress Headless', 'WPGraphQL', 'TypeScript', 'Cloudflare Workers', 'Tailwind CSS'],
+		id: '1',
+		title: 'Daxulfolio Modern Headless',
+		description: 'Portfolio personal moderno construido con Astro, WordPress Headless y Cloudflare Workers.',
+		image: null,
+		technologies: ['Astro', 'WordPress', 'WPGraphQL', 'Cloudflare Workers'],
+		link: '/projects/daxulfolio-headless/',
+		github: 'https://github.com/lord-daxul/astro-portfolio',
 	},
 	{
-		id: 'exp-2',
-		title: 'Senior WordPress & Frontend Developer',
-		role: 'Senior WordPress & Frontend Developer',
-		company: 'Proyectos Corporativos & Consultoría',
-		location: 'Bogotá, Colombia (Remoto)',
-		startDate: '2021',
-		endDate: '2023',
-		isCurrent: false,
-		description: 'Desarrollo de themes a medida basados en ACF Pro y Gutenberg, WebApps reactivas y APIs personalizadas, asegurando puntuaciones perfectas en Core Web Vitals.',
-		technologies: ['WordPress', 'PHP', 'React', 'ACF Pro', 'REST API', 'SEO Técnico'],
+		id: '2',
+		title: 'E-Commerce Platform & Headless Catalog',
+		description: 'Plataforma de comercio electrónico con panel de administración y pagos integrados.',
+		image: null,
+		technologies: ['Next.js', 'Stripe', 'PostgreSQL', 'Docker'],
+		link: '/projects/ecommerce-platform/',
+		github: '#',
 	},
 	{
-		id: 'exp-3',
-		title: 'Desarrollador Web & Mobile Freelance',
-		role: 'Desarrollador Web & Mobile Freelance',
-		company: 'Estudio Independiente',
-		location: 'Bogotá, Colombia',
-		startDate: '2016',
-		endDate: '2021',
-		isCurrent: false,
-		description: 'Diseño e implementación de más de 30 soluciones web y aplicaciones móviles para clientes internacionales en comercio electrónico, SaaS y medios digitales.',
-		technologies: ['React Native', 'JavaScript', 'HTML5/CSS3', 'WordPress', 'MySQL'],
+		id: '3',
+		title: 'Task Manager Mobile App',
+		description: 'Aplicación de gestión de tareas multiplataforma para iOS y Android con sincronización en tiempo real.',
+		image: null,
+		technologies: ['React Native', 'Node.js', 'Socket.io', 'MongoDB'],
+		link: '/projects/task-manager/',
+		github: '#',
+	},
+	{
+		id: '4',
+		title: 'API REST Microservices',
+		description: 'Arquitectura de microservicios serverless con autenticación JWT y documentación automática.',
+		image: null,
+		technologies: ['Python', 'FastAPI', 'Docker', 'Redis'],
+		link: '/projects/api-microservices/',
+		github: '#',
 	},
 ];
 
-let projects = await getProjects(6).catch(() => []);
-let experiences = await getExperiences().catch(() => []);
+// Obtener solo los 4 proyectos más recientes
+let wpProjects = await getProjects(4).catch(() => []);
+const displayProjects = wpProjects.length > 0
+	? wpProjects.map((p) => ({
+			id: p.id,
+			title: p.title,
+			description: p.excerpt ? p.excerpt.replace(/<[^>]*>/g, '').trim() : 'Proyecto desarrollado con tecnologías modernas.',
+			image: p.featuredImage?.sourceUrl || null,
+			technologies: p.technologies || ['React', 'TailwindCSS'],
+			link: `/projects/${p.slug}/`,
+			github: p.repositoryUrl || '#',
+	  }))
+	: fallbackProjects;
 
-if (experiences.length === 0) {
-	experiences = fallbackExperience;
+// Obtener solo los 4 artículos más recientes del blog
+let wpPosts = await getPosts(4).catch(() => []);
+const fallbackPosts = [
+	{
+		id: '1',
+		title: 'Construyendo APIs modernas con FastAPI y MongoDB',
+		excerpt: 'Una guía práctica para crear APIs REST robustas usando Python, FastAPI y MongoDB como base de datos.',
+		image: null,
+		date: '2024-01-15',
+		slug: 'fastapi-mongodb-guide',
+		readTime: '8 min',
+	},
+	{
+		id: '2',
+		title: 'React 18: Todo lo que necesitas saber',
+		excerpt: 'Exploramos las nuevas características de React 18 incluyendo Concurrent Mode, Suspense y las nuevas hooks.',
+		image: null,
+		date: '2024-01-08',
+		slug: 'react-18-features',
+		readTime: '6 min',
+	},
+	{
+		id: '3',
+		title: 'Docker para desarrolladores full-stack',
+		excerpt: 'Aprende a containerizar tus aplicaciones web completas con Docker y Docker Compose de manera efectiva.',
+		image: null,
+		date: '2023-12-20',
+		slug: 'docker-fullstack',
+		readTime: '10 min',
+	},
+	{
+		id: '4',
+		title: 'TailwindCSS: El framework que cambió mi flujo de trabajo',
+		excerpt: 'Por qué adopté TailwindCSS y cómo transformó la manera en que construyo interfaces de usuario.',
+		image: null,
+		date: '2023-12-10',
+		slug: 'tailwind-workflow',
+		readTime: '5 min',
+	},
+];
+
+const displayPosts = wpPosts.length > 0
+	? wpPosts.map((p: any) => ({
+			id: p.id,
+			title: p.title,
+			excerpt: p.excerpt ? p.excerpt.replace(/<[^>]*>/g, '').trim() : '',
+			image: p.featuredImage?.node?.sourceUrl || null,
+			date: p.date ? new Date(p.date).toISOString().split('T')[0] : '2024-01-15',
+			slug: p.slug,
+			readTime: '5 min',
+	  }))
+	: fallbackPosts;
+
+function formatDate(dateStr: string) {
+	try {
+		return new Date(dateStr).toLocaleDateString('es-ES', {
+			day: 'numeric',
+			month: 'long',
+			year: 'numeric',
+		});
+	} catch {
+		return dateStr;
+	}
 }
 ---
 
 <BaseLayout
 	title="Inicio"
-	description="Raúl David Sánchez — Senior Full Stack Developer en Bogotá, Colombia. Especialista en WebApps de alto rendimiento (Astro, React), WordPress Headless (WPGraphQL), aplicaciones móviles (iOS/Android) y AI Vibe Coding."
-	keywords={[
-		'Desarrollador Web Bogotá',
-		'Desarrollador Full Stack Colombia',
-		'Desarrollo WebApps Astro React',
-		'Desarrollador WordPress Headless Bogotá',
-		'WPGraphQL Cloudflare Workers',
-		'Desarrollador Mobile iOS Android React Native Colombia',
-		'AI Vibe Coding Developer',
-		'Ingeniero de Software Bogotá',
-	]}
+	description="Portafolio profesional de Raúl David Sánchez — Senior Full Stack Developer & AI Vibe Coder en Bogotá, Colombia. Especialista en WebApps de alto rendimiento, WordPress Headless, iOS/Android y Cloudflare Workers."
 >
-	<!-- Hero Section -->
-	<section class="hero" aria-labelledby="hero-title">
-		<div class="hero-body">
-			<span class="hero-badge">📍 Bogotá, Colombia · Senior Full Stack & AI Vibe Coder</span>
-			<h1 id="hero-title" class="hero-heading">
-				Hola, soy <span class="highlight">Raúl David Sánchez</span>.<br />
-				Desarrollador Full Stack & Mobile.
-			</h1>
-			<p class="hero-lead">
-				Especializado en construir <strong>WebApps ultrarrápidas</strong>, arquitecturas <strong>WordPress Headless</strong> desplegadas en Cloudflare Workers y aplicaciones móviles para <strong>iOS & Android</strong>.
-			</p>
-			<p class="hero-sublead">
-				Acelero el ciclo de desarrollo desde la concepción hasta producción combinando arquitectura de software de clase mundial y <strong>Vibe Coding</strong> asistido por agentes de inteligencia artificial.
-			</p>
-			<div class="hero-cta">
-				<Button href="/projects/" variant="primary">
-					Explorar Proyectos
-				</Button>
-				<Button href="/cv/" variant="secondary">
-					📄 Ver / Descargar CV
-				</Button>
-				<Button href="/contacto/" variant="ghost">
-					Contáctame en Bogotá →
-				</Button>
+	<!-- HERO SECTION (from Docker Hero.js) -->
+	<section id="inicio" class="relative min-h-[calc(100vh-5rem)] flex items-center overflow-hidden">
+		<div class="absolute inset-0 grid-bg opacity-40 pointer-events-none"></div>
+		<div class="absolute inset-0 hero-glow pointer-events-none"></div>
+
+		<div class="absolute top-1/3 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
+		<div class="absolute bottom-1/4 right-1/4 w-72 h-72 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+		<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 w-full">
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+				<div class="space-y-6">
+					<div class="inline-flex items-center gap-2">
+						<span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+						<span class="text-xs font-semibold tracking-[0.2em] text-cyan-400 uppercase">
+							📍 Bogotá, Colombia · Desarrollador Full-Stack & AI Vibe Coder
+						</span>
+					</div>
+
+					<h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-tight text-white">
+						Hola, Soy <span class="gradient-text">Raúl David</span>
+					</h1>
+
+					<p class="text-base sm:text-lg text-white/60 leading-relaxed max-w-lg">
+						Transformo ideas en soluciones digitales funcionales y atractivas. Combino lógica, diseño y creatividad para crear aplicaciones web de alto rendimiento (WebApps), arquitecturas WordPress Headless y aplicaciones móviles para iOS & Android.
+					</p>
+
+					<blockquote class="border-l-2 border-cyan-400 pl-4 text-white/50 italic text-sm">
+						"Siempre aprendiendo, siempre construyendo con la mejor arquitectura y velocidad."
+					</blockquote>
+
+					<div class="flex flex-row items-center gap-3 pt-2">
+						<a href="/projects/" class="btn-primary">
+							Ver Proyectos →
+						</a>
+						<a href="/cv/" class="btn-outline">
+							Descargar CV
+						</a>
+					</div>
+
+					<div class="flex items-center gap-4 pt-2">
+						<a href="https://github.com/daxul" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="p-2 rounded-lg text-white/40 hover:text-cyan-400 hover:bg-white/5 transition-all">
+							<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+						</a>
+						<a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="p-2 rounded-lg text-white/40 hover:text-cyan-400 hover:bg-white/5 transition-all">
+							<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+						</a>
+						<a href="mailto:contacto@rauldavid.com" aria-label="Email" class="p-2 rounded-lg text-white/40 hover:text-cyan-400 hover:bg-white/5 transition-all">
+							<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+						</a>
+					</div>
+				</div>
+
+				<div class="flex justify-center lg:justify-end">
+					<div class="relative">
+						<div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-cyan-500/20 to-indigo-500/20 blur-2xl scale-105 pointer-events-none"></div>
+						<div class="relative w-72 h-80 sm:w-80 sm:h-96 lg:w-96 lg:h-[28rem] rounded-3xl overflow-hidden border border-white/10 glow-cyan bg-[#0f172a]">
+							<img
+								src="/foto.webp"
+								alt="Raúl David - Full-Stack Developer"
+								class="w-full h-full object-cover object-top"
+								loading="eager"
+							/>
+							<div class="absolute inset-0 bg-gradient-to-t from-[#0b1020]/60 via-transparent to-transparent"></div>
+						</div>
+
+						<!-- Floating Badge 1 -->
+						<div class="absolute -bottom-4 -left-4 bg-[#0f172a] border border-white/10 rounded-2xl px-4 py-3 shadow-xl backdrop-blur-sm animate-float">
+							<div class="flex items-center gap-2">
+								<span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+								<span class="text-xs font-medium text-white/80">Disponible para proyectos</span>
+							</div>
+						</div>
+
+						<!-- Floating Badge 2 -->
+						<div class="absolute -top-4 -right-4 bg-[#0f172a] border border-cyan-400/20 rounded-2xl px-4 py-3 shadow-xl backdrop-blur-sm">
+							<div class="text-xs text-white/60">Proyectos completados</div>
+							<div class="text-lg font-bold text-cyan-400">+30</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
+	</section>
 
-		<div class="hero-avatar">
-			<div class="avatar-frame">
-				<img
-					src="/img/raul-david-sanchez.webp"
-					alt="Fotografía de Raúl David Sánchez — Desarrollador Full Stack en Bogotá"
-					width="380"
-					height="380"
-					loading="eager"
-					fetchpriority="high"
-					decoding="async"
-				/>
+	<!-- ESPECIALIDADES & HABILIDADES TÉCNICAS (UX Design Engineering Section) -->
+	<section id="especialidades" class="py-24 bg-[#0b1020] relative overflow-hidden border-t border-white/5">
+		<div class="absolute inset-0 grid-bg opacity-30 pointer-events-none"></div>
+		<div class="absolute top-1/2 left-0 w-80 h-80 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
+		<div class="absolute bottom-0 right-0 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+		<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="text-center mb-16">
+				<span class="text-xs font-semibold tracking-[0.2em] text-cyan-400 uppercase">Propuesta de Valor</span>
+				<h2 class="section-title text-3xl md:text-5xl font-display font-bold mt-2 text-white">
+					Especialidades & <span class="gradient-text">Habilidades Técnicas</span>
+				</h2>
+				<p class="text-white/60 max-w-2xl mx-auto text-base mt-3 leading-relaxed">
+					Disciplinas de ingeniería, tecnologías y soluciones en las que aporto máximo valor competitivo para empresas, startups y productos digitales de alta escala.
+				</p>
+			</div>
+
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+				{
+					specialtiesAndSkills.map((item) => (
+						<div class="group card-dark p-7 flex flex-col justify-between hover:-translate-y-2 hover:border-cyan-400/50 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300">
+							<div>
+								<div class="flex items-center justify-between gap-3 mb-5">
+									<span class="text-3xl p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 group-hover:scale-110 group-hover:border-cyan-400/40 transition-transform duration-300">
+										{item.icon}
+									</span>
+									<span class="w-2.5 h-2.5 rounded-full bg-cyan-400/40 group-hover:bg-cyan-400 group-hover:animate-pulse transition-colors"></span>
+								</div>
+
+								<h3 class="font-display font-bold text-xl text-white group-hover:text-cyan-400 transition-colors mb-3 leading-snug">
+									{item.title}
+								</h3>
+
+								<p class="text-sm text-white/60 leading-relaxed mb-6">
+									{item.description}
+								</p>
+							</div>
+
+							<div class="flex flex-wrap gap-1.5 pt-4 border-t border-white/5">
+								{item.tags.map((tag) => (
+									<span class="tag">{tag}</span>
+								))}
+							</div>
+						</div>
+					))
+				}
 			</div>
 		</div>
 	</section>
 
-	<!-- Skills Section -->
-	<section class="section" aria-labelledby="skills-heading">
-		<SectionHeader
-			id="skills-heading"
-			title="Especialidades & Habilidades Técnicas"
-			subtitle="Disciplinas de ingeniería, tecnologías y soluciones en las que aporto máximo valor competitivo."
-		/>
-		<div class="skills-grid">
-			{
-				specialtiesAndSkills.map((skill) => (
-					<article class="skill-card">
-						<div class="skill-top">
-							<span class="skill-icon" aria-hidden="true">{skill.icon}</span>
-							<h3 class="skill-title">{skill.title}</h3>
+	<!-- TECHNOLOGIES SECTION (from Docker Technologies.js) -->
+	<section id="tecnologias" class="py-20 bg-[#0d1526] relative overflow-hidden">
+		<div class="absolute inset-0 grid-bg opacity-20"></div>
+		<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="text-center mb-12">
+				<span class="text-xs font-semibold tracking-[0.2em] text-cyan-400 uppercase">Stack técnico</span>
+				<h2 class="section-title text-3xl md:text-4xl font-display font-bold mt-2 text-white">
+					Tecnologías que <span class="gradient-text">domino</span>
+				</h2>
+				<p class="text-white/50 max-w-lg mx-auto text-sm mt-2">
+					Herramientas y frameworks con los que construyo soluciones robustas y escalables.
+				</p>
+			</div>
+
+			<div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+				{
+					techStack.map((tech) => (
+						<div class={`group flex flex-col items-center gap-2 p-4 rounded-2xl bg-gradient-to-br ${tech.color} border ${tech.border} backdrop-blur-sm cursor-default transition-all duration-300 hover:border-cyan-400/40 hover:-translate-y-1`}>
+							<span class="text-2xl">{tech.icon}</span>
+							<span class="text-xs font-medium text-white/70 group-hover:text-white transition-colors text-center">
+								{tech.name}
+							</span>
 						</div>
-						<p class="skill-desc">{skill.description}</p>
-						<div class="skill-tags">
-							{skill.tags.map((t) => (
-								<span class="pill pill--sm">{t}</span>
-							))}
-						</div>
-					</article>
-				))
-			}
+					))
+				}
+			</div>
+
+			<div class="text-center mt-10">
+				<a href="/stack/" class="btn-outline">
+					Ver Stack Completo & Especialidades →
+				</a>
+			</div>
 		</div>
 	</section>
 
-	<!-- Projects Preview Section -->
-	<section class="section" aria-labelledby="projects-heading">
-		<SectionHeader
-			id="projects-heading"
-			title="Proyectos Destacados en WebApps & Headless"
-			subtitle="Casos de estudio recientes, plataformas web en producción y soluciones a medida."
-		/>
-		<ProjectGrid
-			projects={projects}
-			basePath="/projects/"
-			emptyMessage="No se pudieron cargar los proyectos de WordPress en este momento."
-		/>
-		<div class="section-footer-action">
-			<Button href="/projects/" variant="secondary">
-				Explorar todos los proyectos →
-			</Button>
+	<!-- PROYECTOS RECIENTES (4 últimos proyectos + botón ver todos) -->
+	<section id="portfolio" class="py-24 bg-[#0b1020] relative">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="text-center mb-14">
+				<span class="text-xs font-semibold tracking-[0.2em] text-cyan-400 uppercase">Mi trabajo</span>
+				<h2 class="section-title text-3xl md:text-4xl font-display font-bold mt-2 text-white">
+					Proyectos <span class="gradient-text">recientes</span>
+				</h2>
+				<p class="text-white/50 max-w-lg mx-auto text-sm mt-2">
+					Una selección de los 4 proyectos más recientes y casos de estudio en producción.
+				</p>
+			</div>
+
+			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+				{
+					displayProjects.slice(0, 4).map((project) => (
+						<div class="group card-dark overflow-hidden flex flex-col hover:-translate-y-1.5 transition-transform duration-300">
+							<div class="relative h-48 bg-gradient-to-br from-cyan-500/10 to-indigo-500/10 overflow-hidden">
+								{project.image ? (
+									<img
+										src={project.image}
+										alt={project.title}
+										class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+										loading="lazy"
+									/>
+								) : (
+									<div class="w-full h-full flex items-center justify-center">
+										<span class="text-5xl opacity-20 font-mono">{'</>'}</span>
+									</div>
+								)}
+								<div class="absolute inset-0 bg-gradient-to-t from-[#0b1020] via-transparent to-transparent opacity-60"></div>
+							</div>
+
+							<div class="p-5 flex flex-col gap-3 flex-1">
+								<h3 class="font-display font-semibold text-white group-hover:text-cyan-400 transition-colors">
+									{project.title}
+								</h3>
+								<p class="text-sm text-white/50 leading-relaxed flex-1">{project.description}</p>
+
+								<div class="flex flex-wrap gap-1.5">
+									{(project.technologies || []).map((tech) => (
+										<span class="tag">{tech}</span>
+									))}
+								</div>
+
+								<div class="flex items-center gap-3 pt-1">
+									{project.link && (
+										<a
+											href={project.link}
+											class="flex items-center gap-1 text-xs text-cyan-400 hover:text-cyan-300 transition-colors"
+										>
+											Ver proyecto →
+										</a>
+									)}
+									{project.github && project.github !== '#' && (
+										<a
+											href={project.github}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="flex items-center gap-1 text-xs text-white/40 hover:text-white/70 transition-colors"
+										>
+											Código ↗
+										</a>
+									)}
+								</div>
+							</div>
+						</div>
+					))
+				}
+			</div>
+
+			<!-- Botón centrado: Ver todos los proyectos -->
+			<div class="text-center mt-12">
+				<a href="/projects/" class="btn-primary">
+					Ver todos los proyectos →
+				</a>
+			</div>
 		</div>
 	</section>
 
-	<!-- Experience Section -->
-	<section class="section" aria-labelledby="experience-heading">
-		<SectionHeader
-			id="experience-heading"
-			title="Trayectoria Profesional en Ingeniería de Software"
-			subtitle="Experiencia liderando arquitecturas digitales para clientes en Colombia y el mercado internacional."
-		/>
-		<div class="experience-container">
-			<ExperienceTimeline items={experiences} />
+	<!-- BLOG SECTION (4 últimas publicaciones + botón ver todos) -->
+	<section id="blog" class="py-24 bg-[#0d1526] relative">
+		<div class="absolute inset-0 grid-bg opacity-20"></div>
+		<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="text-center mb-14">
+				<span class="text-xs font-semibold tracking-[0.2em] text-cyan-400 uppercase">Artículos</span>
+				<h2 class="section-title text-3xl md:text-4xl font-display font-bold mt-2 text-white">
+					Últimas <span class="gradient-text">publicaciones</span>
+				</h2>
+				<p class="text-white/50 max-w-lg mx-auto text-sm mt-2">
+					Comparto lo que aprendo sobre desarrollo, tecnología y buenas prácticas.
+				</p>
+			</div>
+
+			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+				{
+					displayPosts.slice(0, 4).map((post) => (
+						<article class="group card-dark overflow-hidden flex flex-col cursor-pointer hover:-translate-y-1.5 transition-transform duration-300">
+							<div class="relative h-44 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 overflow-hidden">
+								{post.image ? (
+									<img
+										src={post.image}
+										alt={post.title}
+										class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+										loading="lazy"
+									/>
+								) : (
+									<div class="w-full h-full flex items-center justify-center">
+										<span class="text-4xl opacity-20">✍️</span>
+									</div>
+								)}
+								<div class="absolute inset-0 bg-gradient-to-t from-[#0b1020] via-transparent to-transparent opacity-60"></div>
+								<span class="absolute top-3 right-3 text-xs font-medium px-2.5 py-1 rounded-full bg-[#0b1020]/80 text-white/60 border border-white/10">
+									{post.readTime}
+								</span>
+							</div>
+
+							<div class="p-5 flex flex-col gap-3 flex-1">
+								<div class="flex items-center gap-1.5 text-xs text-white/40">
+									<span>📅</span>
+									<span>{formatDate(post.date)}</span>
+								</div>
+
+								<h3 class="font-display font-semibold text-white group-hover:text-cyan-400 transition-colors leading-snug">
+									{post.title}
+								</h3>
+								<p class="text-sm text-white/50 leading-relaxed flex-1 line-clamp-3">{post.excerpt}</p>
+
+								<a href={`/blog/${post.slug}/`} class="flex items-center gap-1 text-xs text-cyan-400 group-hover:gap-2 transition-all pt-1">
+									Leer más →
+								</a>
+							</div>
+						</article>
+					))
+				}
+			</div>
+
+			<!-- Botón centrado: Ver todos los artículos -->
+			<div class="text-center mt-12">
+				<a href="/blog/" class="btn-primary">
+					Ver todos los artículos →
+				</a>
+			</div>
 		</div>
-		<div class="section-footer-action">
-			<Button href="/cv/" variant="secondary">
-				Ver CV completo detallado →
-			</Button>
+	</section>
+
+	<!-- CONTACT SECTION (from Docker Contact.js) -->
+	<section id="contacto" class="py-24 bg-[#0b1020] relative overflow-hidden">
+		<div class="absolute inset-0 grid-bg opacity-20"></div>
+		<div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+		<div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="text-center mb-14">
+				<span class="text-xs font-semibold tracking-[0.2em] text-cyan-400 uppercase">Hablemos</span>
+				<h2 class="section-title text-3xl md:text-4xl font-display font-bold mt-2 text-white">
+					¿Tienes un <span class="gradient-text">proyecto</span>?
+				</h2>
+				<p class="text-white/50 max-w-lg mx-auto text-sm mt-2">
+					Estoy disponible para proyectos freelance, colaboraciones y oportunidades laborales.
+				</p>
+			</div>
+
+			<div class="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
+				<div class="lg:col-span-2 space-y-6">
+					<div class="space-y-4">
+						<div class="flex items-center gap-3 text-white/60">
+							<div class="p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
+								✉️
+							</div>
+							<div>
+								<div class="text-xs text-white/40 mb-0.5">Email</div>
+								<a href="mailto:contacto@rauldavid.com" class="text-sm font-medium text-white hover:text-cyan-400">
+									contacto@rauldavid.com
+								</a>
+							</div>
+						</div>
+						<div class="flex items-center gap-3 text-white/60">
+							<div class="p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
+								📍
+							</div>
+							<div>
+								<div class="text-xs text-white/40 mb-0.5">Ubicación</div>
+								<div class="text-sm font-medium text-white">Bogotá, Colombia 🇨🇴</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="pt-2">
+						<p class="text-xs text-white/40 mb-3 uppercase tracking-widest">Sígueme</p>
+						<div class="flex items-center gap-2">
+							<a href="https://github.com/daxul" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="p-2.5 rounded-xl border border-white/10 text-white/40 hover:text-white hover:border-cyan-400/30 hover:bg-white/5 transition-all">
+								<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+							</a>
+							<a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="p-2.5 rounded-xl border border-white/10 text-white/40 hover:text-blue-400 hover:border-cyan-400/30 hover:bg-white/5 transition-all">
+								<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+							</a>
+						</div>
+					</div>
+
+					<div class="p-4 rounded-2xl bg-cyan-500/5 border border-cyan-500/20">
+						<div class="flex items-center gap-2 mb-1">
+							<span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+							<span class="text-sm font-medium text-white">Disponible ahora</span>
+						</div>
+						<p class="text-xs text-white/40">Tiempo de respuesta promedio: 24 horas</p>
+					</div>
+				</div>
+
+				<div class="lg:col-span-3">
+					<form id="docker-form" class="card-dark p-6 sm:p-8 space-y-5">
+						<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+							<div class="space-y-1.5">
+								<label for="name" class="text-xs font-medium text-white/50 uppercase tracking-wider">Nombre</label>
+								<input
+									id="name"
+									name="name"
+									type="text"
+									required
+									placeholder="Tu nombre"
+									class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-cyan-400/60 focus:bg-white/8 transition-all"
+								/>
+							</div>
+							<div class="space-y-1.5">
+								<label for="email" class="text-xs font-medium text-white/50 uppercase tracking-wider">Email</label>
+								<input
+									id="email"
+									name="email"
+									type="email"
+									required
+									placeholder="tu@email.com"
+									class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-cyan-400/60 focus:bg-white/8 transition-all"
+								/>
+							</div>
+						</div>
+
+						<div class="space-y-1.5">
+							<label for="message" class="text-xs font-medium text-white/50 uppercase tracking-wider">Mensaje</label>
+							<textarea
+								id="message"
+								name="message"
+								required
+								rows="5"
+								placeholder="Cuéntame sobre tu proyecto..."
+								class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-cyan-400/60 focus:bg-white/8 transition-all resize-none"
+							></textarea>
+						</div>
+
+						<div id="form-feedback" class="text-xs font-medium hidden p-3 rounded-lg"></div>
+
+						<button type="submit" id="submit-btn" class="btn-primary w-full justify-center">
+							Enviar mensaje
+						</button>
+					</form>
+				</div>
+			</div>
 		</div>
 	</section>
 </BaseLayout>
 
-<style>
-	.hero {
-		display: grid;
-		grid-template-columns: 1.2fr 0.8fr;
-		align-items: center;
-		gap: 3rem;
-		padding-block: clamp(2rem, 6vw, 4.5rem);
-		border-bottom: 1px solid var(--rd-ink);
-		margin-bottom: 3.5rem;
-	}
+<script is:inline>
+	(() => {
+		const form = document.getElementById('docker-form');
+		const feedback = document.getElementById('form-feedback');
+		const submitBtn = document.getElementById('submit-btn');
 
-	.hero-badge {
-		display: inline-block;
-		font-size: 0.8125rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		color: var(--rd-accent);
-		margin-bottom: 0.75rem;
-	}
+		form?.addEventListener('submit', async (e) => {
+			e.preventDefault();
+			feedback.className = 'text-xs font-medium p-3 rounded-lg';
+			feedback.classList.add('hidden');
 
-	.hero-heading {
-		font-size: clamp(2.25rem, 4.5vw, 3.25rem);
-		font-weight: 800;
-		line-height: 1.15;
-		letter-spacing: -0.035em;
-		margin: 0 0 1.25rem;
-	}
+			const data = {
+				name: form.name.value,
+				email: form.email.value,
+				message: form.message.value,
+			};
 
-	.highlight {
-		color: var(--rd-accent);
-	}
+			submitBtn.disabled = true;
+			submitBtn.textContent = 'Enviando...';
 
-	.hero-lead {
-		font-size: 1.15rem;
-		color: var(--rd-text);
-		line-height: 1.6;
-		margin: 0 0 0.75rem;
-		max-width: 38rem;
-	}
-
-	.hero-sublead {
-		font-size: 1rem;
-		color: var(--rd-text-soft);
-		line-height: 1.6;
-		margin: 0 0 2rem;
-		max-width: 38rem;
-	}
-
-	.hero-cta {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.85rem;
-	}
-
-	.hero-avatar {
-		display: flex;
-		justify-content: center;
-	}
-
-	.avatar-frame {
-		position: relative;
-		width: min(20rem, 100%);
-		aspect-ratio: 1;
-		border-radius: var(--rd-radius-lg);
-		overflow: hidden;
-		border: 2px solid var(--rd-ink);
-		box-shadow: var(--rd-shadow-lg);
-		background: var(--rd-panel);
-	}
-
-	.avatar-frame img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		object-position: center top;
-		display: block;
-	}
-
-	.section {
-		padding-bottom: 4rem;
-	}
-
-	.skills-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
-		gap: 1.5rem;
-	}
-
-	.skill-card {
-		background: var(--rd-panel);
-		border: 1px solid var(--rd-ink);
-		border-radius: var(--rd-radius-lg);
-		padding: 1.75rem;
-		display: flex;
-		flex-direction: column;
-		box-shadow: var(--rd-shadow-sm);
-		transition: transform 0.2s ease, border-color 0.2s ease;
-	}
-
-	.skill-card:hover {
-		transform: translateY(-2px);
-		border-color: color-mix(in srgb, var(--rd-accent) 45%, var(--rd-ink));
-		box-shadow: var(--rd-shadow-md);
-	}
-
-	.skill-top {
-		display: flex;
-		align-items: center;
-		gap: 0.85rem;
-		margin-bottom: 0.75rem;
-	}
-
-	.skill-icon {
-		font-size: 1.5rem;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 2.5rem;
-		height: 2.5rem;
-		border-radius: var(--rd-radius-md);
-		background: var(--rd-ink-subtle);
-		border: 1px solid var(--rd-ink);
-	}
-
-	.skill-title {
-		font-size: 1.125rem;
-		font-weight: 800;
-		margin: 0;
-		letter-spacing: -0.02em;
-	}
-
-	.skill-desc {
-		font-size: 0.9375rem;
-		color: var(--rd-text-soft);
-		margin: 0 0 1.25rem;
-		line-height: 1.55;
-	}
-
-	.skill-tags {
-		margin-top: auto;
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.35rem;
-	}
-
-	.section-footer-action {
-		text-align: center;
-		margin-top: 2.5rem;
-	}
-
-	.experience-container {
-		max-width: 48rem;
-		margin-inline: auto;
-	}
-
-	@media (max-width: 860px) {
-		.hero {
-			grid-template-columns: 1fr;
-			gap: 2rem;
-			text-align: center;
-		}
-
-		.hero-lead,
-		.hero-sublead {
-			margin-inline: auto;
-		}
-
-		.hero-cta {
-			justify-content: center;
-		}
-
-		.avatar-frame {
-			width: min(15rem, 70%);
-		}
-	}
-</style>
+			try {
+				const res = await fetch('/api/contact', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(data),
+				});
+				const resData = await res.json();
+				if (res.ok && resData.success) {
+					feedback.textContent = '¡Mensaje enviado! Te responderé a la brevedad.';
+					feedback.classList.remove('hidden');
+					feedback.classList.add('bg-green-500/20', 'text-green-300', 'border', 'border-green-500/30');
+					form.reset();
+				} else {
+					feedback.textContent = resData.error || 'Hubo un error al enviar. Intenta de nuevo.';
+					feedback.classList.remove('hidden');
+					feedback.classList.add('bg-red-500/20', 'text-red-300', 'border', 'border-red-500/30');
+				}
+			} catch (err) {
+				feedback.textContent = 'Error de conexión al enviar.';
+				feedback.classList.remove('hidden');
+				feedback.classList.add('bg-red-500/20', 'text-red-300', 'border', 'border-red-500/30');
+			} finally {
+				submitBtn.disabled = false;
+				submitBtn.textContent = 'Enviar mensaje';
+			}
+		});
+	})();
+</script>

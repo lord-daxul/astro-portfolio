@@ -16,13 +16,12 @@ export const GET: APIRoute = async ({ site }) => {
 	// Static routes
 	const staticPages: PageEntry[] = [
 		{ url: `${siteUrl}/`, changefreq: 'weekly', priority: 1.0 },
-		{ url: `${siteUrl}/home2/`, changefreq: 'weekly', priority: 0.9 },
+		{ url: `${siteUrl}/stack/`, changefreq: 'monthly', priority: 0.9 },
 		{ url: `${siteUrl}/projects/`, changefreq: 'daily', priority: 0.9 },
-		{ url: `${siteUrl}/experience/`, changefreq: 'monthly', priority: 0.8 },
-		{ url: `${siteUrl}/cv/`, changefreq: 'monthly', priority: 0.9 },
-		{ url: `${siteUrl}/about/`, changefreq: 'monthly', priority: 0.8 },
 		{ url: `${siteUrl}/blog/`, changefreq: 'daily', priority: 0.8 },
 		{ url: `${siteUrl}/contacto/`, changefreq: 'yearly', priority: 0.7 },
+		{ url: `${siteUrl}/cv/`, changefreq: 'monthly', priority: 0.9 },
+		{ url: `${siteUrl}/about/`, changefreq: 'monthly', priority: 0.8 },
 	];
 
 	// Fetch dynamic projects and posts

@@ -2,42 +2,146 @@
 export const prerender = false;
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import SectionHeader from '../../components/ui/SectionHeader.astro';
-import ProjectGrid from '../../components/projects/ProjectGrid.astro';
 import { getProjects } from '../../lib/wordpress';
 
-const projects = await getProjects(100).catch(() => []);
+const fallbackProjects = [
+	{
+		id: '1',
+		title: 'Daxulfolio Modern Headless',
+		slug: 'daxulfolio-headless',
+		excerpt: 'Portfolio personal ultra optimizado en Cloudflare Workers con WordPress Headless, Astro y TailwindCSS.',
+		technologies: ['Astro', 'WordPress', 'WPGraphQL', 'Cloudflare Workers'],
+		featuredImage: null,
+		projectUrl: 'https://rauldavid.com',
+		repositoryUrl: 'https://github.com/lord-daxul/astro-portfolio',
+	},
+	{
+		id: '2',
+		title: 'E-Commerce Platform & Headless Catalog',
+		slug: 'ecommerce-platform',
+		excerpt: 'Plataforma de comercio electrónico con panel de administración y pagos integrados.',
+		technologies: ['Next.js', 'Stripe', 'PostgreSQL', 'Docker'],
+		featuredImage: null,
+		projectUrl: '#',
+		repositoryUrl: '#',
+	},
+	{
+		id: '3',
+		title: 'Task Manager Mobile App',
+		slug: 'task-manager',
+		excerpt: 'Aplicación móvil multiplataforma para iOS y Android con sincronización en tiempo real.',
+		technologies: ['React Native', 'Node.js', 'Socket.io', 'MongoDB'],
+		featuredImage: null,
+		projectUrl: '#',
+		repositoryUrl: '#',
+	},
+	{
+		id: '4',
+		title: 'API REST Microservices',
+		slug: 'api-microservices',
+		excerpt: 'Arquitectura de microservicios serverless con autenticación JWT y documentación automática.',
+		technologies: ['Python', 'FastAPI', 'Docker', 'Redis'],
+		featuredImage: null,
+		projectUrl: '#',
+		repositoryUrl: '#',
+	},
+];
+
+let wpProjects = await getProjects(100).catch(() => []);
+const projects = wpProjects.length > 0 ? wpProjects : fallbackProjects;
 ---
 
 <BaseLayout
-	title="Proyectos & WebApps"
-	description="Portafolio de proyectos de software y WebApps creados por Raúl David Sánchez en Bogotá, Colombia: Astro, WordPress Headless, React, Next.js, Mobile (iOS/Android) y Cloudflare Workers."
-	keywords={[
-		'Proyectos WebApps Bogotá',
-		'Portafolio Desarrollador Full Stack',
-		'Proyectos WordPress Headless',
-		'Aplicaciones Móviles React Native',
-		'Desarrollo Web Astro Cloudflare',
-		'Casos de estudio software Colombia',
-	]}
+	title="Portfolio & Proyectos"
+	description="Portafolio de proyectos de software, WebApps y aplicaciones creadas por Raúl David Sánchez en Bogotá, Colombia."
 >
-	<div class="projects-page">
-		<SectionHeader
-			title="Proyectos, WebApps & Desarrollos"
-			subtitle="Casos de estudio, aplicaciones web de alto rendimiento y soluciones digitales creadas con tecnologías modernas."
-			align="left"
-		/>
+	<!-- Banner -->
+	<section class="relative py-20 bg-[#0b1020] overflow-hidden">
+		<div class="absolute inset-0 grid-bg opacity-40 pointer-events-none"></div>
+		<div class="absolute inset-0 hero-glow pointer-events-none"></div>
 
-		<ProjectGrid
-			projects={projects}
-			basePath="/projects/"
-			emptyMessage="Aún no hay proyectos publicados en WordPress o el servicio no está disponible temporalmente."
-		/>
-	</div>
+		<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+			<span class="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase">Casos de Estudio</span>
+			<h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-bold mt-3 text-white">
+				Portfolio & <span class="gradient-text">Proyectos</span>
+			</h1>
+			<p class="text-white/60 max-w-2xl mx-auto text-base sm:text-lg mt-4 leading-relaxed">
+				Explora mis desarrollos más recientes: aplicaciones web de alto rendimiento, arquitecturas desacopladas y apps móviles.
+			</p>
+		</div>
+	</section>
+
+	<!-- Projects Grid -->
+	<section class="py-20 bg-[#0d1526] relative">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+				{
+					projects.map((project: any) => (
+						<article class="group card-dark overflow-hidden flex flex-col hover:-translate-y-2 transition-all duration-300">
+							<div class="relative h-52 bg-gradient-to-br from-cyan-500/10 to-indigo-500/10 overflow-hidden">
+								{project.featuredImage?.sourceUrl ? (
+									<img
+										src={project.featuredImage.sourceUrl}
+										alt={project.title}
+										class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+										loading="lazy"
+									/>
+								) : (
+									<div class="w-full h-full flex items-center justify-center">
+										<span class="text-5xl opacity-20 font-mono">{'</>'}</span>
+									</div>
+								)}
+								<div class="absolute inset-0 bg-gradient-to-t from-[#0b1020] via-transparent to-transparent opacity-60"></div>
+							</div>
+
+							<div class="p-6 flex flex-col gap-3.5 flex-1">
+								<h2 class="font-display font-bold text-xl text-white group-hover:text-cyan-400 transition-colors">
+									{project.title}
+								</h2>
+
+								<p class="text-sm text-white/60 leading-relaxed flex-1">
+									{project.excerpt ? project.excerpt.replace(/<[^>]*>/g, '').trim() : 'Aplicación y desarrollo web creado con tecnologías modernas.'}
+								</p>
+
+								<div class="flex flex-wrap gap-1.5 pt-2">
+									{(project.technologies || []).map((tech: string) => (
+										<span class="tag">{tech}</span>
+									))}
+								</div>
+
+								<div class="flex items-center gap-3 pt-3 border-t border-white/5">
+									<a
+										href={`/projects/${project.slug}/`}
+										class="text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors"
+									>
+										Ver detalles →
+									</a>
+									{project.projectUrl && project.projectUrl !== '#' && (
+										<a
+											href={project.projectUrl}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="text-xs text-white/50 hover:text-white transition-colors"
+										>
+											En vivo ↗
+										</a>
+									)}
+									{project.repositoryUrl && project.repositoryUrl !== '#' && (
+										<a
+											href={project.repositoryUrl}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="text-xs text-white/40 hover:text-white transition-colors ml-auto"
+										>
+											GitHub
+										</a>
+									)}
+								</div>
+							</div>
+						</article>
+					))
+				}
+			</div>
+		</div>
+	</section>
 </BaseLayout>
-
-<style>
-	.projects-page {
-		padding-top: 1rem;
-	}
-</style>

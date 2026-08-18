@@ -49,66 +49,75 @@ const postJsonLd = {
 	modifiedTime={post.modified}
 	jsonLd={postJsonLd}
 >
-	<!-- Breadcrumb -->
-	<nav class="breadcrumb" aria-label="Migas de pan">
-		<ol>
-			<li><a href="/">Inicio</a></li>
-			<li><a href="/blog/">Blog</a></li>
-			<li aria-current="page">{post.title}</li>
-		</ol>
-	</nav>
+	<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+		<!-- Breadcrumb -->
+		<nav class="breadcrumb" aria-label="Migas de pan">
+			<ol>
+				<li><a href="/">Inicio</a></li>
+				<li><a href="/blog/">Blog</a></li>
+				<li aria-current="page">{post.title}</li>
+			</ol>
+		</nav>
 
-	<article class="post-article">
-		<header class="article-header">
-			{post.date ? (
-				<time class="article-date" datetime={post.date}>
-					{new Date(post.date).toLocaleDateString('es-ES', {
-						year: 'numeric',
-						month: 'long',
-						day: 'numeric',
-					})}
-				</time>
-			) : null}
+		<article class="post-article">
+			<header class="article-header">
+				{
+					post.date ? (
+						<time class="article-date" datetime={post.date}>
+							{new Date(post.date).toLocaleDateString('es-ES', {
+								year: 'numeric',
+								month: 'long',
+								day: 'numeric',
+							})}
+						</time>
+					) : null
+				}
 
-			<h1 class="article-title">{post.title}</h1>
+				<h1 class="article-title">{post.title}</h1>
 
-			{post.excerpt ? <p class="article-lead">{post.excerpt}</p> : null}
+				{post.excerpt ? <p class="article-lead">{post.excerpt}</p> : null}
+
+				{
+					post.categories?.length > 0 ? (
+						<div class="article-tags" aria-label="Categorías">
+							{post.categories.map((c) => (
+								<Badge text={c} variant="default" />
+							))}
+						</div>
+					) : null
+				}
+			</header>
 
 			{
-				post.categories?.length > 0 ? (
-					<div class="article-tags" aria-label="Categorías">
-						{post.categories.map((c) => (
-							<Badge text={c} variant="default" />
-						))}
-					</div>
+				img?.sourceUrl ? (
+					<figure class="article-media">
+						<img
+							src={img.sourceUrl}
+							alt={img.altText || post.title}
+							width={img.width || 1200}
+							height={img.height || 650}
+							loading="eager"
+							fetchpriority="high"
+							decoding="async"
+						/>
+						{img.caption ? <figcaption>{img.caption}</figcaption> : null}
+					</figure>
 				) : null
 			}
-		</header>
 
-		{
-			img?.sourceUrl ? (
-				<figure class="article-media">
-					<img
-						src={img.sourceUrl}
-						alt={img.altText || post.title}
-						width={img.width || 1200}
-						height={img.height || 650}
-						loading="eager"
-						fetchpriority="high"
-						decoding="async"
-					/>
-				</figure>
-			) : null
-		}
+			{
+				post.content ? (
+					<div class="article-content-body wp-rendered-content" set:html={post.content} />
+				) : null
+			}
 
-		<div class="article-content wp-rendered-content" set:html={post.content} />
-
-		<footer class="article-footer">
-			<Button href="/blog/" variant="ghost">
-				← Volver al blog
-			</Button>
-		</footer>
-	</article>
+			<footer class="article-footer">
+				<Button href="/blog/" variant="ghost">
+					← Volver a todos los artículos
+				</Button>
+			</footer>
+		</article>
+	</div>
 </BaseLayout>
 
 <style>
@@ -157,29 +166,29 @@ const postJsonLd = {
 		font-weight: 700;
 		color: var(--rd-accent);
 		text-transform: uppercase;
-		letter-spacing: 0.04em;
+		letter-spacing: 0.05em;
 		margin-bottom: 0.75rem;
 	}
 
 	.article-title {
-		font-size: clamp(2rem, 4.5vw, 2.75rem);
+		font-size: clamp(2.25rem, 5vw, 3rem);
 		font-weight: 800;
-		line-height: 1.2;
-		letter-spacing: -0.03em;
+		line-height: 1.15;
 		margin: 0 0 1rem;
+		color: var(--rd-text);
 	}
 
 	.article-lead {
-		font-size: 1.15rem;
-		color: var(--rd-text-soft);
+		font-size: 1.2rem;
 		line-height: 1.6;
+		color: var(--rd-text-soft);
 		margin: 0 0 1.5rem;
 	}
 
 	.article-tags {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.4rem;
+		gap: 0.5rem;
 	}
 
 	.article-media {
@@ -197,66 +206,58 @@ const postJsonLd = {
 		display: block;
 	}
 
-	.article-content {
+	.article-content-body {
 		font-size: 1.0625rem;
 		line-height: 1.8;
 		color: var(--rd-text);
-		margin-bottom: 4rem;
+		margin-bottom: 3.5rem;
 	}
 
-	.article-content :global(h2),
-	.article-content :global(h3),
-	.article-content :global(h4) {
-		margin-top: 2.25rem;
+	.article-content-body :global(h2) {
+		font-size: 1.75rem;
+		font-weight: 800;
+		margin-top: 2.5rem;
 		margin-bottom: 1rem;
-		line-height: 1.3;
+		color: var(--rd-text);
 	}
 
-	.article-content :global(p) {
+	.article-content-body :global(h3) {
+		font-size: 1.35rem;
+		font-weight: 700;
+		margin-top: 2rem;
+		margin-bottom: 0.75rem;
+		color: var(--rd-text);
+	}
+
+	.article-content-body :global(p) {
 		margin-bottom: 1.35rem;
 	}
 
-	.article-content :global(ul),
-	.article-content :global(ol) {
+	.article-content-body :global(ul),
+	.article-content-body :global(ol) {
 		margin-bottom: 1.5rem;
 		padding-left: 1.5rem;
 	}
 
-	.article-content :global(li) {
+	.article-content-body :global(li) {
 		margin-bottom: 0.5rem;
 	}
 
-	.article-content :global(pre),
-	.article-content :global(code) {
-		font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-		background: var(--rd-panel);
-		border-radius: var(--rd-radius-sm);
-	}
-
-	.article-content :global(code) {
-		padding: 0.2em 0.4em;
-		font-size: 0.9em;
-		border: 1px solid var(--rd-ink);
-	}
-
-	.article-content :global(pre) {
-		padding: 1.25rem;
-		overflow-x: auto;
-		border: 1px solid var(--rd-ink);
-		margin-bottom: 1.75rem;
-	}
-
-	.article-content :global(pre code) {
-		padding: 0;
-		border: none;
-	}
-
-	.article-content :global(img) {
-		max-width: 100%;
-		height: auto;
-		border-radius: var(--rd-radius-md);
-		border: 1px solid var(--rd-ink);
+	.article-content-body :global(pre) {
 		margin-block: 1.75rem;
+		padding: 1.25rem;
+		border-radius: var(--rd-radius-md);
+		background: var(--rd-panel);
+		border: 1px solid var(--rd-ink);
+		overflow-x: auto;
+	}
+
+	.article-content-body :global(blockquote) {
+		margin-block: 1.75rem;
+		padding-left: 1.25rem;
+		border-left: 3px solid var(--rd-accent);
+		color: var(--rd-text-soft);
+		font-style: italic;
 	}
 
 	.article-footer {
