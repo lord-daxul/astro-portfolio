@@ -1,4 +1,19 @@
+@import "tailwindcss";
 @import './tokens.css';
+
+@theme {
+	--font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	--font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+	--color-dark-50: #f0f4ff;
+	--color-dark-100: #e0e9ff;
+	--color-dark-600: #334155;
+	--color-dark-700: #1e293b;
+	--color-dark-800: #0f172a;
+	--color-dark-900: #0b1020;
+	--color-cyan-400: #22d3ee;
+	--color-cyan-500: #06b6d4;
+	--color-cyan-600: #0891b2;
+}
 
 *,
 *::before,
@@ -14,9 +29,6 @@ html {
 		BlinkMacSystemFont,
 		'Segoe UI',
 		Roboto,
-		Oxygen,
-		Ubuntu,
-		Cantarell,
 		sans-serif;
 	color: var(--rd-text);
 	background-color: var(--rd-bg);
@@ -51,9 +63,6 @@ body {
 main {
 	flex: 1;
 	width: 100%;
-	max-width: 76rem;
-	margin-inline: auto;
-	padding: 2.5rem clamp(1rem, 4vw, 3rem);
 }
 
 a {
@@ -77,20 +86,6 @@ select:focus-visible {
 	border-radius: var(--rd-radius-sm);
 }
 
-/* Base typography */
-h1, h2, h3, h4, h5, h6 {
-	color: var(--rd-text);
-	font-weight: 700;
-	letter-spacing: -0.025em;
-	line-height: 1.2;
-	margin-top: 0;
-}
-
-p {
-	margin-top: 0;
-	margin-bottom: 1.25rem;
-}
-
 /* Screen reader utility */
 .sr-only {
 	position: absolute;
@@ -108,6 +103,10 @@ p {
    PORTAFOLIO DOCKER DESIGN SYSTEM & UTILITY CLASSES
    ========================================================================== */
 
+.font-display {
+	font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+}
+
 /* Gradient Text */
 .gradient-text {
 	background: linear-gradient(135deg, #22d3ee, #818cf8);
@@ -116,7 +115,8 @@ p {
 	background-clip: text;
 }
 
-html[data-theme='light'] .gradient-text {
+html[data-theme='light'] .gradient-text,
+body.light .gradient-text {
 	background: linear-gradient(135deg, #2563eb, #7c3aed) !important;
 	-webkit-background-clip: text !important;
 	-webkit-text-fill-color: transparent !important;
@@ -130,7 +130,8 @@ html[data-theme='light'] .gradient-text {
 	background-size: 50px 50px;
 }
 
-html[data-theme='light'] .grid-bg {
+html[data-theme='light'] .grid-bg,
+body.light .grid-bg {
 	background-image: linear-gradient(#e2e8f0 1px, transparent 1px),
 		linear-gradient(90deg, #e2e8f0 1px, transparent 1px) !important;
 	opacity: 0.18 !important;
@@ -141,7 +142,8 @@ html[data-theme='light'] .grid-bg {
 	box-shadow: 0 0 40px rgba(34, 211, 238, 0.15);
 }
 
-html[data-theme='light'] .glow-cyan {
+html[data-theme='light'] .glow-cyan,
+body.light .glow-cyan {
 	box-shadow: 0 0 40px rgba(37, 99, 235, 0.12) !important;
 }
 
@@ -149,7 +151,8 @@ html[data-theme='light'] .glow-cyan {
 	background: radial-gradient(ellipse at 60% 50%, rgba(34, 211, 238, 0.08) 0%, transparent 70%);
 }
 
-html[data-theme='light'] .hero-glow {
+html[data-theme='light'] .hero-glow,
+body.light .hero-glow {
 	background: radial-gradient(ellipse at 60% 50%, rgba(37, 99, 235, 0.06) 0%, transparent 70%) !important;
 }
 
@@ -157,7 +160,7 @@ html[data-theme='light'] .hero-glow {
 .card-dark {
 	background: rgba(255, 255, 255, 0.05);
 	border: 1px solid rgba(255, 255, 255, 0.1);
-	border-radius: var(--rd-radius-lg);
+	border-radius: 1rem;
 	backdrop-filter: blur(8px);
 	-webkit-backdrop-filter: blur(8px);
 	transition: all 0.3s ease;
@@ -169,13 +172,15 @@ html[data-theme='light'] .hero-glow {
 	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
-html[data-theme='light'] .card-dark {
+html[data-theme='light'] .card-dark,
+body.light .card-dark {
 	background: #ffffff !important;
 	border-color: #e2e8f0 !important;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
 }
 
-html[data-theme='light'] .card-dark:hover {
+html[data-theme='light'] .card-dark:hover,
+body.light .card-dark:hover {
 	box-shadow: 0 8px 24px rgba(37, 99, 235, 0.08) !important;
 	border-color: rgba(37, 99, 235, 0.4) !important;
 }
@@ -189,7 +194,7 @@ html[data-theme='light'] .card-dark:hover {
 	font-size: 0.75rem;
 	font-weight: 600;
 	padding: 0.25rem 0.65rem;
-	border-radius: var(--rd-radius-full);
+	border-radius: 9999px;
 	background: rgba(6, 182, 212, 0.1);
 	color: #22d3ee;
 	border: 1px solid rgba(6, 182, 212, 0.25);
@@ -198,7 +203,9 @@ html[data-theme='light'] .card-dark:hover {
 }
 
 html[data-theme='light'] .tag,
-html[data-theme='light'] .pill {
+html[data-theme='light'] .pill,
+body.light .tag,
+body.light .pill {
 	background: rgba(37, 99, 235, 0.08) !important;
 	color: #2563eb !important;
 	border-color: rgba(37, 99, 235, 0.2) !important;
@@ -212,7 +219,7 @@ html[data-theme='light'] .pill {
 	justify-content: center;
 	gap: 0.5rem;
 	padding: 0.6875rem 1.5rem;
-	border-radius: var(--rd-radius-md);
+	border-radius: 0.75rem;
 	font-weight: 700;
 	font-size: 0.9375rem;
 	background: #2979ff;
@@ -241,7 +248,7 @@ html[data-theme='light'] .pill {
 	justify-content: center;
 	gap: 0.5rem;
 	padding: 0.6875rem 1.5rem;
-	border-radius: var(--rd-radius-md);
+	border-radius: 0.75rem;
 	font-weight: 600;
 	font-size: 0.9375rem;
 	background: rgba(255, 255, 255, 0.04);
@@ -262,14 +269,18 @@ html[data-theme='light'] .pill {
 }
 
 html[data-theme='light'] .btn-outline,
-html[data-theme='light'] .action-btn--secondary {
+html[data-theme='light'] .action-btn--secondary,
+body.light .btn-outline,
+body.light .action-btn--secondary {
 	background: #ffffff !important;
 	border-color: #cbd5e1 !important;
 	color: #334155 !important;
 }
 
 html[data-theme='light'] .btn-outline:hover,
-html[data-theme='light'] .action-btn--secondary:hover {
+html[data-theme='light'] .action-btn--secondary:hover,
+body.light .btn-outline:hover,
+body.light .action-btn--secondary:hover {
 	border-color: #2563eb !important;
 	color: #2563eb !important;
 	background: rgba(37, 99, 235, 0.04) !important;
@@ -281,7 +292,7 @@ html[data-theme='light'] .action-btn--secondary:hover {
 	justify-content: center;
 	gap: 0.5rem;
 	padding: 0.6875rem 1.25rem;
-	border-radius: var(--rd-radius-md);
+	border-radius: 0.75rem;
 	font-weight: 600;
 	font-size: 0.9375rem;
 	background: transparent;
@@ -316,6 +327,53 @@ html[data-theme='light'] .action-btn--secondary:hover {
 	color: #22d3ee;
 }
 
-html[data-theme='light'] .accent-text {
+html[data-theme='light'] .accent-text,
+body.light .accent-text {
 	color: #2563eb !important;
+}
+
+/* Light Mode Hardcoded Color Overrides (From Docker App.css) */
+body.light {
+	background-color: #F8FAFC !important;
+	color: #0F172A !important;
+}
+
+body.light .text-white {
+	color: #0F172A !important;
+}
+
+body.light .text-white\/90,
+body.light .text-white\/80 {
+	color: #1E293B !important;
+}
+
+body.light .text-white\/70,
+body.light .text-white\/60,
+body.light .text-white\/50,
+body.light .text-white\/40 {
+	color: #475569 !important;
+}
+
+body.light section[class*="bg-"][class*="0b1020"],
+body.light section[class*="bg-"][class*="0d1526"],
+body.light div[class*="bg-"][class*="0b1020"],
+body.light div[class*="bg-"][class*="0d1526"] {
+	background-color: #F8FAFC !important;
+}
+
+body.light div[class*="bg-"][class*="0f172a"] {
+	background-color: #FFFFFF !important;
+	border-color: #E2E8F0 !important;
+}
+
+body.light input,
+body.light textarea {
+	background-color: #FFFFFF !important;
+	border-color: #CBD5E1 !important;
+	color: #0F172A !important;
+}
+
+body.light input::placeholder,
+body.light textarea::placeholder {
+	color: #94A3B8 !important;
 }

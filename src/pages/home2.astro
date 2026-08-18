@@ -1,607 +1,714 @@
 ---
 export const prerender = false;
 
-import BaseLayout from '../layouts/BaseLayout.astro';
 import { getProjects, getPosts } from '../lib/wordpress';
 import type { Project } from '../types/project';
+import '../styles/global.css';
 
 const techStack = [
-	{ name: 'Astro', icon: '🚀', color: 'from-orange-500/10 to-red-500/10', border: 'border-orange-500/20' },
 	{ name: 'React', icon: '⚛️', color: 'from-blue-500/10 to-cyan-500/10', border: 'border-blue-500/20' },
 	{ name: 'Next.js', icon: '▲', color: 'from-white/5 to-white/10', border: 'border-white/10' },
 	{ name: 'TypeScript', icon: 'TS', color: 'from-blue-600/10 to-blue-400/10', border: 'border-blue-500/20' },
 	{ name: 'Node.js', icon: '🟢', color: 'from-green-500/10 to-emerald-500/10', border: 'border-green-500/20' },
-	{ name: 'TailwindCSS', icon: '🌊', color: 'from-cyan-500/10 to-teal-500/10', border: 'border-cyan-500/20' },
-	{ name: 'WordPress Headless', icon: '🌐', color: 'from-blue-700/10 to-cyan-600/10', border: 'border-blue-500/20' },
-	{ name: 'WPGraphQL', icon: '⚡', color: 'from-pink-500/10 to-purple-500/10', border: 'border-pink-500/20' },
-	{ name: 'React Native (iOS/Android)', icon: '📱', color: 'from-blue-400/10 to-indigo-400/10', border: 'border-blue-400/20' },
-	{ name: 'Cloudflare Workers', icon: '☁️', color: 'from-amber-500/10 to-orange-500/10', border: 'border-amber-500/20' },
-	{ name: 'Python & FastAPI', icon: '🐍', color: 'from-yellow-500/10 to-blue-500/10', border: 'border-yellow-500/20' },
+	{ name: 'Python', icon: '🐍', color: 'from-yellow-500/10 to-blue-500/10', border: 'border-yellow-500/20' },
+	{ name: 'FastAPI', icon: '⚡', color: 'from-teal-500/10 to-green-500/10', border: 'border-teal-500/20' },
+	{ name: 'MongoDB', icon: '🍃', color: 'from-green-600/10 to-green-400/10', border: 'border-green-500/20' },
 	{ name: 'PostgreSQL', icon: '🐘', color: 'from-blue-700/10 to-blue-400/10', border: 'border-blue-600/20' },
 	{ name: 'Docker', icon: '🐳', color: 'from-blue-500/10 to-sky-500/10', border: 'border-blue-400/20' },
-	{ name: 'AI Vibe Coding', icon: '🧠', color: 'from-purple-500/10 to-cyan-500/10', border: 'border-purple-500/20' },
-	{ name: 'Core Web Vitals', icon: '🎯', color: 'from-emerald-500/10 to-teal-500/10', border: 'border-emerald-500/20' },
-	{ name: 'Git & GitHub CI/CD', icon: '🔀', color: 'from-orange-500/10 to-red-500/10', border: 'border-orange-500/20' },
+	{ name: 'TailwindCSS', icon: '🌊', color: 'from-cyan-500/10 to-teal-500/10', border: 'border-cyan-500/20' },
+	{ name: 'React Native', icon: '📱', color: 'from-blue-400/10 to-indigo-400/10', border: 'border-blue-400/20' },
+	{ name: 'Git', icon: '🔀', color: 'from-orange-500/10 to-red-500/10', border: 'border-orange-500/20' },
 ];
 
-const fallbackProjects: Project[] = [
+const fallbackProjects = [
 	{
-		id: 'p-1',
-		title: 'Daxulfolio Modern Headless',
-		slug: 'daxulfolio-headless',
-		excerpt: 'Portfolio personal ultra optimizado en Cloudflare Workers con WordPress Headless, Astro y TailwindCSS.',
-		technologies: ['Astro', 'WordPress', 'WPGraphQL', 'Cloudflare Workers'],
-		categories: ['Headless CMS', 'Astro'],
-		isFeatured: true,
+		id: 1,
+		title: 'Daxulfolio',
+		description: 'Portfolio personal moderno construido con React, TailwindCSS y FastAPI.',
+		image: null,
+		technologies: ['React', 'TailwindCSS', 'FastAPI', 'MongoDB'],
+		link: '#',
+		github: 'https://github.com/lord-daxul/astro-portfolio',
 	},
 	{
-		id: 'p-2',
-		title: 'E-Commerce & Headless Catalog',
-		slug: 'ecommerce-headless',
-		excerpt: 'Plataforma de comercio electrónico de alta conversión con panel de administración y pagos integrados.',
+		id: 2,
+		title: 'E-Commerce Platform',
+		description: 'Plataforma de comercio electrónico con panel de administración y pagos integrados.',
+		image: null,
 		technologies: ['Next.js', 'Stripe', 'PostgreSQL', 'Docker'],
-		categories: ['E-Commerce', 'Full Stack'],
-		isFeatured: true,
+		link: '#',
+		github: '#',
 	},
 	{
-		id: 'p-3',
-		title: 'Task & Workflow Mobile App',
-		slug: 'task-mobile-app',
-		excerpt: 'Aplicación móvil multiplataforma para iOS y Android con sincronización en tiempo real.',
-		technologies: ['React Native', 'Expo', 'Node.js', 'Mobile APIs'],
-		categories: ['Mobile', 'iOS / Android'],
-		isFeatured: true,
+		id: 3,
+		title: 'Task Manager App',
+		description: 'Aplicación de gestión de tareas con colaboración en tiempo real.',
+		image: null,
+		technologies: ['React Native', 'Node.js', 'Socket.io', 'MongoDB'],
+		link: '#',
+		github: '#',
 	},
 	{
-		id: 'p-4',
-		title: 'API Serverless Microservices',
-		slug: 'api-serverless',
-		excerpt: 'Arquitectura de microservicios en el Edge con autenticación segura y documentación automática.',
-		technologies: ['Cloudflare Workers', 'TypeScript', 'Resend API'],
-		categories: ['Cloud & Edge', 'APIs'],
-		isFeatured: true,
+		id: 4,
+		title: 'API REST Microservices',
+		description: 'Arquitectura de microservicios con autenticación JWT y documentación automática.',
+		image: null,
+		technologies: ['Python', 'FastAPI', 'Docker', 'Redis'],
+		link: '#',
+		github: '#',
 	},
 ];
 
-let projects = await getProjects(8).catch(() => []);
-if (projects.length === 0) {
-	projects = fallbackProjects;
-}
+let wpProjects = await getProjects(8).catch(() => []);
+const displayProjects = wpProjects.length > 0
+	? wpProjects.map((p) => ({
+			id: p.id,
+			title: p.title,
+			description: p.excerpt ? p.excerpt.replace(/<[^>]*>/g, '').trim() : 'Proyecto desarrollado con tecnologías modernas.',
+			image: p.featuredImage?.sourceUrl || null,
+			technologies: p.technologies || ['React', 'TailwindCSS'],
+			link: `/projects/${p.slug}/`,
+			github: p.repositoryUrl || '#',
+	  }))
+	: fallbackProjects;
 
-let posts = await getPosts(4).catch(() => []);
+let wpPosts = await getPosts(4).catch(() => []);
+const fallbackPosts = [
+	{
+		id: 1,
+		title: 'Construyendo APIs modernas con FastAPI y MongoDB',
+		excerpt: 'Una guía práctica para crear APIs REST robustas usando Python, FastAPI y MongoDB como base de datos.',
+		image: null,
+		date: '2024-01-15',
+		slug: 'fastapi-mongodb-guide',
+		readTime: '8 min',
+	},
+	{
+		id: 2,
+		title: 'React 18: Todo lo que necesitas saber',
+		excerpt: 'Exploramos las nuevas características de React 18 incluyendo Concurrent Mode, Suspense y las nuevas hooks.',
+		image: null,
+		date: '2024-01-08',
+		slug: 'react-18-features',
+		readTime: '6 min',
+	},
+	{
+		id: 3,
+		title: 'Docker para desarrolladores full-stack',
+		excerpt: 'Aprende a containerizar tus aplicaciones web completas con Docker y Docker Compose de manera efectiva.',
+		image: null,
+		date: '2023-12-20',
+		slug: 'docker-fullstack',
+		readTime: '10 min',
+	},
+	{
+		id: 4,
+		title: 'TailwindCSS: El framework que cambió mi flujo de trabajo',
+		excerpt: 'Por qué adopté TailwindCSS y cómo transformó la manera en que construyo interfaces de usuario.',
+		image: null,
+		date: '2023-12-10',
+		slug: 'tailwind-workflow',
+		readTime: '5 min',
+	},
+];
+
+const displayPosts = wpPosts.length > 0
+	? wpPosts.map((p: any) => ({
+			id: p.id,
+			title: p.title,
+			excerpt: p.excerpt ? p.excerpt.replace(/<[^>]*>/g, '').trim() : '',
+			image: p.featuredImage?.node?.sourceUrl || null,
+			date: p.date ? new Date(p.date).toISOString().split('T')[0] : '2024-01-15',
+			slug: p.slug,
+			readTime: '5 min',
+	  }))
+	: fallbackPosts;
+
+function formatDate(dateStr: string) {
+	try {
+		return new Date(dateStr).toLocaleDateString('es-ES', {
+			day: 'numeric',
+			month: 'long',
+			year: 'numeric',
+		});
+	} catch {
+		return dateStr;
+	}
+}
 ---
 
-<BaseLayout
-	title="Home 2 (Docker Style)"
-	description="Versión interactiva del portafolio inspirada en el diseño visual de portafolio docker: Cyber-Dark, Glassmorphism, TailwindCSS y conexión a WordPress."
->
-	<!-- Hero Section (Docker Portafolio Style) -->
-	<section id="inicio" class="hero-docker relative min-h-[85vh] flex items-center overflow-hidden">
-		<div class="absolute inset-0 grid-bg opacity-40 pointer-events-none"></div>
-		<div class="absolute inset-0 hero-glow pointer-events-none"></div>
-		<div class="glow-orb glow-orb-1 pointer-events-none"></div>
-		<div class="glow-orb glow-orb-2 pointer-events-none"></div>
-
-		<div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-			<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-				<!-- Left Column: Copy & Actions -->
-				<div class="lg:col-span-7 space-y-6">
-					<div class="inline-flex items-center gap-2">
-						<span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
-						<span class="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase">
-							📍 Bogotá, Colombia · Desarrollador Full-Stack & AI Vibe Coder
-						</span>
-					</div>
-
-					<h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-white tracking-tight">
-						Hola, Soy <span class="gradient-text">Raúl David Sánchez</span>
-					</h1>
-
-					<p class="text-base sm:text-lg text-white/70 leading-relaxed max-w-xl">
-						Transformo ideas en soluciones digitales funcionales y atractivas. Combino lógica,
-						diseño y creatividad para crear aplicaciones web de alto rendimiento (WebApps),
-						<strong>WordPress Headless</strong> en el Edge y aplicaciones móviles para <strong>iOS & Android</strong>.
-					</p>
-
-					<blockquote class="border-l-2 border-cyan-400 pl-4 text-white/60 italic text-sm">
-						"Siempre aprendiendo, siempre construyendo con la mejor arquitectura y velocidad."
-					</blockquote>
-
-					<div class="flex flex-wrap items-center gap-3 pt-2">
-						<a href="#portfolio" class="btn-primary">
-							Portafolio →
-						</a>
-						<a href="/cv/" class="btn-outline">
-							📄 Ver / Descargar CV
-						</a>
-						<a href="#contacto" class="btn-outline">
-							Contáctame
-						</a>
-					</div>
-
-					<div class="flex items-center gap-4 pt-4">
-						<a
-							href="https://github.com/daxul"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="social-btn"
-							aria-label="GitHub"
-						>
-							<svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-						</a>
-						<a
-							href="https://linkedin.com"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="social-btn"
-							aria-label="LinkedIn"
-						>
-							<svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-						</a>
-						<a
-							href="mailto:contacto@rauldavid.com"
-							class="social-btn"
-							aria-label="Email"
-						>
-							<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-						</a>
-					</div>
-				</div>
-
-				<!-- Right Column: Avatar & Floating Badges -->
-				<div class="lg:col-span-5 flex justify-center lg:justify-end">
-					<div class="relative">
-						<!-- Glow background -->
-						<div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-cyan-500/20 to-indigo-500/20 blur-2xl scale-105 pointer-events-none"></div>
-						
-						<div class="relative w-72 h-80 sm:w-80 sm:h-96 lg:w-88 lg:h-[26rem] rounded-3xl overflow-hidden border border-white/10 glow-cyan bg-[#0f172a]">
-							<img
-								src="/img/raul-david-sanchez.webp"
-								alt="Fotografía de Raúl David Sánchez"
-								class="w-full h-full object-cover object-top"
-								loading="eager"
-							/>
-							<div class="absolute inset-0 bg-gradient-to-t from-[#0b1020]/70 via-transparent to-transparent"></div>
-						</div>
-
-						<!-- Floating Badge 1 (Bottom Left) -->
-						<div class="floating-badge floating-badge-bottom animate-float">
-							<div class="flex items-center gap-2">
-								<span class="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse"></span>
-								<span class="text-xs font-semibold text-white/90">Disponible para proyectos</span>
-							</div>
-						</div>
-
-						<!-- Floating Badge 2 (Top Right) -->
-						<div class="floating-badge floating-badge-top">
-							<div class="text-[11px] text-white/60">Proyectos Completados</div>
-							<div class="text-lg font-extrabold text-cyan-400">+30</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<!-- Technologies Section (From Docker Technologies.js) -->
-	<section id="tecnologias" class="py-20 bg-[#0d1526] relative overflow-hidden">
-		<div class="absolute inset-0 grid-bg opacity-20 pointer-events-none"></div>
-		<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<div class="text-center mb-12">
-				<span class="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase">Stack Técnico</span>
-				<h2 class="text-3xl sm:text-4xl font-bold mt-2 text-white">
-					Tecnologías que <span class="gradient-text">domino</span>
-				</h2>
-				<p class="text-white/60 max-w-lg mx-auto text-sm mt-2">
-					Herramientas y frameworks modernos con los que construyo soluciones robustas, escalables y veloces.
-				</p>
-			</div>
-
-			<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4">
-				{
-					techStack.map((tech) => (
-						<div class={`tech-card bg-gradient-to-br ${tech.color} border ${tech.border}`}>
-							<span class="text-2xl">{tech.icon}</span>
-							<span class="text-xs font-semibold text-white/80 text-center">
-								{tech.name}
-							</span>
-						</div>
-					))
+<!doctype html>
+<html lang="es" class="scroll-smooth">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Daxulfolio | Raúl David - Full-Stack Developer</title>
+		<meta name="description" content="Raúl David - Desarrollador Full-Stack. Transformo ideas en soluciones digitales funcionales y atractivas." />
+		<meta name="keywords" content="desarrollador full-stack, React, Node.js, portfolio, web developer, Bogota" />
+		<meta name="author" content="Raúl David" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<script is:inline>
+			(() => {
+				const saved = localStorage.getItem('theme');
+				if (saved === 'light') {
+					document.documentElement.classList.add('light');
+					document.body?.classList.add('light');
 				}
-			</div>
-		</div>
-	</section>
+			})();
+		</script>
+	</head>
 
-	<!-- Portfolio Section (From Docker Portfolio.js) -->
-	<section id="portfolio" class="py-24 bg-[#0b1020] relative">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<div class="text-center mb-14">
-				<span class="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase">Mi Trabajo</span>
-				<h2 class="text-3xl sm:text-4xl font-bold mt-2 text-white">
-					Proyectos <span class="gradient-text">destacados</span>
-				</h2>
-				<p class="text-white/60 max-w-lg mx-auto text-sm mt-2">
-					Selección de aplicaciones web, arquitecturas headless y casos de estudio en producción.
-				</p>
-			</div>
+	<body class="bg-[#0b1020] text-white font-sans antialiased transition-colors duration-300">
+		<!-- Docker Header Component -->
+		<header id="site-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<div class="flex items-center justify-between h-16 md:h-20">
+					<a href="#inicio" class="text-xl font-display font-bold tracking-tight">
+						<span class="text-white site-logo-name">Daxul</span><span class="text-cyan-400">folio</span>
+					</a>
 
-			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-				{
-					projects.map((project) => (
-						<article class="card-dark overflow-hidden flex flex-col group">
-							<div class="relative h-48 bg-gradient-to-br from-cyan-500/10 to-indigo-500/10 overflow-hidden">
-								{project.featuredImage?.sourceUrl ? (
-									<img
-										src={project.featuredImage.sourceUrl}
-										alt={project.featuredImage.altText || project.title}
-										class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-										loading="lazy"
-									/>
-								) : (
-									<div class="w-full h-full flex items-center justify-center">
-										<span class="text-4xl font-mono text-cyan-400/40">{'</>'}</span>
-									</div>
-								)}
-								<div class="absolute inset-0 bg-gradient-to-t from-[#0b1020] via-transparent to-transparent opacity-60"></div>
-							</div>
+					<nav class="hidden md:flex items-center gap-1">
+						<a href="#inicio" class="px-4 py-2 text-sm font-medium text-white/70 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-colors">
+							Inicio
+						</a>
+						<a href="#portfolio" class="px-4 py-2 text-sm font-medium text-white/70 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-colors">
+							Portfolio
+						</a>
+						<a href="#blog" class="px-4 py-2 text-sm font-medium text-white/70 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-colors">
+							Blog
+						</a>
+						<a href="#contacto" class="px-4 py-2 text-sm font-medium text-white/70 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-colors">
+							Contacto
+						</a>
+						<a href="/" class="px-4 py-2 text-sm font-medium text-cyan-400 hover:bg-cyan-500/10 rounded-lg transition-colors">
+							Volver a Daxulfolio 1
+						</a>
+					</nav>
 
-							<div class="p-5 flex flex-col gap-3 flex-1">
-								<h3 class="font-bold text-white group-hover:text-cyan-400 transition-colors text-lg">
-									{project.title}
-								</h3>
-								<p class="text-sm text-white/60 leading-relaxed flex-1 line-clamp-3">
-									{project.excerpt ? project.excerpt.replace(/<[^>]*>/g, '') : 'Aplicación web desarrollada con tecnologías modernas.'}
-								</p>
+					<div class="flex items-center gap-2">
+						<button id="theme-toggle-btn" class="p-2 rounded-lg text-white/60 hover:text-cyan-400 hover:bg-white/5 transition-all" aria-label="Cambiar tema">
+							<svg id="sun-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+							<svg id="moon-icon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+						</button>
 
-								<div class="flex flex-wrap gap-1.5">
-									{(project.technologies || []).slice(0, 4).map((tech) => (
-										<span class="tag">{tech}</span>
-									))}
-								</div>
+						<a href="/cv/" class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-[#2979FF] text-white hover:bg-[#2979FF]/80 transition-all shadow-lg shadow-[#2979FF]/20">
+							Ver CV
+						</a>
 
-								<div class="flex items-center gap-3 pt-2">
-									<a
-										href={`/projects/${project.slug}/`}
-										class="text-xs font-semibold text-cyan-400 hover:text-cyan-300 transition-colors"
-									>
-										Ver detalles →
-									</a>
-									{project.projectUrl ? (
-										<a
-											href={project.projectUrl}
-											target="_blank"
-											rel="noopener"
-											class="text-xs text-white/50 hover:text-white transition-colors"
-										>
-											En vivo ↗
-										</a>
-									) : null}
-								</div>
-							</div>
-						</article>
-					))
-				}
-			</div>
-
-			<div class="text-center mt-12">
-				<a href="/projects/" class="btn-outline">
-					Explorar todos los proyectos →
-				</a>
-			</div>
-		</div>
-	</section>
-
-	<!-- Blog Section (From Docker Blog.js) -->
-	{
-		posts && posts.length > 0 ? (
-			<section id="blog" class="py-24 bg-[#0d1526] relative">
-				<div class="absolute inset-0 grid-bg opacity-20 pointer-events-none"></div>
-				<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div class="text-center mb-14">
-						<span class="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase">Artículos & Blog</span>
-						<h2 class="text-3xl sm:text-4xl font-bold mt-2 text-white">
-							Últimas <span class="gradient-text">publicaciones</span>
-						</h2>
-						<p class="text-white/60 max-w-lg mx-auto text-sm mt-2">
-							Comparto lo que aprendo sobre desarrollo web, inteligencia artificial y arquitectura de software.
-						</p>
-					</div>
-
-					<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-						{posts.map((post: any) => (
-							<article class="card-dark overflow-hidden flex flex-col group">
-								<div class="relative h-44 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 overflow-hidden">
-									{post.featuredImage?.node?.sourceUrl ? (
-										<img
-											src={post.featuredImage.node.sourceUrl}
-											alt={post.title}
-											class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-											loading="lazy"
-										/>
-									) : (
-										<div class="w-full h-full flex items-center justify-center text-3xl">
-											✍️
-										</div>
-									)}
-									<div class="absolute inset-0 bg-gradient-to-t from-[#0b1020] via-transparent to-transparent opacity-60"></div>
-								</div>
-
-								<div class="p-5 flex flex-col gap-2.5 flex-1">
-									<time class="text-xs text-white/40">
-										{post.date ? new Date(post.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Reciente'}
-									</time>
-									<h3 class="font-bold text-white group-hover:text-cyan-400 transition-colors line-clamp-2">
-										{post.title}
-									</h3>
-									<p class="text-sm text-white/60 flex-1 line-clamp-3">
-										{post.excerpt ? post.excerpt.replace(/<[^>]*>/g, '') : ''}
-									</p>
-									<a href={`/blog/${post.slug}/`} class="text-xs font-semibold text-cyan-400 pt-2 hover:underline">
-										Leer artículo →
-									</a>
-								</div>
-							</article>
-						))}
+						<button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-all" aria-label="Abrir menú">
+							<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+						</button>
 					</div>
 				</div>
-			</section>
-		) : null
-	}
-
-	<!-- Contact Section (From Docker Contact.js) -->
-	<section id="contacto" class="py-24 bg-[#0b1020] relative overflow-hidden">
-		<div class="absolute inset-0 grid-bg opacity-20 pointer-events-none"></div>
-		<div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-			<div class="text-center mb-14">
-				<span class="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase">Hablemos</span>
-				<h2 class="text-3xl sm:text-4xl font-bold mt-2 text-white">
-					¿Tienes un <span class="gradient-text">proyecto</span> en mente?
-				</h2>
-				<p class="text-white/60 max-w-lg mx-auto text-sm mt-2">
-					Estoy disponible para proyectos de desarrollo Full Stack, WebApps, aplicaciones móviles y consultoría técnica.
-				</p>
 			</div>
 
-			<div class="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
-				<!-- Left info -->
-				<div class="lg:col-span-2 space-y-6">
-					<div class="space-y-4">
-						<div class="flex items-center gap-3 text-white/70">
-							<div class="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
-								📧
+			<!-- Mobile Menu Dropdown -->
+			<div id="mobile-menu" class="hidden md:hidden backdrop-blur-md border-t px-4 pb-4 bg-[#0b1020]/95 border-white/10">
+				<a href="#inicio" class="block py-3 text-sm font-medium text-white/70 hover:text-cyan-400 border-b border-white/5">Inicio</a>
+				<a href="#portfolio" class="block py-3 text-sm font-medium text-white/70 hover:text-cyan-400 border-b border-white/5">Portfolio</a>
+				<a href="#blog" class="block py-3 text-sm font-medium text-white/70 hover:text-cyan-400 border-b border-white/5">Blog</a>
+				<a href="#contacto" class="block py-3 text-sm font-medium text-white/70 hover:text-cyan-400 border-b border-white/5">Contacto</a>
+				<a href="/" class="block py-3 text-sm font-semibold text-cyan-400">Volver a Daxulfolio 1</a>
+			</div>
+		</header>
+
+		<main>
+			<!-- HERO SECTION (from Docker Hero.js) -->
+			<section id="inicio" class="relative min-h-screen flex items-center overflow-hidden">
+				<div class="absolute inset-0 grid-bg opacity-40"></div>
+				<div class="absolute inset-0 hero-glow"></div>
+
+				<div class="absolute top-1/3 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
+				<div class="absolute bottom-1/4 right-1/4 w-72 h-72 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+				<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 w-full">
+					<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+						<div class="space-y-6">
+							<div class="inline-flex items-center gap-2">
+								<span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+								<span class="text-xs font-semibold tracking-[0.2em] text-cyan-400 uppercase">
+									Desarrollador Full-Stack
+								</span>
 							</div>
-							<div>
-								<div class="text-xs text-white/40">Email</div>
-								<a href="mailto:contacto@rauldavid.com" class="text-sm font-semibold text-white hover:text-cyan-400">
-									contacto@rauldavid.com
+
+							<h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-tight text-white">
+								Hola, Soy <span class="gradient-text">Raúl David</span>
+							</h1>
+
+							<p class="text-base sm:text-lg text-white/60 leading-relaxed max-w-lg">
+								Transformo ideas en soluciones digitales funcionales y atractivas. Combino lógica, diseño y creatividad para crear aplicaciones web y móviles que realmente marcan la diferencia.
+							</p>
+
+							<blockquote class="border-l-2 border-cyan-400 pl-4 text-white/50 italic text-sm">
+								"Siempre aprendiendo, siempre construyendo."
+							</blockquote>
+
+							<div class="flex flex-row items-center gap-3 pt-2">
+								<a href="#portfolio" class="btn-primary">
+									Portafolio →
+								</a>
+								<a href="/cv/" class="btn-outline">
+									Descargar CV
+								</a>
+							</div>
+
+							<div class="flex items-center gap-4 pt-2">
+								<a href="https://github.com/daxul" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="p-2 rounded-lg text-white/40 hover:text-cyan-400 hover:bg-white/5 transition-all">
+									<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+								</a>
+								<a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="p-2 rounded-lg text-white/40 hover:text-cyan-400 hover:bg-white/5 transition-all">
+									<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+								</a>
+								<a href="mailto:contacto@rauldavid.com" aria-label="Email" class="p-2 rounded-lg text-white/40 hover:text-cyan-400 hover:bg-white/5 transition-all">
+									<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
 								</a>
 							</div>
 						</div>
-						<div class="flex items-center gap-3 text-white/70">
-							<div class="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
-								📍
-							</div>
-							<div>
-								<div class="text-xs text-white/40">Ubicación</div>
-								<div class="text-sm font-semibold text-white">Bogotá, Colombia (Remoto Global)</div>
-							</div>
-						</div>
-					</div>
 
-					<div class="card-dark p-5 border-cyan-500/20 bg-cyan-500/5">
-						<div class="flex items-center gap-2 mb-1">
-							<span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-							<span class="text-sm font-bold text-white">Disponible ahora</span>
+						<div class="flex justify-center lg:justify-end">
+							<div class="relative">
+								<div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-cyan-500/20 to-indigo-500/20 blur-2xl scale-105 pointer-events-none"></div>
+								<div class="relative w-72 h-80 sm:w-80 sm:h-96 lg:w-96 lg:h-[28rem] rounded-3xl overflow-hidden border border-white/10 glow-cyan bg-[#0f172a]">
+									<img
+										src="/foto.webp"
+										alt="Raúl David - Full-Stack Developer"
+										class="w-full h-full object-cover object-top"
+										loading="eager"
+									/>
+									<div class="absolute inset-0 bg-gradient-to-t from-[#0b1020]/60 via-transparent to-transparent"></div>
+								</div>
+
+								<!-- Floating Badge 1 -->
+								<div class="absolute -bottom-4 -left-4 bg-[#0f172a] border border-white/10 rounded-2xl px-4 py-3 shadow-xl backdrop-blur-sm animate-float">
+									<div class="flex items-center gap-2">
+										<span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+										<span class="text-xs font-medium text-white/80">Disponible para proyectos</span>
+									</div>
+								</div>
+
+								<!-- Floating Badge 2 -->
+								<div class="absolute -top-4 -right-4 bg-[#0f172a] border border-cyan-400/20 rounded-2xl px-4 py-3 shadow-xl backdrop-blur-sm">
+									<div class="text-xs text-white/60">Proyectos completados</div>
+									<div class="text-lg font-bold text-cyan-400">+30</div>
+								</div>
+							</div>
 						</div>
-						<p class="text-xs text-white/50 m-0">Tiempo promedio de respuesta: menos de 24 horas.</p>
 					</div>
 				</div>
 
-				<!-- Right form -->
-				<div class="lg:col-span-3">
-					<form id="docker-contact-form" class="card-dark p-6 sm:p-8 space-y-4" novalidate>
-						<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-							<div class="space-y-1">
-								<label for="c-name" class="text-xs font-semibold text-white/60 uppercase tracking-wider">Nombre</label>
-								<input
-									id="c-name"
-									name="name"
-									type="text"
-									required
-									placeholder="Tu nombre"
-									class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-cyan-400"
-								/>
+				<div class="absolute bottom-8 left-1/2 -translate-x-1/2">
+					<div class="w-5 h-8 rounded-full border border-white/20 flex items-start justify-center pt-1.5 animate-bounce">
+						<div class="w-1 h-2 rounded-full bg-cyan-400 opacity-70"></div>
+					</div>
+				</div>
+			</section>
+
+			<!-- TECHNOLOGIES SECTION (from Docker Technologies.js) -->
+			<section class="py-20 bg-[#0d1526] relative overflow-hidden">
+				<div class="absolute inset-0 grid-bg opacity-20"></div>
+				<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div class="text-center mb-12">
+						<span class="text-xs font-semibold tracking-[0.2em] text-cyan-400 uppercase">Stack técnico</span>
+						<h2 class="section-title text-3xl md:text-4xl font-display font-bold mt-2 text-white">
+							Tecnologías que <span class="gradient-text">domino</span>
+						</h2>
+						<p class="text-white/50 max-w-lg mx-auto text-sm mt-2">
+							Herramientas y frameworks con los que construyo soluciones robustas y escalables.
+						</p>
+					</div>
+
+					<div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+						{
+							techStack.map((tech) => (
+								<div class={`group flex flex-col items-center gap-2 p-4 rounded-2xl bg-gradient-to-br ${tech.color} border ${tech.border} backdrop-blur-sm cursor-default transition-all duration-300 hover:border-cyan-400/40 hover:-translate-y-1`}>
+									<span class="text-2xl">{tech.icon}</span>
+									<span class="text-xs font-medium text-white/70 group-hover:text-white transition-colors text-center">
+										{tech.name}
+									</span>
+								</div>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<!-- PORTFOLIO SECTION (from Docker Portfolio.js) -->
+			<section id="portfolio" class="py-24 bg-[#0b1020] relative">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div class="text-center mb-14">
+						<span class="text-xs font-semibold tracking-[0.2em] text-cyan-400 uppercase">Mi trabajo</span>
+						<h2 class="section-title text-3xl md:text-4xl font-display font-bold mt-2 text-white">
+							Proyectos <span class="gradient-text">destacados</span>
+						</h2>
+						<p class="text-white/50 max-w-lg mx-auto text-sm mt-2">
+							Una selección de proyectos que demuestran mi experiencia técnica y creatividad.
+						</p>
+					</div>
+
+					<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+						{
+							displayProjects.map((project) => (
+								<div class="group card-dark overflow-hidden flex flex-col hover:-translate-y-1.5 transition-transform duration-300">
+									<div class="relative h-48 bg-gradient-to-br from-cyan-500/10 to-indigo-500/10 overflow-hidden">
+										{project.image ? (
+											<img
+												src={project.image}
+												alt={project.title}
+												class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+												loading="lazy"
+											/>
+										) : (
+											<div class="w-full h-full flex items-center justify-center">
+												<span class="text-5xl opacity-20 font-mono">{'</>'}</span>
+											</div>
+										)}
+										<div class="absolute inset-0 bg-gradient-to-t from-[#0b1020] via-transparent to-transparent opacity-60"></div>
+									</div>
+
+									<div class="p-5 flex flex-col gap-3 flex-1">
+										<h3 class="font-display font-semibold text-white group-hover:text-cyan-400 transition-colors">
+											{project.title}
+										</h3>
+										<p class="text-sm text-white/50 leading-relaxed flex-1">{project.description}</p>
+
+										<div class="flex flex-wrap gap-1.5">
+											{(project.technologies || []).map((tech) => (
+												<span class="tag">{tech}</span>
+											))}
+										</div>
+
+										<div class="flex items-center gap-3 pt-1">
+											{project.link && (
+												<a
+													href={project.link}
+													class="flex items-center gap-1 text-xs text-cyan-400 hover:text-cyan-300 transition-colors"
+												>
+													Ver proyecto →
+												</a>
+											)}
+											{project.github && project.github !== '#' && (
+												<a
+													href={project.github}
+													target="_blank"
+													rel="noopener noreferrer"
+													class="flex items-center gap-1 text-xs text-white/40 hover:text-white/70 transition-colors"
+												>
+													Código ↗
+												</a>
+											)}
+										</div>
+									</div>
+								</div>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<!-- BLOG SECTION (from Docker Blog.js) -->
+			<section id="blog" class="py-24 bg-[#0d1526] relative">
+				<div class="absolute inset-0 grid-bg opacity-20"></div>
+				<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div class="text-center mb-14">
+						<span class="text-xs font-semibold tracking-[0.2em] text-cyan-400 uppercase">Artículos</span>
+						<h2 class="section-title text-3xl md:text-4xl font-display font-bold mt-2 text-white">
+							Últimas <span class="gradient-text">publicaciones</span>
+						</h2>
+						<p class="text-white/50 max-w-lg mx-auto text-sm mt-2">
+							Comparto lo que aprendo sobre desarrollo, tecnología y buenas prácticas.
+						</p>
+					</div>
+
+					<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+						{
+							displayPosts.map((post) => (
+								<article class="group card-dark overflow-hidden flex flex-col cursor-pointer hover:-translate-y-1.5 transition-transform duration-300">
+									<div class="relative h-44 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 overflow-hidden">
+										{post.image ? (
+											<img
+												src={post.image}
+												alt={post.title}
+												class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+												loading="lazy"
+											/>
+										) : (
+											<div class="w-full h-full flex items-center justify-center">
+												<span class="text-4xl opacity-20">✍️</span>
+											</div>
+										)}
+										<div class="absolute inset-0 bg-gradient-to-t from-[#0b1020] via-transparent to-transparent opacity-60"></div>
+										<span class="absolute top-3 right-3 text-xs font-medium px-2.5 py-1 rounded-full bg-[#0b1020]/80 text-white/60 border border-white/10">
+											{post.readTime}
+										</span>
+									</div>
+
+									<div class="p-5 flex flex-col gap-3 flex-1">
+										<div class="flex items-center gap-1.5 text-xs text-white/40">
+											<span>📅</span>
+											<span>{formatDate(post.date)}</span>
+										</div>
+
+										<h3 class="font-display font-semibold text-white group-hover:text-cyan-400 transition-colors leading-snug">
+											{post.title}
+										</h3>
+										<p class="text-sm text-white/50 leading-relaxed flex-1 line-clamp-3">{post.excerpt}</p>
+
+										<a href={`/blog/${post.slug}/`} class="flex items-center gap-1 text-xs text-cyan-400 group-hover:gap-2 transition-all pt-1">
+											Leer más →
+										</a>
+									</div>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<!-- CONTACT SECTION (from Docker Contact.js) -->
+			<section id="contacto" class="py-24 bg-[#0b1020] relative overflow-hidden">
+				<div class="absolute inset-0 grid-bg opacity-20"></div>
+				<div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+				<div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div class="text-center mb-14">
+						<span class="text-xs font-semibold tracking-[0.2em] text-cyan-400 uppercase">Hablemos</span>
+						<h2 class="section-title text-3xl md:text-4xl font-display font-bold mt-2 text-white">
+							¿Tienes un <span class="gradient-text">proyecto</span>?
+						</h2>
+						<p class="text-white/50 max-w-lg mx-auto text-sm mt-2">
+							Estoy disponible para proyectos freelance, colaboraciones y oportunidades laborales.
+						</p>
+					</div>
+
+					<div class="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
+						<div class="lg:col-span-2 space-y-6">
+							<div class="space-y-4">
+								<div class="flex items-center gap-3 text-white/60">
+									<div class="p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
+										✉️
+									</div>
+									<div>
+										<div class="text-xs text-white/40 mb-0.5">Email</div>
+										<a href="mailto:contacto@rauldavid.com" class="text-sm font-medium text-white hover:text-cyan-400">
+											contacto@rauldavid.com
+										</a>
+									</div>
+								</div>
+								<div class="flex items-center gap-3 text-white/60">
+									<div class="p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
+										📍
+									</div>
+									<div>
+										<div class="text-xs text-white/40 mb-0.5">Ubicación</div>
+										<div class="text-sm font-medium text-white">Gran Colombia 🇨🇴</div>
+									</div>
+								</div>
 							</div>
-							<div class="space-y-1">
-								<label for="c-email" class="text-xs font-semibold text-white/60 uppercase tracking-wider">Email</label>
-								<input
-									id="c-email"
-									name="email"
-									type="email"
-									required
-									placeholder="tu@email.com"
-									class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-cyan-400"
-								/>
+
+							<div class="pt-2">
+								<p class="text-xs text-white/40 mb-3 uppercase tracking-widest">Sígueme</p>
+								<div class="flex items-center gap-2">
+									<a href="https://github.com/daxul" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="p-2.5 rounded-xl border border-white/10 text-white/40 hover:text-white hover:border-cyan-400/30 hover:bg-white/5 transition-all">
+										<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+									</a>
+									<a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="p-2.5 rounded-xl border border-white/10 text-white/40 hover:text-blue-400 hover:border-cyan-400/30 hover:bg-white/5 transition-all">
+										<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+									</a>
+								</div>
+							</div>
+
+							<div class="p-4 rounded-2xl bg-cyan-500/5 border border-cyan-500/20">
+								<div class="flex items-center gap-2 mb-1">
+									<span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+									<span class="text-sm font-medium text-white">Disponible ahora</span>
+								</div>
+								<p class="text-xs text-white/40">Tiempo de respuesta promedio: 24 horas</p>
 							</div>
 						</div>
 
-						<div class="space-y-1">
-							<label for="c-message" class="text-xs font-semibold text-white/60 uppercase tracking-wider">Mensaje</label>
-							<textarea
-								id="c-message"
-								name="message"
-								rows="5"
-								required
-								placeholder="Cuéntame sobre tu proyecto..."
-								class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-cyan-400 resize-none"
-							></textarea>
+						<div class="lg:col-span-3">
+							<form id="docker-form" class="card-dark p-6 sm:p-8 space-y-5">
+								<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+									<div class="space-y-1.5">
+										<label for="name" class="text-xs font-medium text-white/50 uppercase tracking-wider">Nombre</label>
+										<input
+											id="name"
+											name="name"
+											type="text"
+											required
+											placeholder="Tu nombre"
+											class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-cyan-400/60 focus:bg-white/8 transition-all"
+										/>
+									</div>
+									<div class="space-y-1.5">
+										<label for="email" class="text-xs font-medium text-white/50 uppercase tracking-wider">Email</label>
+										<input
+											id="email"
+											name="email"
+											type="email"
+											required
+											placeholder="tu@email.com"
+											class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-cyan-400/60 focus:bg-white/8 transition-all"
+										/>
+									</div>
+								</div>
+
+								<div class="space-y-1.5">
+									<label for="message" class="text-xs font-medium text-white/50 uppercase tracking-wider">Mensaje</label>
+									<textarea
+										id="message"
+										name="message"
+										required
+										rows="5"
+										placeholder="Cuéntame sobre tu proyecto..."
+										class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-cyan-400/60 focus:bg-white/8 transition-all resize-none"
+									></textarea>
+								</div>
+
+								<div id="form-feedback" class="text-xs font-medium hidden p-3 rounded-lg"></div>
+
+								<button type="submit" id="submit-btn" class="btn-primary w-full justify-center">
+									Enviar mensaje
+								</button>
+							</form>
 						</div>
+					</div>
+				</div>
+			</section>
+		</main>
 
-						<div id="c-status" class="text-sm font-semibold hidden p-3 rounded-lg"></div>
+		<!-- DOCKER FOOTER (from Docker Footer.js) -->
+		<footer class="border-t border-white/5 bg-[#080e1c] py-10">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<div class="flex flex-col md:flex-row items-center justify-between gap-6">
+					<a href="#inicio" class="text-lg font-display font-bold">
+						<span class="text-white">Daxul</span><span class="text-cyan-400">folio</span>
+					</a>
 
-						<button type="submit" id="c-btn" class="btn-primary w-full justify-center">
-							Enviar Mensaje →
-						</button>
-					</form>
+					<nav class="flex items-center gap-6">
+						<a href="#inicio" class="text-sm text-white/40 hover:text-cyan-400 transition-colors">Inicio</a>
+						<a href="#portfolio" class="text-sm text-white/40 hover:text-cyan-400 transition-colors">Portfolio</a>
+						<a href="#blog" class="text-sm text-white/40 hover:text-cyan-400 transition-colors">Blog</a>
+						<a href="#contacto" class="text-sm text-white/40 hover:text-cyan-400 transition-colors">Contacto</a>
+					</nav>
+
+					<div class="flex items-center gap-3">
+						<a href="https://github.com/daxul" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="p-2 rounded-lg text-white/30 hover:text-cyan-400 hover:bg-white/5 transition-all">
+							<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+						</a>
+						<a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="p-2 rounded-lg text-white/30 hover:text-cyan-400 hover:bg-white/5 transition-all">
+							<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+						</a>
+					</div>
+				</div>
+
+				<div class="mt-8 pt-6 border-t border-white/5 text-center text-xs text-white/25 flex items-center justify-center gap-1">
+					<span>© {new Date().getFullYear()} Raúl David. Hecho con ❤️ en Gran Colombia</span>
 				</div>
 			</div>
-		</div>
-	</section>
-</BaseLayout>
+		</footer>
 
-<script is:inline>
-	(() => {
-		const form = document.getElementById('docker-contact-form');
-		const statusBox = document.getElementById('c-status');
-		const btn = document.getElementById('c-btn');
+		<!-- Header Scroll, Mobile Menu & Theme Toggle Scripts -->
+		<script is:inline>
+			(() => {
+				const header = document.getElementById('site-header');
+				const mobileBtn = document.getElementById('mobile-menu-btn');
+				const mobileMenu = document.getElementById('mobile-menu');
+				const themeBtn = document.getElementById('theme-toggle-btn');
+				const sunIcon = document.getElementById('sun-icon');
+				const moonIcon = document.getElementById('moon-icon');
 
-		if (!form || !statusBox || !btn) return;
+				// Scroll behavior for navbar
+				const handleScroll = () => {
+					if (window.scrollY > 20) {
+						header.classList.add('bg-[#0b1020]/90', 'backdrop-blur-md', 'border-b', 'border-white/5', 'shadow-xl');
+						header.classList.remove('bg-transparent');
+					} else {
+						header.classList.remove('bg-[#0b1020]/90', 'backdrop-blur-md', 'border-b', 'border-white/5', 'shadow-xl');
+						header.classList.add('bg-transparent');
+					}
+				};
+				window.addEventListener('scroll', handleScroll);
+				handleScroll();
 
-		form.addEventListener('submit', async (e) => {
-			e.preventDefault();
-			statusBox.className = 'text-sm font-semibold p-3 rounded-lg';
-			statusBox.classList.add('hidden');
-
-			const formData = new FormData(form);
-			const payload = {
-				name: formData.get('name')?.toString() || '',
-				email: formData.get('email')?.toString() || '',
-				message: formData.get('message')?.toString() || '',
-			};
-
-			if (!payload.name || !payload.email || !payload.message) {
-				statusBox.textContent = 'Por favor completa todos los campos requeridos.';
-				statusBox.classList.remove('hidden');
-				statusBox.classList.add('bg-red-500/20', 'text-red-300', 'border', 'border-red-500/30');
-				return;
-			}
-
-			btn.disabled = true;
-			btn.textContent = 'Enviando...';
-
-			try {
-				const res = await fetch('/api/contact', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(payload),
+				// Mobile menu toggle
+				mobileBtn?.addEventListener('click', () => {
+					mobileMenu?.classList.toggle('hidden');
 				});
-				const result = await res.json();
-				if (res.ok && result.success) {
-					statusBox.textContent = '¡Mensaje enviado con éxito! Me pondré en contacto pronto.';
-					statusBox.classList.remove('hidden');
-					statusBox.classList.add('bg-green-500/20', 'text-green-300', 'border', 'border-green-500/30');
-					form.reset();
-				} else {
-					statusBox.textContent = result.error || 'Ocurrió un error al enviar el mensaje.';
-					statusBox.classList.remove('hidden');
-					statusBox.classList.add('bg-red-500/20', 'text-red-300', 'border', 'border-red-500/30');
-				}
-			} catch (err) {
-				statusBox.textContent = 'Error de conexión. Intenta nuevamente.';
-				statusBox.classList.remove('hidden');
-				statusBox.classList.add('bg-red-500/20', 'text-red-300', 'border', 'border-red-500/30');
-			} finally {
-				btn.disabled = false;
-				btn.textContent = 'Enviar Mensaje →';
-			}
-		});
-	})();
-</script>
 
-<style>
-	.hero-docker {
-		padding-top: 2rem;
-		padding-bottom: 3rem;
-	}
+				// Theme toggle
+				const updateThemeIcons = () => {
+					const isLight = document.body.classList.contains('light');
+					if (isLight) {
+						sunIcon?.classList.add('hidden');
+						moonIcon?.classList.remove('hidden');
+					} else {
+						sunIcon?.classList.remove('hidden');
+						moonIcon?.classList.add('hidden');
+					}
+				};
 
-	.glow-orb {
-		position: absolute;
-		border-radius: 9999px;
-		filter: blur(80px);
-	}
+				themeBtn?.addEventListener('click', () => {
+					document.body.classList.toggle('light');
+					document.documentElement.classList.toggle('light');
+					const isLight = document.body.classList.contains('light');
+					localStorage.setItem('theme', isLight ? 'light' : 'dark');
+					updateThemeIcons();
+				});
+				updateThemeIcons();
 
-	.glow-orb-1 {
-		top: 20%;
-		left: 20%;
-		width: 22rem;
-		height: 22rem;
-		background: rgba(34, 211, 238, 0.06);
-	}
+				// Contact form submit
+				const form = document.getElementById('docker-form');
+				const feedback = document.getElementById('form-feedback');
+				const submitBtn = document.getElementById('submit-btn');
 
-	.glow-orb-2 {
-		bottom: 20%;
-		right: 20%;
-		width: 18rem;
-		height: 18rem;
-		background: rgba(99, 102, 241, 0.06);
-	}
+				form?.addEventListener('submit', async (e) => {
+					e.preventDefault();
+					feedback.className = 'text-xs font-medium p-3 rounded-lg';
+					feedback.classList.add('hidden');
 
-	.social-btn {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0.6rem;
-		border-radius: var(--rd-radius-md);
-		border: 1px solid rgba(255, 255, 255, 0.1);
-		color: rgba(255, 255, 255, 0.5);
-		background: rgba(255, 255, 255, 0.03);
-		transition: all 0.2s ease;
-	}
+					const data = {
+						name: form.name.value,
+						email: form.email.value,
+						message: form.message.value,
+					};
 
-	.social-btn:hover {
-		color: #22d3ee;
-		border-color: rgba(34, 211, 238, 0.4);
-		background: rgba(34, 211, 238, 0.08);
-		transform: translateY(-2px);
-	}
+					submitBtn.disabled = true;
+					submitBtn.textContent = 'Enviando...';
 
-	.floating-badge {
-		position: absolute;
-		background: #0f172a;
-		border: 1px solid rgba(255, 255, 255, 0.12);
-		border-radius: var(--rd-radius-lg);
-		padding: 0.75rem 1.15rem;
-		box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-		backdrop-filter: blur(8px);
-		z-index: 10;
-	}
-
-	.floating-badge-bottom {
-		bottom: -1rem;
-		left: -1.5rem;
-	}
-
-	.floating-badge-top {
-		top: -1rem;
-		right: -1.5rem;
-		border-color: rgba(34, 211, 238, 0.3);
-	}
-
-	.tech-card {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 1.15rem 0.75rem;
-		border-radius: var(--rd-radius-lg);
-		backdrop-filter: blur(8px);
-		transition: all 0.25s ease;
-	}
-
-	.tech-card:hover {
-		transform: translateY(-4px);
-		border-color: rgba(34, 211, 238, 0.4);
-		box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-	}
-
-	@media (max-width: 640px) {
-		.floating-badge-bottom {
-			left: 0;
-			bottom: -0.5rem;
-		}
-		.floating-badge-top {
-			right: 0;
-			top: -0.5rem;
-		}
-	}
-</style>
+					try {
+						const res = await fetch('/api/contact', {
+							method: 'POST',
+							headers: { 'Content-Type': 'application/json' },
+							body: JSON.stringify(data),
+						});
+						const resData = await res.json();
+						if (res.ok && resData.success) {
+							feedback.textContent = '¡Mensaje enviado! Te responderé a la brevedad.';
+							feedback.classList.remove('hidden');
+							feedback.classList.add('bg-green-500/20', 'text-green-300', 'border', 'border-green-500/30');
+							form.reset();
+						} else {
+							feedback.textContent = resData.error || 'Hubo un error al enviar. Intenta de nuevo.';
+							feedback.classList.remove('hidden');
+							feedback.classList.add('bg-red-500/20', 'text-red-300', 'border', 'border-red-500/30');
+						}
+					} catch (err) {
+						feedback.textContent = 'Error de conexión al enviar.';
+						feedback.classList.remove('hidden');
+						feedback.classList.add('bg-red-500/20', 'text-red-300', 'border', 'border-red-500/30');
+					} finally {
+						submitBtn.disabled = false;
+						submitBtn.textContent = 'Enviar mensaje';
+					}
+				});
+			})();
+		</script>
+	</body>
+</html>
