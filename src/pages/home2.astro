@@ -2,8 +2,58 @@
 export const prerender = false;
 
 import { getProjects, getPosts } from '../lib/wordpress';
-import type { Project } from '../types/project';
 import '../styles/global.css';
+
+const specialtiesAndSkills = [
+	{
+		title: 'Desarrollo de WebApps & Full Stack',
+		description: 'Ingeniería de aplicaciones web modernas, reactivas y ultrarrápidas utilizando Astro, React, Next.js, TypeScript y Tailwind CSS.',
+		tags: ['WebApps', 'Astro', 'React', 'Next.js', 'TypeScript', 'Node.js', 'Tailwind CSS'],
+		icon: '⚡',
+		color: 'from-blue-500/10 to-cyan-500/10',
+		border: 'border-blue-500/20',
+	},
+	{
+		title: 'Desarrollo Móvil (iOS & Android)',
+		description: 'Creación de aplicaciones móviles multiplataforma nativas y fluidas, con sincronización de datos en tiempo real y almacenamiento offline.',
+		tags: ['iOS', 'Android', 'React Native', 'Expo', 'Cross-Platform', 'Mobile APIs'],
+		icon: '📱',
+		color: 'from-cyan-500/10 to-indigo-500/10',
+		border: 'border-cyan-500/20',
+	},
+	{
+		title: 'Vibe Coding & AI Engineering',
+		description: 'Desarrollo acelerado mediante agentes autónomos de IA, prototipado instantáneo de ideas a producción, integración de LLMs y automatizaciones.',
+		tags: ['Vibe Coding', 'AI Agents', 'LLMs', 'Prompt Engineering', 'Automatización'],
+		icon: '🧠',
+		color: 'from-purple-500/10 to-pink-500/10',
+		border: 'border-purple-500/20',
+	},
+	{
+		title: 'WordPress Headless & CMS Moderno',
+		description: 'Arquitecturas desacopladas con WPGraphQL y ACF Pro para entregar paneles editoriales intuitivos y frontends de máxima velocidad.',
+		tags: ['WordPress Headless', 'WPGraphQL', 'ACF Pro', 'PHP', 'APIs REST'],
+		icon: '🌐',
+		color: 'from-teal-500/10 to-emerald-500/10',
+		border: 'border-teal-500/20',
+	},
+	{
+		title: 'Cloud, Edge & Serverless',
+		description: 'Despliegues globales en el Edge con Cloudflare Workers, microservicios serverless, latencia ultrabaja y entrega de emails con Resend.',
+		tags: ['Cloudflare Workers', 'Edge Computing', 'Wrangler', 'Serverless', 'Resend API'],
+		icon: '☁️',
+		color: 'from-amber-500/10 to-orange-500/10',
+		border: 'border-amber-500/20',
+	},
+	{
+		title: 'Rendimiento Extremo & Accesibilidad (a11y)',
+		description: 'Optimización obsesiva de Core Web Vitals (LCP < 1.2s), navegación por teclado, contraste estricto y cumplimiento WCAG 2.1 AA.',
+		tags: ['Core Web Vitals', 'LCP < 1.2s', 'WCAG 2.1 AA', 'SEO Técnico'],
+		icon: '🎯',
+		color: 'from-emerald-500/10 to-cyan-500/10',
+		border: 'border-emerald-500/20',
+	},
+];
 
 const techStack = [
 	{ name: 'React', icon: '⚛️', color: 'from-blue-500/10 to-cyan-500/10', border: 'border-blue-500/20' },
@@ -142,9 +192,9 @@ function formatDate(dateStr: string) {
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Daxulfolio | Raúl David - Full-Stack Developer</title>
-		<meta name="description" content="Raúl David - Desarrollador Full-Stack. Transformo ideas en soluciones digitales funcionales y atractivas." />
-		<meta name="keywords" content="desarrollador full-stack, React, Node.js, portfolio, web developer, Bogota" />
+		<title>Daxulfolio | Raúl David - Senior Full Stack & AI Vibe Coder</title>
+		<meta name="description" content="Raúl David - Senior Full Stack Developer & AI Vibe Coder en Bogotá, Colombia. WebApps, WordPress Headless, iOS/Android y Cloudflare Workers." />
+		<meta name="keywords" content="desarrollador full-stack, WebApps, React, Node.js, portfolio, WordPress Headless, Bogota Colombia" />
 		<meta name="author" content="Raúl David" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -174,20 +224,26 @@ function formatDate(dateStr: string) {
 					</a>
 
 					<nav class="hidden md:flex items-center gap-1">
-						<a href="#inicio" class="px-4 py-2 text-sm font-medium text-white/70 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-colors">
+						<a href="#inicio" class="px-3.5 py-2 text-sm font-medium text-white/70 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-colors">
 							Inicio
 						</a>
-						<a href="#portfolio" class="px-4 py-2 text-sm font-medium text-white/70 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-colors">
+						<a href="#especialidades" class="px-3.5 py-2 text-sm font-medium text-white/70 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-colors">
+							Especialidades
+						</a>
+						<a href="#tecnologias" class="px-3.5 py-2 text-sm font-medium text-white/70 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-colors">
+							Stack
+						</a>
+						<a href="#portfolio" class="px-3.5 py-2 text-sm font-medium text-white/70 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-colors">
 							Portfolio
 						</a>
-						<a href="#blog" class="px-4 py-2 text-sm font-medium text-white/70 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-colors">
+						<a href="#blog" class="px-3.5 py-2 text-sm font-medium text-white/70 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-colors">
 							Blog
 						</a>
-						<a href="#contacto" class="px-4 py-2 text-sm font-medium text-white/70 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-colors">
+						<a href="#contacto" class="px-3.5 py-2 text-sm font-medium text-white/70 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-colors">
 							Contacto
 						</a>
-						<a href="/" class="px-4 py-2 text-sm font-medium text-cyan-400 hover:bg-cyan-500/10 rounded-lg transition-colors">
-							Volver a Daxulfolio 1
+						<a href="/" class="px-3 py-1.5 text-xs font-semibold text-cyan-400 border border-cyan-500/20 bg-cyan-500/10 hover:bg-cyan-500/20 rounded-lg transition-colors ml-2">
+							Home Clásico ↗
 						</a>
 					</nav>
 
@@ -211,18 +267,20 @@ function formatDate(dateStr: string) {
 			<!-- Mobile Menu Dropdown -->
 			<div id="mobile-menu" class="hidden md:hidden backdrop-blur-md border-t px-4 pb-4 bg-[#0b1020]/95 border-white/10">
 				<a href="#inicio" class="block py-3 text-sm font-medium text-white/70 hover:text-cyan-400 border-b border-white/5">Inicio</a>
+				<a href="#especialidades" class="block py-3 text-sm font-medium text-white/70 hover:text-cyan-400 border-b border-white/5">Especialidades</a>
+				<a href="#tecnologias" class="block py-3 text-sm font-medium text-white/70 hover:text-cyan-400 border-b border-white/5">Stack</a>
 				<a href="#portfolio" class="block py-3 text-sm font-medium text-white/70 hover:text-cyan-400 border-b border-white/5">Portfolio</a>
 				<a href="#blog" class="block py-3 text-sm font-medium text-white/70 hover:text-cyan-400 border-b border-white/5">Blog</a>
 				<a href="#contacto" class="block py-3 text-sm font-medium text-white/70 hover:text-cyan-400 border-b border-white/5">Contacto</a>
-				<a href="/" class="block py-3 text-sm font-semibold text-cyan-400">Volver a Daxulfolio 1</a>
+				<a href="/" class="block py-3 text-sm font-semibold text-cyan-400">Ir a Home Clásico</a>
 			</div>
 		</header>
 
 		<main>
 			<!-- HERO SECTION (from Docker Hero.js) -->
 			<section id="inicio" class="relative min-h-screen flex items-center overflow-hidden">
-				<div class="absolute inset-0 grid-bg opacity-40"></div>
-				<div class="absolute inset-0 hero-glow"></div>
+				<div class="absolute inset-0 grid-bg opacity-40 pointer-events-none"></div>
+				<div class="absolute inset-0 hero-glow pointer-events-none"></div>
 
 				<div class="absolute top-1/3 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
 				<div class="absolute bottom-1/4 right-1/4 w-72 h-72 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none"></div>
@@ -233,7 +291,7 @@ function formatDate(dateStr: string) {
 							<div class="inline-flex items-center gap-2">
 								<span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
 								<span class="text-xs font-semibold tracking-[0.2em] text-cyan-400 uppercase">
-									Desarrollador Full-Stack
+									📍 Bogotá, Colombia · Desarrollador Full-Stack & AI Vibe Coder
 								</span>
 							</div>
 
@@ -242,16 +300,16 @@ function formatDate(dateStr: string) {
 							</h1>
 
 							<p class="text-base sm:text-lg text-white/60 leading-relaxed max-w-lg">
-								Transformo ideas en soluciones digitales funcionales y atractivas. Combino lógica, diseño y creatividad para crear aplicaciones web y móviles que realmente marcan la diferencia.
+								Transformo ideas en soluciones digitales funcionales y atractivas. Combino lógica, diseño y creatividad para crear aplicaciones web de alto rendimiento (WebApps), arquitecturas WordPress Headless y aplicaciones móviles para iOS & Android.
 							</p>
 
 							<blockquote class="border-l-2 border-cyan-400 pl-4 text-white/50 italic text-sm">
-								"Siempre aprendiendo, siempre construyendo."
+								"Siempre aprendiendo, siempre construyendo con la mejor arquitectura y velocidad."
 							</blockquote>
 
 							<div class="flex flex-row items-center gap-3 pt-2">
-								<a href="#portfolio" class="btn-primary">
-									Portafolio →
+								<a href="#especialidades" class="btn-primary">
+									Especialidades →
 								</a>
 								<a href="/cv/" class="btn-outline">
 									Descargar CV
@@ -309,8 +367,58 @@ function formatDate(dateStr: string) {
 				</div>
 			</section>
 
+			<!-- ESPECIALIDADES & HABILIDADES TÉCNICAS (UX Design Engineering Section) -->
+			<section id="especialidades" class="py-24 bg-[#0b1020] relative overflow-hidden border-t border-white/5">
+				<div class="absolute inset-0 grid-bg opacity-30 pointer-events-none"></div>
+				<div class="absolute top-1/2 left-0 w-80 h-80 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
+				<div class="absolute bottom-0 right-0 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+				<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div class="text-center mb-16">
+						<span class="text-xs font-semibold tracking-[0.2em] text-cyan-400 uppercase">Propuesta de Valor</span>
+						<h2 class="section-title text-3xl md:text-5xl font-display font-bold mt-2 text-white">
+							Especialidades & <span class="gradient-text">Habilidades Técnicas</span>
+						</h2>
+						<p class="text-white/60 max-w-2xl mx-auto text-base mt-3 leading-relaxed">
+							Disciplinas de ingeniería, tecnologías y soluciones en las que aporto máximo valor competitivo para empresas, startups y productos digitales de alta escala.
+						</p>
+					</div>
+
+					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+						{
+							specialtiesAndSkills.map((item) => (
+								<div class="group card-dark p-7 flex flex-col justify-between hover:-translate-y-2 hover:border-cyan-400/50 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300">
+									<div>
+										<div class="flex items-center justify-between gap-3 mb-5">
+											<span class="text-3xl p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 group-hover:scale-110 group-hover:border-cyan-400/40 transition-transform duration-300">
+												{item.icon}
+											</span>
+											<span class="w-2.5 h-2.5 rounded-full bg-cyan-400/40 group-hover:bg-cyan-400 group-hover:animate-pulse transition-colors"></span>
+										</div>
+
+										<h3 class="font-display font-bold text-xl text-white group-hover:text-cyan-400 transition-colors mb-3 leading-snug">
+											{item.title}
+										</h3>
+
+										<p class="text-sm text-white/60 leading-relaxed mb-6">
+											{item.description}
+										</p>
+									</div>
+
+									<div class="flex flex-wrap gap-1.5 pt-4 border-t border-white/5">
+										{item.tags.map((tag) => (
+											<span class="tag">{tag}</span>
+										))}
+									</div>
+								</div>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
 			<!-- TECHNOLOGIES SECTION (from Docker Technologies.js) -->
-			<section class="py-20 bg-[#0d1526] relative overflow-hidden">
+			<section id="tecnologias" class="py-20 bg-[#0d1526] relative overflow-hidden">
 				<div class="absolute inset-0 grid-bg opacity-20"></div>
 				<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div class="text-center mb-12">
@@ -506,7 +614,7 @@ function formatDate(dateStr: string) {
 									</div>
 									<div>
 										<div class="text-xs text-white/40 mb-0.5">Ubicación</div>
-										<div class="text-sm font-medium text-white">Gran Colombia 🇨🇴</div>
+										<div class="text-sm font-medium text-white">Bogotá, Colombia 🇨🇴</div>
 									</div>
 								</div>
 							</div>
@@ -593,6 +701,8 @@ function formatDate(dateStr: string) {
 
 					<nav class="flex items-center gap-6">
 						<a href="#inicio" class="text-sm text-white/40 hover:text-cyan-400 transition-colors">Inicio</a>
+						<a href="#especialidades" class="text-sm text-white/40 hover:text-cyan-400 transition-colors">Especialidades</a>
+						<a href="#tecnologias" class="text-sm text-white/40 hover:text-cyan-400 transition-colors">Stack</a>
 						<a href="#portfolio" class="text-sm text-white/40 hover:text-cyan-400 transition-colors">Portfolio</a>
 						<a href="#blog" class="text-sm text-white/40 hover:text-cyan-400 transition-colors">Blog</a>
 						<a href="#contacto" class="text-sm text-white/40 hover:text-cyan-400 transition-colors">Contacto</a>
