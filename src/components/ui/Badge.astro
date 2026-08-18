@@ -1,0 +1,42 @@
+---
+interface Props {
+	text: string;
+	variant?: 'default' | 'accent' | 'subtle';
+	class?: string;
+}
+
+const { text, variant = 'default', class: className = '' } = Astro.props;
+---
+
+<span class={`badge badge--${variant} ${className}`}>
+	{text}
+</span>
+
+<style>
+	.badge {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.2rem 0.6rem;
+		border-radius: var(--rd-radius-full);
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: -0.01em;
+		line-height: 1.2;
+		white-space: nowrap;
+		border: 1px solid var(--rd-ink);
+		background: var(--rd-panel);
+		color: var(--rd-text-soft);
+	}
+
+	.badge--accent {
+		border-color: color-mix(in srgb, var(--rd-accent) 40%, var(--rd-ink));
+		color: var(--rd-accent);
+		background: var(--rd-ink-subtle);
+	}
+
+	.badge--subtle {
+		border-color: var(--rd-ink-subtle);
+		color: var(--rd-muted);
+		background: transparent;
+	}
+</style>

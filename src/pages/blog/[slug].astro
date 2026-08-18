@@ -2,210 +2,241 @@
 export const prerender = false;
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { fetchPostBySlug, stripHtml } from '../../lib/wp/portfolio';
+import Badge from '../../components/ui/Badge.astro';
+import Button from '../../components/ui/Button.astro';
+import { getPostBySlug } from '../../lib/wordpress';
 
 const slug = Astro.params.slug;
 if (!slug) {
 	return Astro.redirect('/404');
 }
 
-const item = (await fetchPostBySlug(slug).catch(() => null)) ?? null;
-if (!item) {
+const post = await getPostBySlug(slug).catch(() => null);
+if (!post) {
 	return Astro.redirect('/404');
 }
 
-const description = stripHtml(item.excerpt) || stripHtml(item.content?.slice(0, 160));
-const img = item.featuredImage?.node;
-
-function toWpFullUrl(src: string | null | undefined): string | null {
-	if (!src) return null;
-	const [base, query] = src.split('?');
-	const extMatch = base.match(/\.(webp|png|jpe?g)$/i);
-	if (!extMatch) return src;
-	const ext = extMatch[0];
-	const baseNoExt = base.slice(0, -ext.length);
-	const full = `${baseNoExt.replace(/-\d+x\d+$/i, '')}${ext}`;
-	return query ? `${full}?${query}` : full;
-}
-
-const imgOriginalSrc = img?.sourceUrl ?? null;
-const imgFullSrc = toWpFullUrl(imgOriginalSrc);
-const featuredSrc = imgFullSrc ?? imgOriginalSrc;
-const featuredOnError =
-	imgOriginalSrc && imgFullSrc && imgOriginalSrc !== imgFullSrc
-		? `this.onerror=null;this.src=${JSON.stringify(imgOriginalSrc)};`
-		: undefined;
+const img = post.featuredImage;
 ---
 
-<BaseLayout title={item.title ?? 'Artículo'} description={description || undefined}>
+<BaseLayout
+	title={post.title}
+	description={post.excerpt || `Lee el artículo ${post.title} publicado por Raúl David Sánchez.`}
+	image={img?.sourceUrl}
+	type="article"
+>
+	<!-- Breadcrumb -->
 	<nav class="breadcrumb" aria-label="Migas de pan">
 		<ol>
 			<li><a href="/">Inicio</a></li>
 			<li><a href="/blog/">Blog</a></li>
-			<li aria-current="page">{item.title}</li>
+			<li aria-current="page">{post.title}</li>
 		</ol>
 	</nav>
 
-	<article class="post">
-		<header class="post-header">
-			<h1>{item.title}</h1>
-			{item.date ? (
-				<p class="meta">
-					<time datetime={item.date}>
-						{new Date(item.date).toLocaleDateString('es', {
-							year: 'numeric',
-							month: 'long',
-							day: 'numeric',
-						})}
-					</time>
-				</p>
+	<article class="post-article">
+		<header class="article-header">
+			{post.date ? (
+				<time class="article-date" datetime={post.date}>
+					{new Date(post.date).toLocaleDateString('es-ES', {
+						year: 'numeric',
+						month: 'long',
+						day: 'numeric',
+					})}
+				</time>
 			) : null}
-			{item.portfolioCategories?.nodes?.length ? (
-				<ul class="tags" aria-label="Categorías">
-					{item.portfolioCategories.nodes.map((c) =>
-						c?.name ? <li class="tag">{c.name}</li> : null,
-					)}
-				</ul>
-			) : null}
+
+			<h1 class="article-title">{post.title}</h1>
+
+			{post.excerpt ? <p class="article-lead">{post.excerpt}</p> : null}
+
+			{
+				post.categories?.length > 0 ? (
+					<div class="article-tags" aria-label="Categorías">
+						{post.categories.map((c) => (
+							<Badge text={c} variant="default" />
+						))}
+					</div>
+				) : null
+			}
 		</header>
 
-		{featuredSrc ? (
-			<figure class="hero-img">
-				<img
-					src={featuredSrc}
-					alt={img.altText ?? item.title ?? ''}
-					width={img.mediaDetails?.width ?? undefined}
-					height={img.mediaDetails?.height ?? undefined}
-					loading="eager"
-					fetchpriority="high"
-					decoding="async"
-					onerror={featuredOnError}
-				/>
-			</figure>
-		) : null}
+		{
+			img?.sourceUrl ? (
+				<figure class="article-media">
+					<img
+						src={img.sourceUrl}
+						alt={img.altText || post.title}
+						width={img.width || 1200}
+						height={img.height || 650}
+						loading="eager"
+						fetchpriority="high"
+						decoding="async"
+					/>
+				</figure>
+			) : null
+		}
 
-		{item.excerpt ? <p class="excerpt">{stripHtml(item.excerpt)}</p> : null}
+		<div class="article-content wp-rendered-content" set:html={post.content} />
 
-		<div class="content wp-content" set:html={item.content ?? ''} />
+		<footer class="article-footer">
+			<Button href="/blog/" variant="ghost">
+				← Volver al blog
+			</Button>
+		</footer>
 	</article>
-
-	<p class="back">
-		<a href="/blog/">← Volver al blog</a>
-	</p>
 </BaseLayout>
 
 <style>
 	.breadcrumb {
+		margin-bottom: 2rem;
 		font-size: 0.875rem;
-		margin-bottom: 1.5rem;
 	}
+
 	.breadcrumb ol {
 		list-style: none;
 		margin: 0;
 		padding: 0;
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.35rem;
+		gap: 0.5rem;
 		align-items: center;
 		color: var(--rd-muted);
 	}
+
 	.breadcrumb li:not(:last-child)::after {
 		content: '/';
-		margin-left: 0.35rem;
-		color: var(--rd-text-soft);
+		margin-left: 0.5rem;
+		color: var(--rd-ink);
 	}
+
 	.breadcrumb a {
 		color: var(--rd-text-soft);
-		text-decoration: none;
 	}
+
 	.breadcrumb a:hover {
-		text-decoration: underline;
+		color: var(--rd-accent);
 	}
-	.post-header h1 {
-		font-size: clamp(1.75rem, 4vw, 2.25rem);
+
+	.post-article {
+		max-width: 50rem;
+		margin-inline: auto;
+	}
+
+	.article-header {
+		margin-bottom: 2.5rem;
+	}
+
+	.article-date {
+		display: block;
+		font-size: 0.875rem;
 		font-weight: 700;
-		letter-spacing: -0.02em;
-		margin: 0 0 0.5rem;
+		color: var(--rd-accent);
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		margin-bottom: 0.75rem;
+	}
+
+	.article-title {
+		font-size: clamp(2rem, 4.5vw, 2.75rem);
+		font-weight: 800;
 		line-height: 1.2;
+		letter-spacing: -0.03em;
+		margin: 0 0 1rem;
 	}
-	.meta {
-		color: var(--rd-muted);
-		font-size: 0.9375rem;
-		margin: 0 0 0.75rem;
+
+	.article-lead {
+		font-size: 1.15rem;
+		color: var(--rd-text-soft);
+		line-height: 1.6;
+		margin: 0 0 1.5rem;
 	}
-	.tags {
-		list-style: none;
-		margin: 0;
-		padding: 0;
+
+	.article-tags {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.5rem;
+		gap: 0.4rem;
 	}
-	.tag {
-		font-size: 0.8125rem;
-		background: var(--rd-ink);
-		color: var(--rd-text-soft);
-		padding: 0.25rem 0.6rem;
-		border-radius: 999px;
-	}
-	.hero-img {
-		margin: 0 0 1.5rem;
-		border-radius: 0.75rem;
+
+	.article-media {
+		margin: 0 0 3rem;
+		border-radius: var(--rd-radius-lg);
 		overflow: hidden;
-		background: var(--rd-ink);
+		border: 1px solid var(--rd-ink);
+		background: var(--rd-panel);
+		box-shadow: var(--rd-shadow-md);
 	}
-	.hero-img img {
+
+	.article-media img {
 		width: 100%;
 		height: auto;
 		display: block;
-		vertical-align: middle;
 	}
-	.excerpt {
-		font-size: 1.125rem;
-		color: var(--rd-text-soft);
-		line-height: 1.55;
-		margin: 0 0 1.5rem;
-		max-width: 48rem;
-	}
-	.content {
-		max-width: 48rem;
+
+	.article-content {
 		font-size: 1.0625rem;
-		line-height: 1.65;
+		line-height: 1.8;
 		color: var(--rd-text);
+		margin-bottom: 4rem;
 	}
-	.content :global(p) {
-		margin: 0 0 1rem;
-	}
-	.content :global(h2),
-	.content :global(h3),
-	.content :global(h4) {
-		color: var(--rd-text);
-		margin: 1.5rem 0 0.75rem;
+
+	.article-content :global(h2),
+	.article-content :global(h3),
+	.article-content :global(h4) {
+		margin-top: 2.25rem;
+		margin-bottom: 1rem;
 		line-height: 1.3;
 	}
-	.content :global(ul),
-	.content :global(ol) {
-		margin: 0 0 1rem;
-		padding-left: 1.25rem;
+
+	.article-content :global(p) {
+		margin-bottom: 1.35rem;
 	}
-	.content :global(img) {
+
+	.article-content :global(ul),
+	.article-content :global(ol) {
+		margin-bottom: 1.5rem;
+		padding-left: 1.5rem;
+	}
+
+	.article-content :global(li) {
+		margin-bottom: 0.5rem;
+	}
+
+	.article-content :global(pre),
+	.article-content :global(code) {
+		font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+		background: var(--rd-panel);
+		border-radius: var(--rd-radius-sm);
+	}
+
+	.article-content :global(code) {
+		padding: 0.2em 0.4em;
+		font-size: 0.9em;
+		border: 1px solid var(--rd-ink);
+	}
+
+	.article-content :global(pre) {
+		padding: 1.25rem;
+		overflow-x: auto;
+		border: 1px solid var(--rd-ink);
+		margin-bottom: 1.75rem;
+	}
+
+	.article-content :global(pre code) {
+		padding: 0;
+		border: none;
+	}
+
+	.article-content :global(img) {
 		max-width: 100%;
 		height: auto;
-		border-radius: 0.5rem;
+		border-radius: var(--rd-radius-md);
+		border: 1px solid var(--rd-ink);
+		margin-block: 1.75rem;
 	}
-	.content :global(a) {
-		color: var(--rd-accent);
-	}
-	.back {
-		margin-top: 2.5rem;
-		padding-top: 1.5rem;
+
+	.article-footer {
+		padding-top: 2rem;
 		border-top: 1px solid var(--rd-ink);
-	}
-	.back a {
-		font-weight: 500;
-		text-decoration: none;
-	}
-	.back a:hover {
-		text-decoration: underline;
 	}
 </style>

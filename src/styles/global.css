@@ -1,35 +1,4 @@
-:root {
-	--rd-bg: #1a1a2e;
-	--rd-panel: #0d1a31;
-	--rd-ink: #083858;
-	--rd-blue: #1d4ed8;
-	--rd-accent: #64ffda;
-	--rd-accent-2: #7dffc3;
-	--rd-text: #e0e0e0;
-	--rd-text-soft: #cbd5e1;
-	--rd-muted: #969696;
-
-	font-family:
-		system-ui,
-		'Segoe UI',
-		Roboto,
-		sans-serif;
-	color: var(--rd-text);
-	background: var(--rd-bg);
-	line-height: 1.5;
-}
-
-html[data-theme='light'] {
-	--rd-bg: #f8fafc;
-	--rd-panel: #ffffff;
-	--rd-ink: #cbd5e1;
-	--rd-blue: #1d4ed8;
-	--rd-accent: #1d4ed8;
-	--rd-accent-2: #2563eb;
-	--rd-text: #0f172a;
-	--rd-text-soft: #475569;
-	--rd-muted: #64748b;
-}
+@import './tokens.css';
 
 *,
 *::before,
@@ -37,12 +6,43 @@ html[data-theme='light'] {
 	box-sizing: border-box;
 }
 
+html {
+	font-family:
+		system-ui,
+		-apple-system,
+		BlinkMacSystemFont,
+		'Segoe UI',
+		Roboto,
+		Oxygen,
+		Ubuntu,
+		Cantarell,
+		sans-serif;
+	color: var(--rd-text);
+	background-color: var(--rd-bg);
+	line-height: 1.6;
+	scroll-behavior: smooth;
+	-webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
 body {
 	margin: 0;
 	min-height: 100dvh;
 	display: flex;
 	flex-direction: column;
-	background: var(--rd-bg);
+	background-color: var(--rd-bg);
 	color: var(--rd-text);
 }
 
@@ -51,100 +51,45 @@ main {
 	width: 100%;
 	max-width: 72rem;
 	margin-inline: auto;
-	padding: 2rem clamp(1rem, 4vw, 3rem);
+	padding: 2.5rem clamp(1rem, 4vw, 3rem);
 }
 
 a {
 	color: var(--rd-accent);
+	text-decoration: none;
+	transition: color 0.15s ease, opacity 0.15s ease;
 }
 
 a:hover {
 	text-decoration: underline;
 }
 
-.pill {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	gap: 0.5rem;
-	border-radius: 999px;
-	border: 1px solid var(--rd-ink);
-	background: transparent;
+/* Accessibility Focus States */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+	outline: none;
+	box-shadow: var(--rd-focus-ring);
+	border-radius: var(--rd-radius-sm);
+}
+
+/* Base typography */
+h1, h2, h3, h4, h5, h6 {
 	color: var(--rd-text);
-	font-weight: 800;
-	letter-spacing: -0.02em;
-	text-decoration: none;
-	transition: border-color 0.18s;
-	white-space: nowrap;
+	font-weight: 700;
+	letter-spacing: -0.025em;
+	line-height: 1.25;
+	margin-top: 0;
 }
 
-.pill:hover {
-	border-color: color-mix(in srgb, var(--rd-accent) 55%, var(--rd-ink));
-	text-decoration: none;
+p {
+	margin-top: 0;
+	margin-bottom: 1.25rem;
 }
 
-.pill--sm {
-	font-size: 0.8125rem;
-	padding: 0.25rem 0.65rem;
-}
-
-.action {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	gap: 0.5rem;
-	height: 2.5rem;
-	padding: 0 1rem;
-	border-radius: 0.75rem;
-	text-decoration: none;
-	font-weight: 800;
-	letter-spacing: -0.02em;
-	border: 1px solid var(--rd-ink);
-	background: transparent;
-	color: var(--rd-text);
-	transition:
-		border-color 0.18s,
-		background 0.18s,
-		color 0.18s;
-	white-space: nowrap;
-}
-
-.action:hover {
-	border-color: color-mix(in srgb, var(--rd-accent) 55%, var(--rd-ink));
-	text-decoration: none;
-}
-
-.action-code:hover {
-	color: #fff;
-}
-
-html[data-theme='light'] .action-code:hover {
-	color: var(--rd-text);
-}
-
-.action-view {
-	background: var(--rd-accent);
-	color: #041016;
-	border-color: color-mix(in srgb, var(--rd-accent) 55%, var(--rd-ink));
-}
-
-.action-view:hover {
-	background: transparent;
-	color: #fff;
-}
-
-html[data-theme='light'] .action-view {
-	color: #fff;
-}
-
-html[data-theme='light'] .action-view:hover {
-	color: var(--rd-text);
-}
-
-.action-view.is-disabled {
-	opacity: 0.55;
-}
-
+/* Screen reader utility */
 .sr-only {
 	position: absolute;
 	width: 1px;
@@ -155,4 +100,83 @@ html[data-theme='light'] .action-view:hover {
 	clip: rect(0, 0, 0, 0);
 	white-space: nowrap;
 	border: 0;
+}
+
+/* Common UI Pills & Badges */
+.pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	padding: 0.25rem 0.65rem;
+	border-radius: var(--rd-radius-full);
+	border: 1px solid var(--rd-ink);
+	background: var(--rd-panel);
+	color: var(--rd-text-soft);
+	font-size: 0.8125rem;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+	white-space: nowrap;
+}
+
+.pill:hover {
+	border-color: var(--rd-accent);
+	color: var(--rd-text);
+	text-decoration: none;
+}
+
+/* Action Buttons */
+.action-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0.625rem 1.25rem;
+	border-radius: var(--rd-radius-md);
+	font-weight: 600;
+	font-size: 0.9375rem;
+	letter-spacing: -0.01em;
+	text-decoration: none;
+	cursor: pointer;
+	border: 1px solid transparent;
+	transition: all 0.18s ease;
+	white-space: nowrap;
+}
+
+.action-btn--primary {
+	background: var(--rd-accent);
+	color: #041016;
+	border-color: var(--rd-accent);
+}
+
+.action-btn--primary:hover {
+	background: var(--rd-accent-hover);
+	border-color: var(--rd-accent-hover);
+	color: #041016;
+	text-decoration: none;
+	box-shadow: 0 0 15px var(--rd-accent-glow);
+}
+
+.action-btn--secondary {
+	background: var(--rd-panel);
+	color: var(--rd-text);
+	border-color: var(--rd-ink);
+}
+
+.action-btn--secondary:hover {
+	background: var(--rd-panel-hover);
+	border-color: var(--rd-accent);
+	color: var(--rd-text);
+	text-decoration: none;
+}
+
+.action-btn--ghost {
+	background: transparent;
+	color: var(--rd-text-soft);
+	border-color: transparent;
+}
+
+.action-btn--ghost:hover {
+	background: var(--rd-panel);
+	color: var(--rd-text);
+	text-decoration: none;
 }

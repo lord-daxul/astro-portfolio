@@ -1,0 +1,52 @@
+---
+import type { Project } from '../../types/project';
+import ProjectCard from './ProjectCard.astro';
+
+interface Props {
+	projects: Project[];
+	basePath?: string;
+	emptyMessage?: string;
+}
+
+const {
+	projects,
+	basePath = '/projects/',
+	emptyMessage = 'No se encontraron proyectos disponibles en este momento.',
+} = Astro.props;
+---
+
+{
+	projects.length === 0 ? (
+		<div class="empty-state" role="status">
+			<p class="empty-text">{emptyMessage}</p>
+		</div>
+	) : (
+		<div class="projects-grid">
+			{projects.map((project) => (
+				<ProjectCard project={project} basePath={basePath} />
+			))}
+		</div>
+	)
+}
+
+<style>
+	.projects-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+		gap: 1.75rem;
+	}
+
+	.empty-state {
+		text-align: center;
+		padding: 3rem 1.5rem;
+		background: var(--rd-panel);
+		border: 1px dashed var(--rd-ink);
+		border-radius: var(--rd-radius-lg);
+	}
+
+	.empty-text {
+		color: var(--rd-text-soft);
+		margin: 0;
+		font-size: 1.05rem;
+	}
+</style>

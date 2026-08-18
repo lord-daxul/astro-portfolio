@@ -1,0 +1,171 @@
+---
+import type { Experience } from '../../types/experience';
+import Badge from '../ui/Badge.astro';
+
+interface Props {
+	items: Experience[];
+	emptyMessage?: string;
+}
+
+const { items, emptyMessage = 'No hay trayectoria registrada por el momento.' } = Astro.props;
+---
+
+{
+	items.length === 0 ? (
+		<div class="empty-state" role="status">
+			<p class="empty-text">{emptyMessage}</p>
+		</div>
+	) : (
+		<div class="timeline">
+			{items.map((exp) => (
+				<article class="timeline-item">
+					<div class="timeline-marker" aria-hidden="true" />
+					<div class="timeline-card">
+						<header class="timeline-header">
+							<div class="timeline-meta">
+								<span class="timeline-date">
+									{exp.startDate} {exp.endDate ? `— ${exp.endDate}` : exp.isCurrent ? '— Presente' : ''}
+								</span>
+								{exp.isCurrent ? <Badge text="Actual" variant="accent" /> : null}
+							</div>
+							<h3 class="timeline-role">{exp.role}</h3>
+							<p class="timeline-company">
+								{exp.companyUrl ? (
+									<a href={exp.companyUrl} target="_blank" rel="noopener noreferrer">
+										{exp.company}
+									</a>
+								) : (
+									exp.company
+								)}
+								{exp.location ? <span class="timeline-location"> · {exp.location}</span> : null}
+							</p>
+						</header>
+
+						{exp.description ? <p class="timeline-desc">{exp.description}</p> : null}
+
+						{exp.technologies?.length > 0 ? (
+							<div class="timeline-techs" aria-label="Tecnologías aplicadas">
+								{exp.technologies.map((t) => (
+									<Badge text={t} variant="subtle" />
+								))}
+							</div>
+						) : null}
+					</div>
+				</article>
+			))}
+		</div>
+	)
+}
+
+<style>
+	.timeline {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+		padding-left: 1.5rem;
+		border-left: 2px solid var(--rd-ink);
+		margin-left: 0.5rem;
+	}
+
+	.timeline-item {
+		position: relative;
+	}
+
+	.timeline-marker {
+		position: absolute;
+		left: -1.95rem;
+		top: 0.5rem;
+		width: 0.85rem;
+		height: 0.85rem;
+		border-radius: var(--rd-radius-full);
+		background: var(--rd-accent);
+		border: 3px solid var(--rd-bg);
+		box-shadow: 0 0 0 1px var(--rd-ink);
+	}
+
+	.timeline-card {
+		background: var(--rd-panel);
+		border: 1px solid var(--rd-ink);
+		border-radius: var(--rd-radius-lg);
+		padding: 1.5rem;
+		box-shadow: var(--rd-shadow-sm);
+		transition: border-color 0.2s ease;
+	}
+
+	.timeline-card:hover {
+		border-color: color-mix(in srgb, var(--rd-accent) 40%, var(--rd-ink));
+	}
+
+	.timeline-header {
+		margin-bottom: 0.75rem;
+	}
+
+	.timeline-meta {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-bottom: 0.35rem;
+	}
+
+	.timeline-date {
+		font-size: 0.8125rem;
+		font-weight: 700;
+		color: var(--rd-accent);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.timeline-role {
+		font-size: 1.25rem;
+		font-weight: 800;
+		margin: 0 0 0.25rem;
+		line-height: 1.25;
+	}
+
+	.timeline-company {
+		font-size: 0.9375rem;
+		color: var(--rd-text-soft);
+		margin: 0;
+		font-weight: 500;
+	}
+
+	.timeline-company a {
+		color: var(--rd-text);
+		font-weight: 600;
+	}
+
+	.timeline-company a:hover {
+		color: var(--rd-accent);
+	}
+
+	.timeline-location {
+		color: var(--rd-muted);
+	}
+
+	.timeline-desc {
+		font-size: 0.9375rem;
+		color: var(--rd-text-soft);
+		margin: 0.75rem 0 1rem;
+		line-height: 1.6;
+	}
+
+	.timeline-techs {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+	}
+
+	.empty-state {
+		text-align: center;
+		padding: 3rem 1.5rem;
+		background: var(--rd-panel);
+		border: 1px dashed var(--rd-ink);
+		border-radius: var(--rd-radius-lg);
+	}
+
+	.empty-text {
+		color: var(--rd-text-soft);
+		margin: 0;
+	}
+</style>

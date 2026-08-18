@@ -1,0 +1,81 @@
+---
+export const prerender = false;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
+import ExperienceTimeline from '../components/experience/ExperienceTimeline.astro';
+import { getExperiences } from '../lib/wordpress';
+import type { Experience } from '../types/experience';
+
+const fallbackExperience: Experience[] = [
+	{
+		id: 'exp-1',
+		title: 'WebMaster & Full Stack Developer',
+		role: 'WebMaster & Full Stack Developer',
+		company: 'PangeaTech',
+		location: 'Remoto',
+		startDate: '2023',
+		endDate: '2025',
+		isCurrent: false,
+		description: 'Desarrollo y optimización continua de aplicaciones web de alto rendimiento. Mantenimiento y modernización del stack headless con WordPress y Astro.',
+		technologies: ['WordPress', 'PHP', 'JavaScript', 'Tailwind CSS', 'Cloudflare'],
+	},
+	{
+		id: 'exp-2',
+		title: 'Senior WordPress Developer',
+		role: 'Senior WordPress Developer',
+		company: 'Proyectos Corporativos',
+		location: 'Remoto',
+		startDate: '2021',
+		endDate: '2023',
+		isCurrent: false,
+		description: 'Arquitecturas desacopladas con WPGraphQL, themes a medida basados en ACF Pro y conectividad con clientes modernos de frontend.',
+		technologies: ['WordPress Headless', 'WPGraphQL', 'React', 'ACF Pro'],
+	},
+	{
+		id: 'exp-3',
+		title: 'Desarrollador Web Freelance',
+		role: 'Desarrollador Web Freelance',
+		company: 'Independiente',
+		location: 'Remoto',
+		startDate: '2016',
+		endDate: '2021',
+		isCurrent: false,
+		description: 'Desarrollo de sitios web a medida, optimización de velocidad de carga y estrategias de posicionamiento web (SEO).',
+		technologies: ['JavaScript', 'HTML5/CSS3', 'WordPress', 'SEO'],
+	},
+];
+
+let experiences = await getExperiences().catch(() => []);
+if (experiences.length === 0) {
+	experiences = fallbackExperience;
+}
+---
+
+<BaseLayout
+	title="Experiencia"
+	description="Trayectoria profesional y experiencia laboral de Raúl David Sánchez: Desarrollo Web Full Stack, WordPress Headless y arquitectura de software."
+>
+	<div class="experience-page">
+		<SectionHeader
+			title="Trayectoria Profesional"
+			subtitle="Un recorrido por los roles y proyectos en los que he participado a lo largo de mi carrera."
+			align="left"
+		/>
+
+		<div class="timeline-wrapper">
+			<ExperienceTimeline items={experiences} />
+		</div>
+	</div>
+</BaseLayout>
+
+<style>
+	.experience-page {
+		padding-top: 1rem;
+	}
+
+	.timeline-wrapper {
+		max-width: 52rem;
+		margin-top: 2rem;
+	}
+</style>

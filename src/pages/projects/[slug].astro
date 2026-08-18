@@ -1,0 +1,243 @@
+---
+export const prerender = false;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Badge from '../../components/ui/Badge.astro';
+import Button from '../../components/ui/Button.astro';
+import { getProjectBySlug } from '../../lib/wordpress';
+
+const slug = Astro.params.slug;
+if (!slug) {
+	return Astro.redirect('/404');
+}
+
+const project = await getProjectBySlug(slug).catch(() => null);
+if (!project) {
+	return Astro.redirect('/404');
+}
+
+const img = project.featuredImage;
+---
+
+<BaseLayout
+	title={project.title}
+	description={project.excerpt || `Detalles y caso de estudio del proyecto ${project.title}`}
+	image={img?.sourceUrl}
+	type="article"
+>
+	<!-- Breadcrumbs -->
+	<nav class="breadcrumb" aria-label="Migas de pan">
+		<ol>
+			<li><a href="/">Inicio</a></li>
+			<li><a href="/projects/">Proyectos</a></li>
+			<li aria-current="page">{project.title}</li>
+		</ol>
+	</nav>
+
+	<article class="project-detail">
+		<header class="project-header">
+			<div class="header-meta">
+				{project.projectDate ? <span class="project-date">{project.projectDate}</span> : null}
+				{project.status ? <Badge text={project.status} variant="accent" /> : null}
+			</div>
+
+			<h1 class="project-title">{project.title}</h1>
+
+			{project.excerpt ? <p class="project-lead">{project.excerpt}</p> : null}
+
+			{
+				project.technologies?.length > 0 ? (
+					<div class="project-tech-list" aria-label="Tecnologías">
+						{project.technologies.map((t) => (
+							<Badge text={t} variant="default" />
+						))}
+					</div>
+				) : null
+			}
+
+			<div class="project-links">
+				{
+					project.projectUrl ? (
+						<Button href={project.projectUrl} variant="primary" target="_blank">
+							Visitar Proyecto en Vivo ↗
+						</Button>
+					) : null
+				}
+				{
+					project.repositoryUrl ? (
+						<Button href={project.repositoryUrl} variant="secondary" target="_blank">
+							Ver Código en GitHub
+						</Button>
+					) : null
+				}
+			</div>
+		</header>
+
+		{
+			img?.sourceUrl ? (
+				<figure class="featured-media">
+					<img
+						src={img.sourceUrl}
+						alt={img.altText || project.title}
+						width={img.width || 1200}
+						height={img.height || 750}
+						loading="eager"
+						fetchpriority="high"
+						decoding="async"
+					/>
+				</figure>
+			) : null
+		}
+
+		{
+			project.content ? (
+				<div class="project-content-body wp-rendered-content" set:html={project.content} />
+			) : null
+		}
+
+		<footer class="project-footer">
+			<Button href="/projects/" variant="ghost">
+				← Volver a todos los proyectos
+			</Button>
+		</footer>
+	</article>
+</BaseLayout>
+
+<style>
+	.breadcrumb {
+		margin-bottom: 2rem;
+		font-size: 0.875rem;
+	}
+
+	.breadcrumb ol {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		align-items: center;
+		color: var(--rd-muted);
+	}
+
+	.breadcrumb li:not(:last-child)::after {
+		content: '/';
+		margin-left: 0.5rem;
+		color: var(--rd-ink);
+	}
+
+	.breadcrumb a {
+		color: var(--rd-text-soft);
+	}
+
+	.breadcrumb a:hover {
+		color: var(--rd-accent);
+	}
+
+	.project-detail {
+		max-width: 54rem;
+		margin-inline: auto;
+	}
+
+	.project-header {
+		margin-bottom: 2.5rem;
+	}
+
+	.header-meta {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.project-date {
+		font-size: 0.8125rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--rd-accent);
+	}
+
+	.project-title {
+		font-size: clamp(2.25rem, 5vw, 3rem);
+		font-weight: 800;
+		line-height: 1.15;
+		letter-spacing: -0.03em;
+		margin: 0 0 1rem;
+	}
+
+	.project-lead {
+		font-size: 1.15rem;
+		color: var(--rd-text-soft);
+		line-height: 1.6;
+		margin: 0 0 1.5rem;
+	}
+
+	.project-tech-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		margin-bottom: 1.75rem;
+	}
+
+	.project-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+	}
+
+	.featured-media {
+		margin: 0 0 3rem;
+		border-radius: var(--rd-radius-lg);
+		overflow: hidden;
+		border: 1px solid var(--rd-ink);
+		background: var(--rd-panel);
+		box-shadow: var(--rd-shadow-md);
+	}
+
+	.featured-media img {
+		width: 100%;
+		height: auto;
+		display: block;
+	}
+
+	.project-content-body {
+		font-size: 1.0625rem;
+		line-height: 1.75;
+		color: var(--rd-text);
+		margin-bottom: 3.5rem;
+	}
+
+	.project-content-body :global(h2),
+	.project-content-body :global(h3) {
+		margin-top: 2.25rem;
+		margin-bottom: 1rem;
+	}
+
+	.project-content-body :global(p) {
+		margin-bottom: 1.25rem;
+	}
+
+	.project-content-body :global(ul),
+	.project-content-body :global(ol) {
+		margin-bottom: 1.5rem;
+		padding-left: 1.5rem;
+	}
+
+	.project-content-body :global(li) {
+		margin-bottom: 0.5rem;
+	}
+
+	.project-content-body :global(img) {
+		max-width: 100%;
+		height: auto;
+		border-radius: var(--rd-radius-md);
+		border: 1px solid var(--rd-ink);
+		margin-block: 1.5rem;
+	}
+
+	.project-footer {
+		padding-top: 2rem;
+		border-top: 1px solid var(--rd-ink);
+	}
+</style>

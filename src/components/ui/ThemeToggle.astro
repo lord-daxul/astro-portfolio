@@ -1,0 +1,72 @@
+---
+interface Props {
+	class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<button
+	class={`theme-toggle ${className}`}
+	type="button"
+	aria-label="Cambiar modo de tema (oscuro/claro)"
+	aria-pressed="true"
+>
+	<span class="icon-sun" aria-hidden="true" title="Modo claro">
+		<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<circle cx="12" cy="12" r="4"></circle>
+			<path d="M12 2v2"></path>
+			<path d="M12 20v2"></path>
+			<path d="m4.93 4.93 1.41 1.41"></path>
+			<path d="m17.66 17.66 1.41 1.41"></path>
+			<path d="M2 12h2"></path>
+			<path d="M20 12h2"></path>
+			<path d="m6.34 17.66-1.41 1.41"></path>
+			<path d="m19.07 4.93-1.41 1.41"></path>
+		</svg>
+	</span>
+	<span class="icon-moon" aria-hidden="true" title="Modo oscuro">
+		<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+		</svg>
+	</span>
+</button>
+
+<style>
+	.theme-toggle {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.35rem;
+		height: 2.35rem;
+		border-radius: var(--rd-radius-full);
+		border: 1px solid var(--rd-ink);
+		background: var(--rd-panel);
+		color: var(--rd-text);
+		cursor: pointer;
+		transition: border-color 0.18s ease, background-color 0.18s ease;
+	}
+
+	.theme-toggle:hover {
+		border-color: var(--rd-accent);
+		background: var(--rd-panel-hover);
+	}
+
+	.theme-toggle .icon-sun {
+		display: none;
+		color: #f59e0b;
+	}
+
+	.theme-toggle .icon-moon {
+		display: inline-flex;
+		color: var(--rd-accent);
+	}
+
+	:global(html[data-theme='light']) .theme-toggle .icon-sun {
+		display: inline-flex;
+	}
+
+	:global(html[data-theme='light']) .theme-toggle .icon-moon {
+		display: none;
+	}
+</style>

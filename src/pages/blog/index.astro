@@ -2,42 +2,196 @@
 export const prerender = false;
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import PortfolioGrid from '../../components/PortfolioGrid.astro';
-import { fetchPostsList, PORTFOLIO_LIST_FOR_PATHS } from '../../lib/wp/portfolio';
+import SectionHeader from '../../components/ui/SectionHeader.astro';
+import Badge from '../../components/ui/Badge.astro';
+import Button from '../../components/ui/Button.astro';
+import { getPosts } from '../../lib/wordpress';
 
-let items: Awaited<ReturnType<typeof fetchPostsList>> = [];
-let loadError: string | null = null;
-
-try {
-	items = await fetchPostsList(PORTFOLIO_LIST_FOR_PATHS);
-} catch (e) {
-	loadError = e instanceof Error ? e.message : String(e);
-}
+const posts = await getPosts(20).catch(() => []);
 ---
 
-<BaseLayout title="Blog" description="Publicaciones y artículos del blog">
-	<h1 class="page-title">Blog</h1>
-	<p class="page-intro">
-		Aquí encontrarás las publicaciones del blog traídas directamente desde WordPress mediante WPGraphQL.
-	</p>
-	<PortfolioGrid
-		items={items}
-		loadError={loadError}
-		basePath="/blog/"
-		emptyMessage="Aún no hay publicaciones en el blog."
-	/>
+<BaseLayout
+	title="Blog"
+	description="Artículos, tutoriales y reflexiones sobre desarrollo web, WordPress Headless, Astro y rendimiento."
+>
+	<div class="blog-page">
+		<SectionHeader
+			title="Blog & Publicaciones"
+			subtitle="Reflexiones, tutoriales y notas técnicas sobre desarrollo web y arquitectura de software."
+			align="left"
+		/>
+
+		{
+			posts.length === 0 ? (
+				<div class="empty-state" role="status">
+					<p class="empty-text">No hay artículos publicados en el blog en este momento.</p>
+				</div>
+			) : (
+				<div class="posts-grid">
+					{posts.map((post) => (
+						<article class="post-card">
+							{post.featuredImage?.sourceUrl ? (
+								<a href={`/blog/${post.slug}/`} class="post-thumb-link" tabindex="-1" aria-hidden="true">
+									<img
+										src={post.featuredImage.sourceUrl}
+										alt={post.featuredImage.altText || post.title}
+										width={post.featuredImage.width || 600}
+										height={post.featuredImage.height || 350}
+										loading="lazy"
+										decoding="async"
+									/>
+								</a>
+							) : null}
+							<div class="post-body">
+								<header class="post-header">
+									{post.date ? (
+										<time class="post-date" datetime={post.date}>
+											{new Date(post.date).toLocaleDateString('es-ES', {
+												year: 'numeric',
+												month: 'long',
+												day: 'numeric',
+											})}
+										</time>
+									) : null}
+									<h2 class="post-title">
+										<a href={`/blog/${post.slug}/`}>{post.title}</a>
+									</h2>
+								</header>
+
+								{post.excerpt ? <p class="post-excerpt">{post.excerpt}</p> : null}
+
+								{post.categories?.length > 0 ? (
+									<div class="post-categories" aria-label="Categorías">
+										{post.categories.map((cat) => (
+											<Badge text={cat} variant="subtle" />
+										))}
+									</div>
+								) : null}
+
+								<div class="post-actions">
+									<Button href={`/blog/${post.slug}/`} variant="ghost">
+										Leer artículo completo →
+									</Button>
+								</div>
+							</div>
+						</article>
+					))}
+				</div>
+			)
+		}
+	</div>
 </BaseLayout>
 
 <style>
-	.page-title {
-		font-size: clamp(1.75rem, 4vw, 2.25rem);
-		font-weight: 700;
-		letter-spacing: -0.02em;
-		margin: 0 0 0.75rem;
+	.blog-page {
+		padding-top: 1rem;
 	}
-	.page-intro {
+
+	.posts-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
+		gap: 2rem;
+	}
+
+	.post-card {
+		background: var(--rd-panel);
+		border: 1px solid var(--rd-ink);
+		border-radius: var(--rd-radius-lg);
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+		box-shadow: var(--rd-shadow-sm);
+		transition: all 0.2s ease;
+	}
+
+	.post-card:hover {
+		border-color: color-mix(in srgb, var(--rd-accent) 40%, var(--rd-ink));
+		transform: translateY(-2px);
+		box-shadow: var(--rd-shadow-md);
+	}
+
+	.post-thumb-link {
+		display: block;
+		aspect-ratio: 16 / 9;
+		overflow: hidden;
+		background: var(--rd-ink-subtle);
+	}
+
+	.post-thumb-link img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		transition: transform 0.3s ease;
+	}
+
+	.post-card:hover .post-thumb-link img {
+		transform: scale(1.03);
+	}
+
+	.post-body {
+		padding: 1.5rem;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.post-date {
+		display: block;
+		font-size: 0.8125rem;
+		color: var(--rd-accent);
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		margin-bottom: 0.4rem;
+	}
+
+	.post-title {
+		font-size: 1.25rem;
+		font-weight: 800;
+		margin: 0 0 0.75rem;
+		line-height: 1.35;
+	}
+
+	.post-title a {
+		color: var(--rd-text);
+		text-decoration: none;
+	}
+
+	.post-title a:hover {
+		color: var(--rd-accent);
+	}
+
+	.post-excerpt {
+		font-size: 0.9375rem;
 		color: var(--rd-text-soft);
-		margin: 0 0 2rem;
-		max-width: 42rem;
+		line-height: 1.6;
+		margin: 0 0 1.25rem;
+	}
+
+	.post-categories {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+		margin-bottom: 1.25rem;
+	}
+
+	.post-actions {
+		margin-top: auto;
+		padding-top: 1rem;
+		border-top: 1px solid var(--rd-ink-subtle);
+	}
+
+	.empty-state {
+		text-align: center;
+		padding: 3rem 1.5rem;
+		background: var(--rd-panel);
+		border: 1px dashed var(--rd-ink);
+		border-radius: var(--rd-radius-lg);
+	}
+
+	.empty-text {
+		color: var(--rd-text-soft);
+		margin: 0;
 	}
 </style>

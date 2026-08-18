@@ -1,0 +1,56 @@
+---
+interface Props {
+	href?: string;
+	variant?: 'primary' | 'secondary' | 'ghost';
+	target?: string;
+	rel?: string;
+	class?: string;
+	type?: 'button' | 'submit' | 'reset';
+	disabled?: boolean;
+	'aria-label'?: string;
+}
+
+const {
+	href,
+	variant = 'primary',
+	target,
+	rel,
+	class: className = '',
+	type = 'button',
+	disabled = false,
+	'aria-label': ariaLabel,
+} = Astro.props;
+
+const computedRel = target === '_blank' ? (rel ? `${rel} noopener noreferrer` : 'noopener noreferrer') : rel;
+---
+
+{
+	href ? (
+		<a
+			href={href}
+			target={target}
+			rel={computedRel}
+			class={`action-btn action-btn--${variant} ${className} ${disabled ? 'is-disabled' : ''}`}
+			aria-label={ariaLabel}
+			aria-disabled={disabled ? 'true' : undefined}
+		>
+			<slot />
+		</a>
+	) : (
+		<button
+			type={type}
+			disabled={disabled}
+			class={`action-btn action-btn--${variant} ${className}`}
+			aria-label={ariaLabel}
+		>
+			<slot />
+		</button>
+	)
+}
+
+<style>
+	.is-disabled {
+		opacity: 0.5;
+		pointer-events: none;
+	}
+</style>

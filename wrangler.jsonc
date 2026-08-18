@@ -1,12 +1,29 @@
 {
+	"name": "daxulfolio",
+	"account_id": "377b232ed65c3ba96b0f1850dad49f67",
+	"main": "@astrojs/cloudflare/entrypoints/server",
 	"compatibility_date": "2026-04-18",
 	"compatibility_flags": ["global_fetch_strictly_public"],
-	"name": "daxulfolio",
-	"main": "@astrojs/cloudflare/entrypoints/server",
 	"assets": {
 		"directory": "./dist",
 		"binding": "ASSETS"
 	},
+	"kv_namespaces": [
+		{
+			"binding": "SESSION",
+			"id": "058a4e6405bd4b5497b3872d5664cc2e"
+		}
+	],
+	"routes": [
+		{
+			"pattern": "rauldavid.com",
+			"custom_domain": true
+		},
+		{
+			"pattern": "www.rauldavid.com",
+			"custom_domain": true
+		}
+	],
 	"observability": {
 		"enabled": true
 	}

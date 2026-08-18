@@ -1,27 +1,59 @@
 ---
+export const prerender = true;
+
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
 ---
 
-<BaseLayout title="No encontrado" description="La página no existe">
-	<h1 class="title">404</h1>
-	<p class="lead">No hay nada en esta ruta.</p>
-	<p>
-		<a href="/">Volver al inicio</a>
-		{' · '}
-		<a href="/portfolio/">Portfolio</a>
-	</p>
+<BaseLayout title="Página No Encontrada" description="La página que buscas no existe o ha sido movida.">
+	<div class="not-found">
+		<span class="error-code">404</span>
+		<h1 class="error-title">Página no encontrada</h1>
+		<p class="error-desc">
+			Lo sentimos, la página o recurso que estás buscando no existe, ha sido renombrada o ya no está disponible.
+		</p>
+		<div class="error-actions">
+			<Button href="/" variant="primary">Volver al Inicio</Button>
+			<Button href="/projects/" variant="secondary">Ver Proyectos</Button>
+		</div>
+	</div>
 </BaseLayout>
 
 <style>
-	.title {
-		font-size: clamp(2rem, 5vw, 3rem);
-		font-weight: 700;
-		margin: 0 0 0.5rem;
-		letter-spacing: -0.03em;
+	.not-found {
+		text-align: center;
+		padding-block: clamp(3rem, 8vw, 6rem);
+		max-width: 36rem;
+		margin-inline: auto;
 	}
-	.lead {
+
+	.error-code {
+		display: block;
+		font-size: clamp(4rem, 10vw, 7rem);
+		font-weight: 900;
+		letter-spacing: -0.05em;
+		color: var(--rd-accent);
+		line-height: 1;
+		margin-bottom: 0.5rem;
+	}
+
+	.error-title {
+		font-size: clamp(1.75rem, 4vw, 2.25rem);
+		font-weight: 800;
+		margin: 0 0 1rem;
+	}
+
+	.error-desc {
+		font-size: 1.05rem;
 		color: var(--rd-text-soft);
-		font-size: 1.125rem;
-		margin: 0 0 1.5rem;
+		line-height: 1.6;
+		margin: 0 0 2rem;
+	}
+
+	.error-actions {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 1rem;
 	}
 </style>

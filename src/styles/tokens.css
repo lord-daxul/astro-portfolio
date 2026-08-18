@@ -1,0 +1,53 @@
+:root {
+	/* Dark Theme Palette (Default) */
+	--rd-bg: #0b132b;
+	--rd-panel: #111e38;
+	--rd-panel-hover: #162646;
+	--rd-ink: #1c2d52;
+	--rd-ink-subtle: #16223d;
+	--rd-primary: #3b82f6;
+	--rd-accent: #64ffda;
+	--rd-accent-hover: #7dffc3;
+	--rd-accent-glow: rgba(100, 255, 218, 0.15);
+	--rd-text: #f1f5f9;
+	--rd-text-soft: #94a3b8;
+	--rd-muted: #64748b;
+	--rd-danger: #ef4444;
+	--rd-success: #10b981;
+
+	/* Radii */
+	--rd-radius-sm: 0.375rem;
+	--rd-radius-md: 0.625rem;
+	--rd-radius-lg: 1rem;
+	--rd-radius-full: 9999px;
+
+	/* Shadows */
+	--rd-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+	--rd-shadow-md: 0 10px 30px rgba(0, 0, 0, 0.35);
+	--rd-shadow-lg: 0 20px 45px rgba(0, 0, 0, 0.45);
+
+	/* Focus Ring */
+	--rd-focus-ring: 0 0 0 2px var(--rd-bg), 0 0 0 4px var(--rd-accent);
+}
+
+html[data-theme='light'] {
+	/* Light Theme Overrides */
+	--rd-bg: #f8fafc;
+	--rd-panel: #ffffff;
+	--rd-panel-hover: #f1f5f9;
+	--rd-ink: #cbd5e1;
+	--rd-ink-subtle: #e2e8f0;
+	--rd-primary: #2563eb;
+	--rd-accent: #0284c7;
+	--rd-accent-hover: #0369a1;
+	--rd-accent-glow: rgba(2, 132, 199, 0.12);
+	--rd-text: #0f172a;
+	--rd-text-soft: #475569;
+	--rd-muted: #64748b;
+
+	--rd-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+	--rd-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+	--rd-shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.12);
+
+	--rd-focus-ring: 0 0 0 2px var(--rd-bg), 0 0 0 4px var(--rd-primary);
+}

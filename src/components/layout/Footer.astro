@@ -1,0 +1,89 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+	<div class="footer-container">
+		<div class="footer-meta">
+			<p class="copyright">
+				© {currentYear} <strong>Raúl David Sánchez</strong> · Desarrollador Web Full Stack.
+			</p>
+			<p class="tech-stack">
+				Construido con <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a>, 
+				<a href="https://wordpress.org" target="_blank" rel="noopener noreferrer">WordPress Headless</a> y 
+				<a href="https://workers.cloudflare.com" target="_blank" rel="noopener noreferrer">Cloudflare Workers</a>.
+			</p>
+		</div>
+
+		<div class="footer-social" aria-label="Enlaces profesionales">
+			<a href="https://github.com/daxul" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">
+				GitHub
+			</a>
+			<a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">
+				LinkedIn
+			</a>
+			<a href="/contacto/" class="social-link">
+				Contacto
+			</a>
+		</div>
+	</div>
+</footer>
+
+<style>
+	.site-footer {
+		border-top: 1px solid var(--rd-ink);
+		background-color: var(--rd-panel);
+		margin-top: auto;
+		padding: 2.5rem clamp(1rem, 4vw, 3rem);
+	}
+
+	.footer-container {
+		max-width: 72rem;
+		margin-inline: auto;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 1.5rem;
+	}
+
+	.footer-meta {
+		font-size: 0.875rem;
+		color: var(--rd-text-soft);
+	}
+
+	.copyright {
+		margin: 0 0 0.35rem;
+		color: var(--rd-text);
+	}
+
+	.tech-stack {
+		margin: 0;
+		color: var(--rd-muted);
+	}
+
+	.footer-social {
+		display: flex;
+		align-items: center;
+		gap: 1.25rem;
+	}
+
+	.social-link {
+		color: var(--rd-text-soft);
+		font-weight: 600;
+		font-size: 0.9rem;
+		text-decoration: none;
+	}
+
+	.social-link:hover {
+		color: var(--rd-accent);
+		text-decoration: underline;
+	}
+
+	@media (max-width: 640px) {
+		.footer-container {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+	}
+</style>

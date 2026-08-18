@@ -1,0 +1,146 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
+import Button from '../components/ui/Button.astro';
+
+const principles = [
+	{
+		title: 'Rendimiento Primero',
+		description: 'Construir para la web moderna significa priorizar la velocidad de carga, la entrega mínima de JavaScript y una experiencia fluida desde el primer byte.',
+	},
+	{
+		title: 'Accesibilidad Universal (a11y)',
+		description: 'La web debe ser usable para todos. Cuido la navegación por teclado, el contraste de color, las etiquetas semánticas y el soporte para tecnologías asistivas.',
+	},
+	{
+		title: 'Arquitectura Limpia & Desacoplada',
+		description: 'Separar el CMS editorial del frontend otorga flexibilidad de diseño, seguridad robusta y facilidad de escalabilidad sin ataduras de temas pesados.',
+	},
+];
+---
+
+<BaseLayout
+	title="Sobre Mí"
+	description="Conoce más sobre Raúl David Sánchez: filosofía de trabajo, stack tecnológico y enfoque de desarrollo."
+>
+	<article class="about-page">
+		<SectionHeader
+			title="Sobre Mí"
+			subtitle="Desarrollador Web Full Stack apasionado por construir productos digitales eficientes, limpios y accesibles."
+			align="left"
+		/>
+
+		<div class="about-grid">
+			<div class="about-story">
+				<p>
+					Hola, soy <strong>Raúl David Sánchez</strong>. Cuento con varios años de experiencia transformando requerimientos de negocio en arquitecturas web sólidas. Me especializo en el ecosistema <strong>Astro</strong>, <strong>WordPress Headless</strong>, <strong>TypeScript</strong> y tecnologías en el Edge como <strong>Cloudflare Workers</strong>.
+				</p>
+				<p>
+					Mi enfoque combina la disciplina del desarrollo frontend moderno (con énfasis en Core Web Vitals y diseño responsivo) con la robustez en la integración de APIs, modelado de contenido y despliegues automatizados.
+				</p>
+				<p>
+					Creo firmemente en la simplicidad arquitectónica: no añadir librerías o dependencias innecesarias cuando las capacidades nativas del navegador y los frameworks modernos ya resuelven el problema con elegancia.
+				</p>
+
+				<div class="about-actions">
+					<Button href="/projects/" variant="primary">Ver Proyectos</Button>
+					<Button href="/contacto/" variant="secondary">Hablemos de tu Proyecto</Button>
+				</div>
+			</div>
+
+			<aside class="about-sidebar">
+				<div class="sidebar-card">
+					<h3>Valores de Desarrollo</h3>
+					<div class="principles-list">
+						{
+							principles.map((p) => (
+								<div class="principle-item">
+									<h4>{p.title}</h4>
+									<p>{p.description}</p>
+								</div>
+							))
+						}
+					</div>
+				</div>
+			</aside>
+		</div>
+	</article>
+</BaseLayout>
+
+<style>
+	.about-page {
+		padding-top: 1rem;
+	}
+
+	.about-grid {
+		display: grid;
+		grid-template-columns: 1.3fr 0.9fr;
+		gap: 3rem;
+		margin-top: 2rem;
+	}
+
+	.about-story {
+		font-size: 1.1rem;
+		line-height: 1.7;
+		color: var(--rd-text);
+	}
+
+	.about-story p {
+		margin-bottom: 1.5rem;
+	}
+
+	.about-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		margin-top: 2.5rem;
+	}
+
+	.about-sidebar {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.sidebar-card {
+		background: var(--rd-panel);
+		border: 1px solid var(--rd-ink);
+		border-radius: var(--rd-radius-lg);
+		padding: 2rem;
+		box-shadow: var(--rd-shadow-sm);
+	}
+
+	.sidebar-card h3 {
+		font-size: 1.25rem;
+		margin-bottom: 1.5rem;
+		padding-bottom: 0.75rem;
+		border-bottom: 1px solid var(--rd-ink);
+	}
+
+	.principles-list {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.principle-item h4 {
+		font-size: 1.05rem;
+		color: var(--rd-accent);
+		margin-bottom: 0.35rem;
+	}
+
+	.principle-item p {
+		font-size: 0.9375rem;
+		color: var(--rd-text-soft);
+		line-height: 1.55;
+		margin: 0;
+	}
+
+	@media (max-width: 860px) {
+		.about-grid {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+	}
+</style>

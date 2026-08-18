@@ -1,0 +1,16 @@
+{
+  "name": "Raúl David Sánchez — Portfolio",
+  "short_name": "Raúl David",
+  "description": "Portafolio profesional de Raúl David Sánchez — Desarrollador Web Full Stack",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b132b",
+  "theme_color": "#0b132b",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

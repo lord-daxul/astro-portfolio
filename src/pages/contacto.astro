@@ -1,72 +1,344 @@
 ---
+export const prerender = false;
+
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
 ---
 
-<BaseLayout title="Contacto" description="Información de contacto y colaboración">
-	<section class="contact">
-		<p class="eyebrow">Contacto</p>
-		<h1>Hablemos de tu proyecto</h1>
-		<p class="lead">
-			Si quieres trabajar conmigo, necesitas una web o deseas colaborar en un proyecto,
-			puedes personalizar esta página con tu correo, WhatsApp o redes profesionales.
-		</p>
+<BaseLayout
+	title="Contacto"
+	description="Ponte en contacto con Raúl David Sánchez para proyectos, consultorías o colaboraciones profesionales."
+>
+	<div class="contact-page">
+		<SectionHeader
+			title="Hablemos de tu Proyecto"
+			subtitle="¿Tienes una idea, necesitas una aplicación web de alto rendimiento o una consultoría técnica? Escríbeme."
+			align="left"
+		/>
 
-		<div class="panel">
-			<h2>Canales de contacto</h2>
-			<ul>
-				<li>Correo profesional</li>
-				<li>LinkedIn</li>
-				<li>GitHub</li>
-				<li>WhatsApp o formulario</li>
-			</ul>
-			<p>
-				Edita esta página para colocar tus datos reales y convertirla en tu contacto final.
-			</p>
+		<div class="contact-grid">
+			<!-- Contact Form -->
+			<div class="form-container">
+				<form id="contact-form" class="contact-form" novalidate>
+					<!-- Honeypot anti-spam -->
+					<div class="sr-only" aria-hidden="true">
+						<label for="honeypot">No llenes este campo:</label>
+						<input type="text" id="honeypot" name="honeypot" tabindex="-1" autocomplete="off" />
+					</div>
+
+					<div class="form-group">
+						<label for="name" class="form-label">
+							Nombre completo <span class="required" aria-hidden="true">*</span>
+						</label>
+						<input
+							type="text"
+							id="name"
+							name="name"
+							class="form-input"
+							placeholder="Tu nombre o empresa"
+							required
+							autocomplete="name"
+						/>
+					</div>
+
+					<div class="form-group">
+						<label for="email" class="form-label">
+							Correo electrónico <span class="required" aria-hidden="true">*</span>
+						</label>
+						<input
+							type="email"
+							id="email"
+							name="email"
+							class="form-input"
+							placeholder="tu@correo.com"
+							required
+							autocomplete="email"
+						/>
+					</div>
+
+					<div class="form-group">
+						<label for="subject" class="form-label">Asunto</label>
+						<input
+							type="text"
+							id="subject"
+							name="subject"
+							class="form-input"
+							placeholder="Propuesta de proyecto / Consultoría"
+						/>
+					</div>
+
+					<div class="form-group">
+						<label for="message" class="form-label">
+							Mensaje <span class="required" aria-hidden="true">*</span>
+						</label>
+						<textarea
+							id="message"
+							name="message"
+							class="form-textarea"
+							rows="5"
+							placeholder="Cuéntame sobre tu proyecto, objetivos y plazos..."
+							required
+						></textarea>
+					</div>
+
+					<div id="form-status" class="form-status" role="alert" aria-live="polite"></div>
+
+					<div class="form-submit">
+						<button type="submit" id="submit-btn" class="action-btn action-btn--primary">
+							<span class="btn-text">Enviar Mensaje</span>
+							<span class="btn-spinner sr-only">Enviando...</span>
+						</button>
+					</div>
+				</form>
+			</div>
+
+			<!-- Direct Contact Info -->
+			<aside class="contact-info">
+				<div class="info-card">
+					<h3>Canales Directos</h3>
+					<p class="info-desc">
+						Si prefieres comunicarte directamente o conectar en redes profesionales:
+					</p>
+
+					<ul class="info-links">
+						<li>
+							<span class="info-icon">📧</span>
+							<div>
+								<strong>Email:</strong>
+								<a href="mailto:contacto@rauldavid.com">contacto@rauldavid.com</a>
+							</div>
+						</li>
+						<li>
+							<span class="info-icon">💼</span>
+							<div>
+								<strong>LinkedIn:</strong>
+								<a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+									linkedin.com/in/rauldavid
+								</a>
+							</div>
+						</li>
+						<li>
+							<span class="info-icon">🐙</span>
+							<div>
+								<strong>GitHub:</strong>
+								<a href="https://github.com/daxul" target="_blank" rel="noopener noreferrer">
+									github.com/daxul
+								</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</aside>
 		</div>
-	</section>
+	</div>
 </BaseLayout>
 
+<script is:inline>
+	(() => {
+		const form = document.getElementById('contact-form');
+		const statusBox = document.getElementById('form-status');
+		const submitBtn = document.getElementById('submit-btn');
+
+		if (!form || !statusBox || !submitBtn) return;
+
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+			statusBox.textContent = '';
+			statusBox.className = 'form-status';
+
+			const formData = new FormData(form);
+			const payload = {
+				name: formData.get('name')?.toString() || '',
+				email: formData.get('email')?.toString() || '',
+				subject: formData.get('subject')?.toString() || '',
+				message: formData.get('message')?.toString() || '',
+				honeypot: formData.get('honeypot')?.toString() || '',
+			};
+
+			if (!payload.name || !payload.email || !payload.message) {
+				statusBox.textContent = 'Por favor completa todos los campos obligatorios.';
+				statusBox.classList.add('is-error');
+				return;
+			}
+
+			submitBtn.disabled = true;
+			submitBtn.classList.add('is-loading');
+
+			try {
+				const res = await fetch('/api/contact', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(payload),
+				});
+
+				const result = await res.json();
+
+				if (res.ok && result.success) {
+					statusBox.textContent = result.message || '¡Mensaje enviado con éxito!';
+					statusBox.classList.add('is-success');
+					form.reset();
+				} else {
+					statusBox.textContent = result.error || 'Ocurrió un error al enviar el mensaje.';
+					statusBox.classList.add('is-error');
+				}
+			} catch (err) {
+				statusBox.textContent = 'Error de conexión. Por favor verifica tu conexión a internet o intenta más tarde.';
+				statusBox.classList.add('is-error');
+			} finally {
+				submitBtn.disabled = false;
+				submitBtn.classList.remove('is-loading');
+			}
+		});
+	})();
+</script>
+
 <style>
-	.contact {
-		max-width: 48rem;
+	.contact-page {
+		padding-top: 1rem;
 	}
-	.eyebrow {
-		font-size: 0.8125rem;
-		font-weight: 700;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		color: var(--rd-muted);
-		margin: 0 0 0.75rem;
+
+	.contact-grid {
+		display: grid;
+		grid-template-columns: 1.3fr 0.9fr;
+		gap: 3rem;
+		margin-top: 2rem;
 	}
-	h1 {
-		font-size: clamp(2rem, 5vw, 2.75rem);
-		line-height: 1.1;
-		letter-spacing: -0.03em;
-		margin: 0 0 1rem;
-	}
-	.lead {
-		font-size: 1.05rem;
-		color: var(--rd-text-soft);
-		margin: 0 0 1.5rem;
-	}
-	.panel {
+
+	.form-container {
 		background: var(--rd-panel);
 		border: 1px solid var(--rd-ink);
-		border-radius: 0.75rem;
-		padding: 1.25rem;
-		box-shadow: 0 1px 3px rgb(0 0 0 / 0.28);
+		border-radius: var(--rd-radius-lg);
+		padding: 2.25rem;
+		box-shadow: var(--rd-shadow-sm);
 	}
-	.panel h2 {
-		margin-top: 0;
-		font-size: 1.125rem;
+
+	.contact-form {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
 	}
-	.panel ul {
-		margin: 0 0 1rem;
-		padding-left: 1.25rem;
+
+	.form-group {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.form-label {
+		font-size: 0.9375rem;
+		font-weight: 600;
 		color: var(--rd-text);
 	}
-	.panel p {
-		margin: 0;
+
+	.required {
+		color: var(--rd-accent);
+	}
+
+	.form-input,
+	.form-textarea {
+		width: 100%;
+		padding: 0.75rem 1rem;
+		border-radius: var(--rd-radius-md);
+		border: 1px solid var(--rd-ink);
+		background: var(--rd-bg);
+		color: var(--rd-text);
+		font-size: 0.9375rem;
+		font-family: inherit;
+		transition: border-color 0.18s ease;
+	}
+
+	.form-input:focus,
+	.form-textarea:focus {
+		border-color: var(--rd-accent);
+		outline: none;
+	}
+
+	.form-status {
+		display: none;
+		padding: 0.85rem 1.25rem;
+		border-radius: var(--rd-radius-md);
+		font-size: 0.9375rem;
+		line-height: 1.4;
+	}
+
+	.form-status.is-success {
+		display: block;
+		background: rgba(16, 185, 129, 0.15);
+		border: 1px solid var(--rd-success);
+		color: #6ee7b7;
+	}
+
+	.form-status.is-error {
+		display: block;
+		background: rgba(239, 68, 68, 0.15);
+		border: 1px solid var(--rd-danger);
+		color: #fca5a5;
+	}
+
+	.info-card {
+		background: var(--rd-panel);
+		border: 1px solid var(--rd-ink);
+		border-radius: var(--rd-radius-lg);
+		padding: 2rem;
+		box-shadow: var(--rd-shadow-sm);
+	}
+
+	.info-card h3 {
+		font-size: 1.25rem;
+		margin-bottom: 0.75rem;
+		padding-bottom: 0.75rem;
+		border-bottom: 1px solid var(--rd-ink);
+	}
+
+	.info-desc {
 		color: var(--rd-text-soft);
+		font-size: 0.9375rem;
+		margin-bottom: 1.75rem;
+	}
+
+	.info-links {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+	}
+
+	.info-links li {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.85rem;
+		font-size: 0.9375rem;
+	}
+
+	.info-icon {
+		font-size: 1.25rem;
+		line-height: 1.2;
+	}
+
+	.info-links strong {
+		display: block;
+		color: var(--rd-text);
+		font-size: 0.8125rem;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		margin-bottom: 0.15rem;
+	}
+
+	.info-links a {
+		color: var(--rd-accent);
+		word-break: break-all;
+	}
+
+	@media (max-width: 860px) {
+		.contact-grid {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+
+		.form-container {
+			padding: 1.5rem;
+		}
 	}
 </style>
